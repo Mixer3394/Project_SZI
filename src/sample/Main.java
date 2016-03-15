@@ -60,7 +60,6 @@ public class Main extends Application {
             public void handle(long currentNanoTime) {
                 tickAndRender();
                 setStatement();
-                inputText();
             }
         }.start();
 
@@ -116,15 +115,6 @@ public class Main extends Application {
         graphicsContext.fillText("Y: " + actualPositionH, 1350, 50);
 
         graphicsContext.fillText("Output:", 1200, 150);
-    }
-
-    private static void inputText() {
-
-        Label label1 = new Label("Name:");
-        TextField textField = new TextField();
-        HBox hb = new HBox();
-        hb.getChildren().addAll(label1, textField);
-        hb.setSpacing(10);
     }
 
     public static void main(String[] args) {
