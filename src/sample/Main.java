@@ -31,8 +31,11 @@ public class Main extends Application {
     static  Image forklift;
     static  Image forklift2;
     static  Image background;
+    static  Image conveyor;
+    static Image cover;
     static int actualPositionH = 500;
     static int actualPositionW = 100;
+    static int conveyorPos = 0;
     @Override
     public void start(Stage mainStage) throws Exception {
 
@@ -60,6 +63,7 @@ public class Main extends Application {
             public void handle(long currentNanoTime) {
                 tickAndRender();
                 setStatement();
+                conveyorAnimated();
             }
         }.start();
 
@@ -80,6 +84,8 @@ public class Main extends Application {
         forklift = new Image("forklift.png");
         forklift2 = new Image("forklift2.png");
         background = new Image("background.png");
+        conveyor = new Image("conveyor.png");
+        cover = new Image("cover.png");
     }
 
     private static void tickAndRender()
@@ -87,6 +93,7 @@ public class Main extends Application {
         // clear canvas
         graphicsContext.clearRect(0, 0, WIDTH, HEIGHT);
         graphicsContext.drawImage(background, 0, 0);
+
 
         if (currentlyActiveKeys.contains("LEFT"))
         {
@@ -97,8 +104,15 @@ public class Main extends Application {
         {
             actualPositionW = actualPositionW + 2;
             graphicsContext.drawImage(forklift, actualPositionW , actualPositionH);
-
         }
+        else if (currentlyActiveKeys.contains("DOWN")) {
+            actualPositionH = actualPositionH + 2;
+            graphicsContext.drawImage(forklift, actualPositionW, actualPositionH);
+        }
+        else if (currentlyActiveKeys.contains("UP")) {
+            actualPositionH = actualPositionH - 2;
+            graphicsContext.drawImage(forklift, actualPositionW, actualPositionH);
+       }
         else {
             graphicsContext.drawImage(forklift, actualPositionW, actualPositionH);
         }
@@ -116,6 +130,19 @@ public class Main extends Application {
 
         graphicsContext.fillText("Output:", 1200, 150);
     }
+
+    private static void conveyorAnimated() {
+
+        graphicsContext.drawImage(conveyor, 5, conveyorPos - 600);
+        graphicsContext.drawImage(conveyor, 5, conveyorPos);
+        conveyorPos = conveyorPos + 1;
+        graphicsContext.drawImage(cover, 5, 618 );
+        if(conveyorPos >= 600) {
+            conveyorPos = 0;
+        }
+    }
+
+
 
     public static void main(String[] args) {
         launch(args);
