@@ -35,7 +35,7 @@ public class Main extends Application {
     static Image cover;
     static int actualPositionH = 500;
     static int actualPositionW = 100;
-    static int conveyorPos = 0;
+    static double conveyorPos = 0.0;
     @Override
     public void start(Stage mainStage) throws Exception {
 
@@ -135,7 +135,7 @@ public class Main extends Application {
 
         graphicsContext.drawImage(conveyor, 5, conveyorPos - 600);
         graphicsContext.drawImage(conveyor, 5, conveyorPos);
-        conveyorPos = conveyorPos + 1;
+        conveyorPos = conveyorPos + 0.5;
         graphicsContext.drawImage(cover, 5, 618 );
         if(conveyorPos >= 600) {
             conveyorPos = 0;
