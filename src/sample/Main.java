@@ -3,15 +3,11 @@ package sample;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -81,11 +77,11 @@ public class Main extends Application {
 
     private static void loadGraphics()
     {
-        forklift = new Image("forklift.png");
-        forklift2 = new Image("forklift2.png");
-        background = new Image("background.png");
-        conveyor = new Image("conveyor.png");
-        cover = new Image("cover.png");
+        forklift = new Image("images/forklift.png");
+        forklift2 = new Image("images/forklift2.png");
+        background = new Image("images/background.png");
+        conveyor = new Image("images/conveyor.png");
+        cover = new Image("images/cover.png");
     }
 
     private static void tickAndRender()
