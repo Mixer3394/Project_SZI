@@ -15,6 +15,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Random;
+import java.util.stream.IntStream;
 
 
 public class Main extends Application {
@@ -29,11 +31,100 @@ public class Main extends Application {
     static  Image background;
     static  Image conveyor;
     static Image cover;
-    static int actualPositionH = 500;
-    static int actualPositionW = 100;
+
+    // Cases
+    static Image caseOne;
+    static Image caseTwo;
+    static Image caseThree;
+    static Image caseFour;
+    static Image caseFive;
+    static Image caseSix;
+    static Image caseSeven;
+    static Image caseEight;
+    static double casePoints[][] = new double[120][2];
+
+    // Randoms for cases-spawns
+    static Random caseSpawn = new Random();
+    static Random caseNumber = new Random();
+    static Image casesToSpawn[] = new Image[20];
+    static int locOfCases[] = new int[20];
+
+    static double actualPositionH = 500;
+    static double actualPositionW = 100;
     static double conveyorPos = 0.0;
+
+
+    // True if right, false if left
+    static boolean leftOrRight = true;
+
     @Override
     public void start(Stage mainStage) throws Exception {
+
+
+        // Declare random case spawn-points
+
+        // X
+        IntStream.range(0, 10).forEach(
+                n -> {
+                    casePoints[n][0] = 156.5;
+                    casePoints[n+10][0] = 210.0;
+                    casePoints[n+20][0] = 313.5;
+                    casePoints[n+30][0] = 367.5;
+                    casePoints[n+40][0] = 472.0;
+                    casePoints[n+50][0] = 525.5;
+                    casePoints[n+60][0] = 629.0;
+                    casePoints[n+70][0] = 682.0;
+                    casePoints[n+80][0] = 784.0;
+                    casePoints[n+90][0] = 837.0;
+                    casePoints[n+100][0] = 945.5;
+                    casePoints[n+110][0] = 999.0;
+                }
+        );
+
+        for (int n = 0; n < 109; n += 12) casePoints[n][0] = 156.5;
+        for (int n = 1; n < 110; n += 12) casePoints[n][0] = 210.0;
+        for (int n = 2; n < 111; n += 12) casePoints[n][0] = 313.5;
+        for (int n = 3; n < 112; n += 12) casePoints[n][0] = 367.5;
+        for (int n = 4; n < 113; n += 12) casePoints[n][0] = 472.0;
+        for (int n = 5; n < 114; n += 12) casePoints[n][0] = 525.5;
+        for (int n = 6; n < 115; n += 12) casePoints[n][0] = 629.0;
+        for (int n = 7; n < 116; n += 12) casePoints[n][0] = 682.0;
+        for (int n = 8; n < 117; n += 12) casePoints[n][0] = 784.0;
+        for (int n = 9; n < 118; n += 12) casePoints[n][0] = 837.0;
+        for (int n = 10; n < 119; n += 12) casePoints[n][0] = 945.5;
+        for (int n = 11; n < 120; n += 12) casePoints[n][0] = 999.0;
+
+        // Y
+        IntStream.range(0,120).forEach(
+                n -> {
+                    if(n<12){
+                        casePoints[n][1] = 97.0;
+                    } else if(n > 11 && n < 24 ) {
+                        casePoints[n][1] = 135.0;
+                    } else if(n > 23 && n < 36) {
+                        casePoints[n][1] = 189.5;
+                    } else if(n > 35 && n < 48) {
+                        casePoints[n][1] = 226.0;
+                    } else if(n > 47 && n < 60) {
+                        casePoints[n][1] = 279.5;
+                    } else if(n > 59 && n < 72) {
+                        casePoints[n][1] = 316.0;
+                    } else if(n > 71 && n < 84) {
+                        casePoints[n][1] = 370.0;
+                    } else if(n > 83 && n < 96) {
+                        casePoints[n][1] = 408.0;
+                    } else if(n > 95 && n < 108) {
+                        casePoints[n][1] = 460.0;
+                    } else if(n > 107 && n < 120) {
+                        casePoints[n][1] = 496.5;
+                    }
+
+                }
+        );
+
+
+
+
 
         try {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("sample.fxml"));
@@ -49,7 +140,6 @@ public class Main extends Application {
         prepareActionHandlers();
         graphicsContext = canvas.getGraphicsContext2D();
         loadGraphics();
-
 
         /**
          * Main "game" loop
@@ -67,6 +157,46 @@ public class Main extends Application {
         } catch (IOException e) {
            e.printStackTrace();
         }
+
+        // Get random spawn points and random cases.
+        IntStream.range(0,20).forEach(
+                n -> {
+                    int i = caseSpawn.nextInt(119) + 1;
+                    int j = caseNumber.nextInt(8) + 1;
+
+                    switch (j) {
+                        case 1:
+                            casesToSpawn[n] = caseOne;
+                            break;
+                        case 2:
+                            casesToSpawn[n] = caseTwo;
+                            break;
+                        case 3:
+                            casesToSpawn[n] = caseThree;
+                            break;
+                        case 4:
+                            casesToSpawn[n] = caseFour;
+                            break;
+                        case 5:
+                            casesToSpawn[n] = caseFive;
+                            break;
+                        case 6:
+                            casesToSpawn[n] = caseSix;
+                            break;
+                        case 7:
+                            casesToSpawn[n] = caseSeven;
+                            break;
+                        case 8:
+                            casesToSpawn[n] = caseEight;
+                            break;
+                        default:
+                            casesToSpawn[n] = caseOne;
+                            break;
+                    }
+                    locOfCases[n] = i;
+
+                }
+        );
     }
 
     private static void prepareActionHandlers()
@@ -82,6 +212,15 @@ public class Main extends Application {
         background = new Image("images/background.png");
         conveyor = new Image("images/conveyor.png");
         cover = new Image("images/cover.png");
+        caseOne = new Image("images/case1.png");
+        caseTwo = new Image("images/case2.png");
+        caseThree = new Image("images/case3.png");
+        caseFour = new Image("images/case4.png");
+        caseFive = new Image("images/case5.png");
+        caseSix = new Image("images/case6.png");
+        caseSeven = new Image("images/case7.png");
+        caseEight = new Image("images/case8.png");
+
     }
 
     private static void tickAndRender()
@@ -91,26 +230,54 @@ public class Main extends Application {
         graphicsContext.drawImage(background, 0, 0);
 
 
+        // Spawn Cases.
+        IntStream.range(0,19).forEach(
+                n -> {
+                    /*
+                    TODO Calc distance
+                    double distance = Math.sqrt((Math.pow((actualPositionH - casePoints[n][1]), 2)) + (Math.pow((actualPositionW - casePoints[n][0]), 2)));
+                    System.out.println(distance);
+                    */
+                    graphicsContext.drawImage(casesToSpawn[n], casePoints[locOfCases[n]][0], casePoints[locOfCases[n]][1]);
+                }
+        );
+        // System.out.println("New distance");
+
+        // Arrow keys moving
         if (currentlyActiveKeys.contains("LEFT"))
         {
-            actualPositionW = actualPositionW - 2;
+            actualPositionW = actualPositionW - 1.5;
             graphicsContext.drawImage(forklift2, actualPositionW, actualPositionH);
+            leftOrRight = false;
         }
         else if (currentlyActiveKeys.contains("RIGHT"))
         {
-            actualPositionW = actualPositionW + 2;
+            actualPositionW = actualPositionW + 1.5;
             graphicsContext.drawImage(forklift, actualPositionW , actualPositionH);
+            leftOrRight = true;
         }
         else if (currentlyActiveKeys.contains("DOWN")) {
-            actualPositionH = actualPositionH + 2;
-            graphicsContext.drawImage(forklift, actualPositionW, actualPositionH);
+            actualPositionH = actualPositionH + 1.5;
+            if (leftOrRight == true) {
+                graphicsContext.drawImage(forklift, actualPositionW, actualPositionH);
+            } else {
+                graphicsContext.drawImage(forklift2, actualPositionW, actualPositionH);
+            }
         }
         else if (currentlyActiveKeys.contains("UP")) {
-            actualPositionH = actualPositionH - 2;
-            graphicsContext.drawImage(forklift, actualPositionW, actualPositionH);
+            actualPositionH = actualPositionH - 1.5;
+            if (leftOrRight == true) {
+                graphicsContext.drawImage(forklift, actualPositionW, actualPositionH);
+            } else {
+                graphicsContext.drawImage(forklift2, actualPositionW, actualPositionH);
+            }
        }
         else {
-            graphicsContext.drawImage(forklift, actualPositionW, actualPositionH);
+            if (leftOrRight == true) {
+                graphicsContext.drawImage(forklift, actualPositionW, actualPositionH);
+            } else {
+                graphicsContext.drawImage(forklift2, actualPositionW, actualPositionH);
+            }
         }
     }
 
