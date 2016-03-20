@@ -31,23 +31,6 @@ public class Main extends Application {
     // Forklifts
     static  Image forklift;
     static  Image forklift2;
-    static  Image forkliftMINI11;
-    static  Image forkliftMINI21;
-    static  Image forkliftMINI12;
-    static  Image forkliftMINI22;
-    static  Image forkliftMINI13;
-    static  Image forkliftMINI23;
-    static  Image forkliftMINI14;
-    static  Image forkliftMINI24;
-    static  Image forkliftMINI15;
-    static  Image forkliftMINI25;
-    static  Image forkliftMINI16;
-    static  Image forkliftMINI26;
-    static  Image forkliftMINI17;
-    static  Image forkliftMINI27;
-    static  Image forkliftMINI18;
-    static  Image forkliftMINI28;
-    static String currentForklift;
 
     // Etc
     static  Image background;
@@ -69,8 +52,16 @@ public class Main extends Application {
     static Random caseSpawn = new Random();
     static Random caseNumber = new Random();
     static Image casesToSpawn[] = new Image[20];
+
+    // actual case on forklift
+    static Image actualCase;
     static int locOfCases[] = new int[20];
+
+    // state if forklift is busy
     static Boolean caseNotToSpawn = false;
+
+    // number of case that is on forklift
+    static int numberOfCase;
 
     static double actualPositionH = 500;
     static double actualPositionW = 100;
@@ -233,22 +224,6 @@ public class Main extends Application {
     {
         forklift = new Image("images/forklift.png");
         forklift2 = new Image("images/forklift2.png");
-        forkliftMINI11 = new Image("images/1/forkliftMINI11.png");
-        forkliftMINI21 = new Image("images/1/forkliftMINI21.png");
-        forkliftMINI12 = new Image("images/2/forkliftMINI12.png");
-        forkliftMINI22 = new Image("images/2/forkliftMINI22.png");
-        forkliftMINI13 = new Image("images/3/forkliftMINI13.png");
-        forkliftMINI23 = new Image("images/3/forkliftMINI23.png");
-        forkliftMINI14 = new Image("images/4/forkliftMINI14.png");
-        forkliftMINI24 = new Image("images/4/forkliftMINI24.png");
-        forkliftMINI15 = new Image("images/5/forkliftMINI15.png");
-        forkliftMINI25 = new Image("images/5/forkliftMINI25.png");
-        forkliftMINI16 = new Image("images/6/forkliftMINI16.png");
-        forkliftMINI26 = new Image("images/6/forkliftMINI26.png");
-        forkliftMINI17 = new Image("images/7/forkliftMINI17.png");
-        forkliftMINI27 = new Image("images/7/forkliftMINI27.png");
-        forkliftMINI18 = new Image("images/8/forkliftMINI18.png");
-        forkliftMINI28 = new Image("images/8/forkliftMINI28.png");
         background = new Image("images/background.png");
         conveyor = new Image("images/conveyor.png");
         cover = new Image("images/cover.png");
@@ -271,22 +246,43 @@ public class Main extends Application {
 
 
         // Spawn Cases.
-        IntStream.range(0,19).forEach(
+        IntStream.range(0, 19).forEach(
                 n -> {
-                    double distance = Math.sqrt((Math.pow((actualPositionH - casePoints[locOfCases[n]][1]), 2)) + (Math.pow((actualPositionW - casePoints[locOfCases[n]][0]), 2)));
+                    double distance = Math.sqrt(
+                            (Math.pow((actualPositionH - casePoints[locOfCases[n]][1]), 2)) +
+                                    (Math.pow((actualPositionW - casePoints[locOfCases[n]][0]),
+                                            2)));
+
+                    // if distance of forklift and case is greater than 30 draw all random cases
                     if (distance > 30) {
                         graphicsContext.drawImage(casesToSpawn[n], casePoints[locOfCases[n]][0],
                                 casePoints[locOfCases[n]][1]);
-                    } else { caseNotToSpawn = true; }
-                    if (distance<30 || caseNotToSpawn == true) {
-                        //currentForklift = casesToSpawn[n];
-                        graphicsContext.drawImage(casesToSpawn[n], actualPositionW +10, actualPositionH);
+
+                        // if distance of forklift and case < 30 change state that forklit is busy
+                    } else {
+                        caseNotToSpawn = true;
+                        numberOfCase = n;
+
+                    }
+                    if(casesToSpawn[numberOfCase]!= null) {
+                        actualCase = casesToSpawn[numberOfCase];
+                    }
+                    // if forklift is busy draw case on the forklift
+                    if (caseNotToSpawn == true) {
+                        graphicsContext
+                                .drawImage(actualCase, actualPositionW + 10, actualPositionH);
                     }
                 }
-
-
         );
 
+        // delete case from bookstand
+        casesToSpawn[numberOfCase] = null;
+
+        // if the forklift approaches the tape, we remove the pack
+        if(actualPositionW <= 60) {
+            caseNotToSpawn = false;
+            actualCase = null;
+        }
         // Arrow keys moving
         if (currentlyActiveKeys.contains("LEFT"))
         {
