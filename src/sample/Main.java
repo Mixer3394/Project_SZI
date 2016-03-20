@@ -1,5 +1,6 @@
 package sample;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -26,8 +27,29 @@ public class Main extends Application {
     static Scene mainScene;
     static GraphicsContext graphicsContext;
     static HashSet<String> currentlyActiveKeys = new HashSet<String>();
+
+    // Forklifts
     static  Image forklift;
     static  Image forklift2;
+    static  Image forkliftMINI11;
+    static  Image forkliftMINI21;
+    static  Image forkliftMINI12;
+    static  Image forkliftMINI22;
+    static  Image forkliftMINI13;
+    static  Image forkliftMINI23;
+    static  Image forkliftMINI14;
+    static  Image forkliftMINI24;
+    static  Image forkliftMINI15;
+    static  Image forkliftMINI25;
+    static  Image forkliftMINI16;
+    static  Image forkliftMINI26;
+    static  Image forkliftMINI17;
+    static  Image forkliftMINI27;
+    static  Image forkliftMINI18;
+    static  Image forkliftMINI28;
+    static String currentForklift;
+
+    // Etc
     static  Image background;
     static  Image conveyor;
     static Image cover;
@@ -48,6 +70,7 @@ public class Main extends Application {
     static Random caseNumber = new Random();
     static Image casesToSpawn[] = new Image[20];
     static int locOfCases[] = new int[20];
+    static Boolean caseNotToSpawn = false;
 
     static double actualPositionH = 500;
     static double actualPositionW = 100;
@@ -64,6 +87,7 @@ public class Main extends Application {
         // Declare random case spawn-points
 
         // X
+        /*
         IntStream.range(0, 10).forEach(
                 n -> {
                     casePoints[n][0] = 156.5;
@@ -79,7 +103,7 @@ public class Main extends Application {
                     casePoints[n+100][0] = 945.5;
                     casePoints[n+110][0] = 999.0;
                 }
-        );
+        );*/
 
         for (int n = 0; n < 109; n += 12) casePoints[n][0] = 156.5;
         for (int n = 1; n < 110; n += 12) casePoints[n][0] = 210.0;
@@ -209,6 +233,22 @@ public class Main extends Application {
     {
         forklift = new Image("images/forklift.png");
         forklift2 = new Image("images/forklift2.png");
+        forkliftMINI11 = new Image("images/1/forkliftMINI11.png");
+        forkliftMINI21 = new Image("images/1/forkliftMINI21.png");
+        forkliftMINI12 = new Image("images/2/forkliftMINI12.png");
+        forkliftMINI22 = new Image("images/2/forkliftMINI22.png");
+        forkliftMINI13 = new Image("images/3/forkliftMINI13.png");
+        forkliftMINI23 = new Image("images/3/forkliftMINI23.png");
+        forkliftMINI14 = new Image("images/4/forkliftMINI14.png");
+        forkliftMINI24 = new Image("images/4/forkliftMINI24.png");
+        forkliftMINI15 = new Image("images/5/forkliftMINI15.png");
+        forkliftMINI25 = new Image("images/5/forkliftMINI25.png");
+        forkliftMINI16 = new Image("images/6/forkliftMINI16.png");
+        forkliftMINI26 = new Image("images/6/forkliftMINI26.png");
+        forkliftMINI17 = new Image("images/7/forkliftMINI17.png");
+        forkliftMINI27 = new Image("images/7/forkliftMINI27.png");
+        forkliftMINI18 = new Image("images/8/forkliftMINI18.png");
+        forkliftMINI28 = new Image("images/8/forkliftMINI28.png");
         background = new Image("images/background.png");
         conveyor = new Image("images/conveyor.png");
         cover = new Image("images/cover.png");
@@ -233,15 +273,19 @@ public class Main extends Application {
         // Spawn Cases.
         IntStream.range(0,19).forEach(
                 n -> {
-                    /*
-                    TODO Calc distance
-                    double distance = Math.sqrt((Math.pow((actualPositionH - casePoints[n][1]), 2)) + (Math.pow((actualPositionW - casePoints[n][0]), 2)));
-                    System.out.println(distance);
-                    */
-                    graphicsContext.drawImage(casesToSpawn[n], casePoints[locOfCases[n]][0], casePoints[locOfCases[n]][1]);
+                    double distance = Math.sqrt((Math.pow((actualPositionH - casePoints[locOfCases[n]][1]), 2)) + (Math.pow((actualPositionW - casePoints[locOfCases[n]][0]), 2)));
+                    if (distance > 30) {
+                        graphicsContext.drawImage(casesToSpawn[n], casePoints[locOfCases[n]][0],
+                                casePoints[locOfCases[n]][1]);
+                    } else { caseNotToSpawn = true; }
+                    if (distance<30 || caseNotToSpawn == true) {
+                        //currentForklift = casesToSpawn[n];
+                        graphicsContext.drawImage(casesToSpawn[n], actualPositionW +10, actualPositionH);
+                    }
                 }
+
+
         );
-        // System.out.println("New distance");
 
         // Arrow keys moving
         if (currentlyActiveKeys.contains("LEFT"))
