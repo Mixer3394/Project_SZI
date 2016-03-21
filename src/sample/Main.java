@@ -15,8 +15,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.IntStream;
 
 
@@ -27,6 +26,8 @@ public class Main extends Application {
     static Scene mainScene;
     static GraphicsContext graphicsContext;
     static HashSet<String> currentlyActiveKeys = new HashSet<String>();
+
+    static KnowledgeBase knowledgeBase;
 
     // Forklifts
     static  Image forklift;
@@ -73,8 +74,35 @@ public class Main extends Application {
 
     @Override
     public void start(Stage mainStage) throws Exception {
+        knowledgeBase = new KnowledgeBase();
+        knowledgeBase.addData("car parts", "gray");
+        knowledgeBase.addData("car parts", "wooden");
+        knowledgeBase.addData("car parts", "heavy");
+        knowledgeBase.addData("wood", "brown");
+        knowledgeBase.addData("wood", "wooden");
+        knowledgeBase.addData("wood", "heavy");
+        knowledgeBase.addData("paper", "brown");
+        knowledgeBase.addData("paper", "paper");
+        knowledgeBase.addData("paper", "light");
+        knowledgeBase.addData("explosives", "red");
+        knowledgeBase.addData("explosives", "labelled");
+        knowledgeBase.addData("explosives", "dangerous");
+        knowledgeBase.addData("chemicals", "black");
+        knowledgeBase.addData("chemicals", "yellow");
+        knowledgeBase.addData("chemicals", "dangerous");
+        knowledgeBase.addData("chemicals", "heavy");
+        knowledgeBase.addData("water", "blue");
+        knowledgeBase.addData("water", "metal");
+        knowledgeBase.addData("water", "heavy");
+        knowledgeBase.addData("oil", "green");
+        knowledgeBase.addData("oil", "metal");
+        knowledgeBase.addData("oil", "heavy");
+        knowledgeBase.addData("glass", "brown");
+        knowledgeBase.addData("glass", "caution");
+        knowledgeBase.addData("glass", "heavy");
 
-
+        Map<String, List<String>> knowledgeBase = Main.knowledgeBase.getKnowledgeBase();
+        System.out.println(knowledgeBase.toString());
         // Declare random case spawn-points
 
         // X
