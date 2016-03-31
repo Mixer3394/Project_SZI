@@ -75,31 +75,55 @@ public class Main extends Application {
     @Override
     public void start(Stage mainStage) throws Exception {
         knowledgeBase = new KnowledgeBase();
-        knowledgeBase.addData("car parts", "gray");
-        knowledgeBase.addData("car parts", "wooden");
+        knowledgeBase.addData("car parts", "gray" );
+        knowledgeBase.addData("car parts", "metal");
         knowledgeBase.addData("car parts", "heavy");
+        knowledgeBase.addData("car parts", "middleweight");
+        knowledgeBase.addData("car parts", "solid");
         knowledgeBase.addData("wood", "brown");
         knowledgeBase.addData("wood", "wooden");
         knowledgeBase.addData("wood", "heavy");
+        knowledgeBase.addData("wood", "solid");
         knowledgeBase.addData("paper", "brown");
+        knowledgeBase.addData("paper", "white");
         knowledgeBase.addData("paper", "paper");
+        knowledgeBase.addData("paper", "middleweiht");
         knowledgeBase.addData("paper", "light");
+        knowledgeBase.addData("paper", "solid");
         knowledgeBase.addData("explosives", "red");
         knowledgeBase.addData("explosives", "labelled");
         knowledgeBase.addData("explosives", "dangerous");
+        knowledgeBase.addData("explosives", "middleweight");
+        knowledgeBase.addData("explosives", "solid");
         knowledgeBase.addData("chemicals", "black");
         knowledgeBase.addData("chemicals", "yellow");
+        knowledgeBase.addData("chemicals", "labelled");
         knowledgeBase.addData("chemicals", "dangerous");
-        knowledgeBase.addData("chemicals", "heavy");
+        knowledgeBase.addData("chemicals", "middleweight");
+        knowledgeBase.addData("chemicals", "liquid");
         knowledgeBase.addData("water", "blue");
-        knowledgeBase.addData("water", "metal");
+        knowledgeBase.addData("water", "water");
         knowledgeBase.addData("water", "heavy");
-        knowledgeBase.addData("oil", "green");
-        knowledgeBase.addData("oil", "metal");
-        knowledgeBase.addData("oil", "heavy");
-        knowledgeBase.addData("glass", "brown");
+        knowledgeBase.addData("water", "liquid");
+        knowledgeBase.addData("oil", "yellow");
+        knowledgeBase.addData("oil", "oil");
+        knowledgeBase.addData("oil", "middleweight");
+        knowledgeBase.addData("oil", "liquid");
+        knowledgeBase.addData("glass", "blue");
+        knowledgeBase.addData("glass", "transparent");
         knowledgeBase.addData("glass", "caution");
-        knowledgeBase.addData("glass", "heavy");
+        knowledgeBase.addData("glass", "light");
+        knowledgeBase.addData("glass", "delicate");
+        knowledgeBase.addData("glass", "solid");
+        knowledgeBase.addData("electronics", "gold");
+        knowledgeBase.addData("electronics", "silver");
+        knowledgeBase.addData("electronics", "light");
+        knowledgeBase.addData("electronics", "middleweight");
+        knowledgeBase.addData("electronics", "delicate");
+        knowledgeBase.addData("electronics", "solid");
+        /**
+         * Edit by Kamil on 2016-03-30.
+         */
 
         Map<String, List<String>> knowledgeBase = Main.knowledgeBase.getKnowledgeBase();
         System.out.println(knowledgeBase.toString());
