@@ -87,7 +87,7 @@ public class Main extends Application {
         knowledgeBase.addData("paper", "brown");
         knowledgeBase.addData("paper", "white");
         knowledgeBase.addData("paper", "paper");
-        knowledgeBase.addData("paper", "middleweiht");
+        knowledgeBase.addData("paper", "middleweight");
         knowledgeBase.addData("paper", "light");
         knowledgeBase.addData("paper", "solid");
         knowledgeBase.addData("explosives", "red");
