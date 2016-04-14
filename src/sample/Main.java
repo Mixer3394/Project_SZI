@@ -1,8 +1,10 @@
 package sample;
 
-import com.sun.xml.internal.bind.v2.TODO;
+import static java.awt.event.MouseEvent.*;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -13,9 +15,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.scene.input.MouseEvent;
+
+import java.awt.*;
+
 
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 import java.util.stream.IntStream;
 
 
@@ -72,6 +79,7 @@ public class Main extends Application {
     // True if right, false if left
     static boolean leftOrRight = true;
 
+
     @Override
     public void start(Stage mainStage) throws Exception {
         knowledgeBase = new KnowledgeBase();
@@ -104,7 +112,6 @@ public class Main extends Application {
         Map<String, List<String>> knowledgeBase = Main.knowledgeBase.getKnowledgeBase();
         System.out.println(knowledgeBase.toString());
         // Declare random case spawn-points
-
         // X
         /*
         IntStream.range(0, 10).forEach(
@@ -178,6 +185,7 @@ public class Main extends Application {
         mainStage.setScene(mainScene);
 
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
+
         page.getChildren().add(canvas);
 
         prepareActionHandlers();
@@ -193,6 +201,7 @@ public class Main extends Application {
                 tickAndRender();
                 setStatement();
                 conveyorAnimated();
+                setCase();
             }
         }.start();
 
@@ -240,6 +249,7 @@ public class Main extends Application {
 
                 }
         );
+
     }
 
     private static void prepareActionHandlers()
@@ -286,7 +296,7 @@ public class Main extends Application {
                         graphicsContext.drawImage(casesToSpawn[n], casePoints[locOfCases[n]][0],
                                 casePoints[locOfCases[n]][1]);
 
-                        // if distance of forklift and case < 30 change state that forklit is busy
+                        // if distance of forklift and case < 30 change state that forklift is busy
                     } else {
                         caseNotToSpawn = true;
                         numberOfCase = n;
@@ -347,6 +357,29 @@ public class Main extends Application {
                 graphicsContext.drawImage(forklift2, actualPositionW, actualPositionH);
             }
         }
+
+    }
+
+    private static void setCase() {
+        mainScene.addEventHandler(MouseEvent.MOUSE_RELEASED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+
+
+
+                        drawCase(mouseEvent.getX(),mouseEvent.getY());
+
+                    }
+
+                });
+
+    }
+
+    private static void drawCase(double x, double y) {
+        graphicsContext.clearRect(0, 0, WIDTH, HEIGHT);
+        graphicsContext.drawImage(casesToSpawn[0], 100, 500);
+        System.out.print(casesToSpawn[1]);
     }
 
     private static void setStatement() {

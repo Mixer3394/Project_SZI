@@ -11,7 +11,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button layoutX="584.0" layoutY="683.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="80.0" text="Button" />
+
 
       <TextFlow layoutX="1247.0" layoutY="265.0" prefHeight="481.0" prefWidth="494.0" />
    </children>
