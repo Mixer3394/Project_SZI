@@ -35,6 +35,7 @@ public class Main extends Application {
     static HashSet<String> currentlyActiveKeys = new HashSet<String>();
 
     static KnowledgeBase knowledgeBase;
+    static GraphPoints graphPoints;
 
     // Forklifts
     static  Image forklift;
@@ -79,6 +80,7 @@ public class Main extends Application {
     // True if right, false if left
     static boolean leftOrRight = true;
 
+    static int[][] notAccessable;
 
     @Override
     public void start(Stage mainStage) throws Exception {
@@ -132,6 +134,14 @@ public class Main extends Application {
         /**
          * Edit by Kamil on 2016-03-30.
          */
+        Map <Integer,GraphPoints> multiplePoints=new HashMap<Integer, GraphPoints>();
+        multiplePoints.put(0, new GraphPoints(110, 548));
+        multiplePoints.put(1, new GraphPoints(110, 482));
+
+  //      GraphPoints coord=multiplePoints.get(1);
+     //   System.out.println(coord.getX() +" : "+coord.getY());
+   //     graphPoints.addData(1,110);
+      //  graphPoints.addData(1,548);
 
         Map<String, List<String>> knowledgeBase = Main.knowledgeBase.getKnowledgeBase();
         System.out.println(knowledgeBase.toString());
@@ -215,7 +225,7 @@ public class Main extends Application {
         prepareActionHandlers();
         graphicsContext = canvas.getGraphicsContext2D();
         loadGraphics();
-
+            setCase();
         /**
          * Main "game" loop
          */
@@ -225,7 +235,7 @@ public class Main extends Application {
                 tickAndRender();
                 setStatement();
                 conveyorAnimated();
-                setCase();
+
             }
         }.start();
 
@@ -393,17 +403,23 @@ public class Main extends Application {
 
 
                         drawCase(mouseEvent.getX(),mouseEvent.getY());
-
+                        System.out.print(mouseEvent.getX()+" "+mouseEvent.getY()+"\n");
                     }
 
                 });
 
     }
 
+    private static void setNotAccessablePoints() {
+        for(int i=150; i<=244; i++) {
+           notAccessable[i][70] = 0;
+        }
+    }
+
     private static void drawCase(double x, double y) {
         graphicsContext.clearRect(0, 0, WIDTH, HEIGHT);
         graphicsContext.drawImage(casesToSpawn[0], 100, 500);
-        System.out.print(casesToSpawn[1]);
+       // System.out.print(WIDTH+" "+HEIGHT);
     }
 
     private static void setStatement() {
