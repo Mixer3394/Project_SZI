@@ -12,11 +12,7 @@ public class Paths {
 // grafy nieskierowane
         Graph graph = new Graph(37);
 
-<<<<<<< HEAD
         graph.addEdge(0, 1);
-=======
-        graph.addEdge(0, 1); // idzie do góry
->>>>>>> ae5be7437624130fba18647200048749b5df273c
         graph.addEdge(1, 2);
         graph.addEdge(2, 3);
         graph.addEdge(3, 4);
@@ -28,11 +24,7 @@ public class Paths {
         graph.addEdge(9, 10);
         graph.addEdge(10, 11);
         graph.addEdge(11, 12);
-<<<<<<< HEAD
         graph.addEdge(12, 13);
-=======
-        graph.addEdge(12, 13); // ruszam w dół
->>>>>>> ae5be7437624130fba18647200048749b5df273c
         graph.addEdge(13, 14);
         graph.addEdge(14, 15);
         graph.addEdge(15, 16);
@@ -43,15 +35,9 @@ public class Paths {
         graph.addEdge(20, 21);
         graph.addEdge(21, 22);
         graph.addEdge(22, 23);
-<<<<<<< HEAD
-        graph.addEdge(0, 23);
-        graph.addEdge(23, 24);
-        graph.addEdge(24, 25);
-=======
         graph.addEdge(0, 23); // jestem na dole
         graph.addEdge(23, 24); // ide poziomo
         graph.addEdge(24, 25); // ide do góry
->>>>>>> ae5be7437624130fba18647200048749b5df273c
         graph.addEdge(25, 26);
         graph.addEdge(26, 27);
         graph.addEdge(27, 28);
@@ -62,9 +48,6 @@ public class Paths {
         graph.addEdge(32, 33);
         graph.addEdge(33, 34);
         graph.addEdge(34, 35);
-<<<<<<< HEAD
-        graph.addEdge(11, 35);
-=======
         graph.addEdge(11, 35); //ide poziomo
         graph.addEdge(35, 36); // ide poziomo
         graph.addEdge(36, 37); // ide w dół
@@ -183,13 +166,6 @@ public class Paths {
         graph.addEdge(142, 143);
         graph.addEdge(120, 143);
 
-
-
-
-
-
-
->>>>>>> ae5be7437624130fba18647200048749b5df273c
 
         System.out.println("Graf nieskierowany: " + graph);
 
