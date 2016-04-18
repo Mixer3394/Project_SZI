@@ -2,11 +2,13 @@ package sample;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 /**
  * Created by Mariusz on 18.04.2016.
  */
-class DFSPaths {
+class BFSPaths {
     // tablica krawedzi ktora jest
 // przechowuje wierzcholki z ktorych mozna sie dostac do biezacego
 // okreslonego indeksem tablicy
@@ -15,12 +17,15 @@ class DFSPaths {
     private boolean[] marked;
     // wierzcholek zrodlowy, z ktorego rozpoczynamy przeszukiwanie
     private final int source;
+    private Queue<Integer> priorityQueue;
 
-    public DFSPaths(Graph graph, int source) {
+    public BFSPaths(Graph graph, int source) {
         this.source = source;
         edgeTo = new int[graph.getNumberOfVertices()];
         marked = new boolean[graph.getNumberOfVertices()];
-        dfs(graph, source);
+        priorityQueue = new PriorityQueue<Integer>(graph.getNumberOfVertices());
+        priorityQueue.offer(source);
+        bfs(graph, source);
     }
 
     /**
@@ -58,16 +63,26 @@ class DFSPaths {
         return path;
     }
 
-    private void dfs(Graph graph, int vertex) {
+    private void bfs(Graph graph, int vertex) {
 // oznaczamy wierzcholek jako odwiedzony
         marked[vertex] = true;
-// dla kazdego sasiedniego wierzcholka jesli nie jest oznaczony
-// wywolujemy rekurencyjnie metode dfs, ktora odwiedzi wierzchoki i
-// zapisze trase
-        for (int w : graph.getAdjacencyList(vertex)) {
-            if (!marked[w]) {
-                edgeTo[w] = vertex;
-                dfs(graph, w);
+
+// dodajemy wierzcholek zrodlowy do kolejki
+        priorityQueue.offer(vertex);
+
+// dopoki kolejka nie jest pusta, wybieramy krawedz o najnizszym
+// priorytecie
+// i oznaczamy jako odwiedzone wierzcholki z listy sasiedztwa usuwanego
+// wierzcholka
+// oraz dodajemy wierzcholki z listy sasiedztwa do kolejki
+        while (!priorityQueue.isEmpty()) {
+            int v = priorityQueue.remove();
+            for (int w : graph.getAdjacencyList(v)) {
+                if (!marked[w]) {
+                    edgeTo[w] = v;
+                    marked[w] = true;
+                    priorityQueue.offer(w);
+                }
             }
         }
     }
