@@ -1,7 +1,5 @@
 package sample;
 
-import static java.awt.event.MouseEvent.*;
-
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -10,19 +8,15 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import javafx.scene.input.MouseEvent;
-
-import java.awt.*;
-
 
 import java.io.IOException;
 import java.util.*;
-import java.util.List;
 import java.util.stream.IntStream;
 
 
@@ -445,6 +439,77 @@ public class Main extends Application {
         graph.addEdge(141, 142);
         graph.addEdge(142, 143);
         graph.addEdge(120, 143);
+
+        /// łączenie pomiędzy regałami
+        // łączenia miedzy 1 a 2 regałem
+        graph.addEdge(13, 34);
+        graph.addEdge(14, 33);
+        graph.addEdge(15, 32);
+        graph.addEdge(16, 31);
+        graph.addEdge(17, 30);
+        graph.addEdge(18, 29);
+        graph.addEdge(19, 28);
+        graph.addEdge(20, 27);
+        graph.addEdge(21, 26);
+        graph.addEdge(22, 25);
+
+        // łączenie między 2 a 3 regałem
+
+        graph.addEdge(37, 58);
+        graph.addEdge(38, 57);
+        graph.addEdge(39, 56);
+        graph.addEdge(40, 55);
+        graph.addEdge(41, 54);
+        graph.addEdge(42, 53);
+        graph.addEdge(43, 52);
+        graph.addEdge(44, 51);
+        graph.addEdge(45, 50);
+        graph.addEdge(46, 49);
+
+        // łaczenie miedzy 3 a 4 regałem
+
+        graph.addEdge(61, 82);
+        graph.addEdge(62, 81);
+        graph.addEdge(63, 80);
+        graph.addEdge(64, 79);
+        graph.addEdge(65, 78);
+        graph.addEdge(66, 77);
+        graph.addEdge(67, 76);
+        graph.addEdge(68, 75);
+        graph.addEdge(69, 74);
+        graph.addEdge(70, 73);
+
+        // łaczenie miedzy 4 a 5 regałem
+
+        graph.addEdge(85, 106);
+        graph.addEdge(86, 105);
+        graph.addEdge(87, 104);
+        graph.addEdge(88, 103);
+        graph.addEdge(89, 102);
+        graph.addEdge(90, 101);
+        graph.addEdge(91, 100);
+        graph.addEdge(92, 99);
+        graph.addEdge(93, 98);
+        graph.addEdge(94, 97);
+
+        // łączenie między 5 a 6 regałem
+
+        graph.addEdge(109, 130);
+        graph.addEdge(110, 129);
+        graph.addEdge(111, 128);
+        graph.addEdge(112, 127);
+        graph.addEdge(113, 126);
+        graph.addEdge(114, 125);
+        graph.addEdge(115, 124);
+        graph.addEdge(116, 123);
+        graph.addEdge(117, 122);
+        graph.addEdge(118, 121);
+
+
+
+
+
+
         BFSPaths dfs2 = new BFSPaths(graph, 0);
         for (int it : dfs2.getPathTo(35)) {
             GraphPoints coord=multiplePoints.get(it);
