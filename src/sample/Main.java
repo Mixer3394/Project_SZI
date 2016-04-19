@@ -128,20 +128,99 @@ public class Main extends Application {
         /**
          * Edit by Kamil on 2016-03-30.
          */
-        Map <Integer,GraphPoints> multiplePoints=new HashMap<Integer, GraphPoints>();
-        multiplePoints.put(0, new GraphPoints(110, 548));
-        multiplePoints.put(1, new GraphPoints(110, 482));
-        multiplePoints.put(2, new GraphPoints(110, 441));
-        multiplePoints.put(3, new GraphPoints(110, 387));
-        multiplePoints.put(4, new GraphPoints(110, 353));
-        multiplePoints.put(5, new GraphPoints(110, 297));
-        multiplePoints.put(6, new GraphPoints(110, 269));
-        multiplePoints.put(7, new GraphPoints(110, 207));
-        multiplePoints.put(8, new GraphPoints(110, 174));
-        multiplePoints.put(9, new GraphPoints(110, 115));
-        multiplePoints.put(10, new GraphPoints(110, 78));
-        multiplePoints.put(11, new GraphPoints(110, 12));
+        Map <Integer,GraphPoints> algorithmAvailablePoints=new HashMap<Integer, GraphPoints>();
+        algorithmAvailablePoints.put(0, new GraphPoints(0,0));
+        algorithmAvailablePoints.put(1, new GraphPoints(1,0));
+        algorithmAvailablePoints.put(2, new GraphPoints(2,0));
+        algorithmAvailablePoints.put(3, new GraphPoints(3,0));
+        algorithmAvailablePoints.put(4, new GraphPoints(4,0));
+        algorithmAvailablePoints.put(5, new GraphPoints(5,0));
+        algorithmAvailablePoints.put(6, new GraphPoints(6,0));
+        algorithmAvailablePoints.put(7, new GraphPoints(7,0));
+        algorithmAvailablePoints.put(8, new GraphPoints(8,0));
+        algorithmAvailablePoints.put(9, new GraphPoints(9,0));
+        algorithmAvailablePoints.put(10, new GraphPoints(10,0));
+        algorithmAvailablePoints.put(11, new GraphPoints(11,0));
+        algorithmAvailablePoints.put(10, new GraphPoints(10,0));
+        algorithmAvailablePoints.put(12, new GraphPoints(11,1));
 
+        algorithmAvailablePoints.put(23, new GraphPoints(0,1));
+        algorithmAvailablePoints.put(24, new GraphPoints(0,2));
+        algorithmAvailablePoints.put(35, new GraphPoints(11,2));
+        algorithmAvailablePoints.put(36, new GraphPoints(11,3));
+
+
+        algorithmAvailablePoints.put(37, new GraphPoints(10,3));
+        algorithmAvailablePoints.put(38, new GraphPoints(9,3));
+        algorithmAvailablePoints.put(39, new GraphPoints(8,3));
+        algorithmAvailablePoints.put(40, new GraphPoints(7,3));
+        algorithmAvailablePoints.put(41, new GraphPoints(6,3));
+        algorithmAvailablePoints.put(42, new GraphPoints(5,3));
+        algorithmAvailablePoints.put(43, new GraphPoints(4,3));
+        algorithmAvailablePoints.put(44, new GraphPoints(3,3));
+        algorithmAvailablePoints.put(45, new GraphPoints(2,3));
+        algorithmAvailablePoints.put(46, new GraphPoints(1,3));
+        algorithmAvailablePoints.put(47, new GraphPoints(0,3));
+
+        Map <Integer,GraphPoints> algorithmBlockedPoints=new HashMap<Integer, GraphPoints>();
+        algorithmBlockedPoints.put(13, new GraphPoints(10,1));
+        algorithmBlockedPoints.put(14, new GraphPoints(9,1));
+        algorithmBlockedPoints.put(15, new GraphPoints(8,1));
+        algorithmBlockedPoints.put(16, new GraphPoints(7,1));
+        algorithmBlockedPoints.put(17, new GraphPoints(6,1));
+        algorithmBlockedPoints.put(18, new GraphPoints(5,1));
+        algorithmBlockedPoints.put(19, new GraphPoints(4,1));
+        algorithmBlockedPoints.put(20, new GraphPoints(3,1));
+        algorithmBlockedPoints.put(21, new GraphPoints(2,1));
+        algorithmBlockedPoints.put(22, new GraphPoints(1,1));
+
+        algorithmBlockedPoints.put(25, new GraphPoints(1,2));
+        algorithmBlockedPoints.put(26, new GraphPoints(2,2));
+        algorithmBlockedPoints.put(27, new GraphPoints(3,2));
+        algorithmBlockedPoints.put(28, new GraphPoints(4,2));
+        algorithmBlockedPoints.put(29, new GraphPoints(5,2));
+        algorithmBlockedPoints.put(30, new GraphPoints(6,2));
+        algorithmBlockedPoints.put(31, new GraphPoints(7,2));
+        algorithmBlockedPoints.put(32, new GraphPoints(8,2));
+        algorithmBlockedPoints.put(33, new GraphPoints(9,2));
+        algorithmBlockedPoints.put(34, new GraphPoints(10,2));
+
+
+
+
+        Map <Integer,GraphPoints> multiplePoints=new HashMap<Integer, GraphPoints>();
+        multiplePoints.put(11, new GraphPoints(110, 548));
+        multiplePoints.put(10, new GraphPoints(110, 482));
+        multiplePoints.put(9, new GraphPoints(110, 441));
+        multiplePoints.put(8, new GraphPoints(110, 387));
+        multiplePoints.put(7, new GraphPoints(110, 353));
+        multiplePoints.put(6, new GraphPoints(110, 297));
+        multiplePoints.put(5, new GraphPoints(110, 269));
+        multiplePoints.put(4, new GraphPoints(110, 207));
+        multiplePoints.put(3, new GraphPoints(110, 174));
+        multiplePoints.put(2, new GraphPoints(110, 115));
+        multiplePoints.put(1, new GraphPoints(110, 78));
+        multiplePoints.put(0, new GraphPoints(110, 12));
+
+        multiplePoints.put(12, new GraphPoints(137, 548));
+        multiplePoints.put(23, new GraphPoints(137, 12));
+        multiplePoints.put(24, new GraphPoints(198, 12));
+        multiplePoints.put(23, new GraphPoints(198, 548));
+        multiplePoints.put(47, new GraphPoints(242, 12));
+        multiplePoints.put(46, new GraphPoints(242, 78));
+        multiplePoints.put(45, new GraphPoints(242, 115));
+        multiplePoints.put(44, new GraphPoints(242, 174));
+        multiplePoints.put(43, new GraphPoints(242, 207));
+        multiplePoints.put(42, new GraphPoints(242, 269));
+        multiplePoints.put(41, new GraphPoints(242, 297));
+        multiplePoints.put(40, new GraphPoints(242, 353));
+        multiplePoints.put(39, new GraphPoints(242, 387));
+        multiplePoints.put(38, new GraphPoints(242, 441));
+        multiplePoints.put(37, new GraphPoints(242, 482));
+        multiplePoints.put(36, new GraphPoints(242, 548));
+
+
+/*
         multiplePoints.put(23, new GraphPoints(242, 548));
         multiplePoints.put(22, new GraphPoints(242, 482));
         multiplePoints.put(21, new GraphPoints(242, 441));
@@ -284,7 +363,7 @@ public class Main extends Application {
         multiplePoints.put(134, new GraphPoints(1024, 115));
         multiplePoints.put(133, new GraphPoints(1024, 78));
         multiplePoints.put(132, new GraphPoints(1024, 12));
-
+*/
 
         Map<String, List<String>> knowledgeBase = Main.knowledgeBase.getKnowledgeBase();
         System.out.println(knowledgeBase.toString());
