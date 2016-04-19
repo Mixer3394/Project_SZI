@@ -1,7 +1,5 @@
 package sample;
 
-import static java.awt.event.MouseEvent.*;
-
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -10,19 +8,15 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import javafx.scene.input.MouseEvent;
-
-import java.awt.*;
-
 
 import java.io.IOException;
 import java.util.*;
-import java.util.List;
 import java.util.stream.IntStream;
 
 
@@ -290,7 +284,6 @@ public class Main extends Application {
         multiplePoints.put(134, new GraphPoints(1024, 115));
         multiplePoints.put(133, new GraphPoints(1024, 78));
         multiplePoints.put(132, new GraphPoints(1024, 12));
-
 
 
         Map<String, List<String>> knowledgeBase = Main.knowledgeBase.getKnowledgeBase();
