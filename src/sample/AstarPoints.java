@@ -3,14 +3,14 @@ package sample;
 /**
  * Created by Mariusz on 18.04.2016.
  */
-public class GraphPoints {
+public class AstarPoints {
     private int X;
     private int Y;
 
-    public GraphPoints() {
+    public AstarPoints() {
         this(0,0);
     }
-    public GraphPoints(int X, int Y) {
+    public AstarPoints(int X, int Y) {
         this.X = X;
         this.Y = Y;
     }

@@ -4,11 +4,13 @@ import java.util.*;
 /**
  * Created by jakubjanicki on 19.04.2016.
  */
-public class astar {
+public class Astar {
 
     /// There are reversed X and Y
     public static final int DIAGONAL_COST = 14;
     public static final int V_H_COST = 10;
+
+    public static Map <Integer, AstarPoints> pathXY=new HashMap<Integer, AstarPoints>();
 
     static class Cell{
         int heuristicCost = 0; //Heuristic cost
@@ -194,19 +196,27 @@ public class astar {
             System.out.println("Path: ");
             Cell current = grid[endI][endJ];
             System.out.print(current);
+            int it = 0;
+            pathXY.put(it, new AstarPoints(current.i,current.j));
             while(current.parent!=null){
                 System.out.print(" -> "+current.parent);
                 current = current.parent;
+                it++;
+                pathXY.put(it, new AstarPoints(current.i,current.j));
+
             }
             System.out.println();
         }else System.out.println("No possible path");
     }
 
     public static void main(String[] args) throws Exception{
-        test(1, 5, 5, 0, 0, 3, 2, new int[][]{{0,4},{2,2},{3,1},{3,3}});
+
+    //    test(1,15,15,0,0,11,3,new int[][]{{10,1},{9,1},{8,1},{7,1}} );
+
+     /*   test(1, 5, 5, 0, 0, 3, 2, new int[][]{{0,4},{2,2},{3,1},{3,3}});
         test(2, 5, 5, 0, 0, 4, 4, new int[][]{{0,4},{2,2},{3,1},{3,3}});
         test(3, 7, 7, 2, 1, 5, 4, new int[][]{{4,1},{4,3},{5,3},{2,3}});
 
-        test(1, 5, 5, 0, 0, 4, 4, new int[][]{{3,4},{3,3},{4,3}});
+        test(1, 5, 5, 0, 0, 4, 4, new int[][]{{3,4},{3,3},{4,3}});*/
     }
 }

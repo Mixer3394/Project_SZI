@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -27,10 +28,13 @@ public class Main extends Application {
     static Scene mainScene;
     static GraphicsContext graphicsContext;
     static HashSet<String> currentlyActiveKeys = new HashSet<String>();
+    static Map <Integer, AstarPoints> algorithmAvailablePoints=new HashMap<Integer, AstarPoints>();
 
+
+    static Map <Integer, AstarPoints> multiplePoints=new HashMap<Integer, AstarPoints>();
     static KnowledgeBase knowledgeBase;
-    static GraphPoints graphPoints;
-
+    static Astar astar;
+    static int fieldNumber[] = new int[100];
     // Forklifts
     static  Image forklift;
     static  Image forklift2;
@@ -66,16 +70,16 @@ public class Main extends Application {
     // number of case that is on forklift
     static int numberOfCase;
 
-    static double actualPositionH = 110;
-    static double actualPositionW = 548;
+    static double actualPositionH = 12;
+    static double actualPositionW = 110;
     static double conveyorPos = 0.0;
 
 
     // True if right, false if left
     static boolean leftOrRight = true;
 
-    static int[] move;
-
+    static int[][] astarBlockedPoints = {{10,1},{9,1},{8,1},{7,1},{6,1},{5,1},{4,1},{3,1},{2,1},{1,1},{1,2},{2,2},{3,2},{4,2},{5,2},{6,2},{7,2},{8,2},{9,2},{10,2}};
+    public int iterator = 0;
     @Override
     public void start(Stage mainStage) throws Exception {
         knowledgeBase = new KnowledgeBase();
@@ -125,270 +129,248 @@ public class Main extends Application {
         knowledgeBase.addData("electronics", "middleweight");
         knowledgeBase.addData("electronics", "delicate");
         knowledgeBase.addData("electronics", "solid");
-        /**
-         * Edit by Kamil on 2016-03-30.
-         */
-        Map <Integer,GraphPoints> algorithmAvailablePoints=new HashMap<Integer, GraphPoints>();
-        algorithmAvailablePoints.put(0, new GraphPoints(0,0));
-        algorithmAvailablePoints.put(1, new GraphPoints(1,0));
-        algorithmAvailablePoints.put(2, new GraphPoints(2,0));
-        algorithmAvailablePoints.put(3, new GraphPoints(3,0));
-        algorithmAvailablePoints.put(4, new GraphPoints(4,0));
-        algorithmAvailablePoints.put(5, new GraphPoints(5,0));
-        algorithmAvailablePoints.put(6, new GraphPoints(6,0));
-        algorithmAvailablePoints.put(7, new GraphPoints(7,0));
-        algorithmAvailablePoints.put(8, new GraphPoints(8,0));
-        algorithmAvailablePoints.put(9, new GraphPoints(9,0));
-        algorithmAvailablePoints.put(10, new GraphPoints(10,0));
-        algorithmAvailablePoints.put(11, new GraphPoints(11,0));
-        algorithmAvailablePoints.put(10, new GraphPoints(10,0));
-        algorithmAvailablePoints.put(12, new GraphPoints(11,1));
-
-        algorithmAvailablePoints.put(23, new GraphPoints(0,1));
-        algorithmAvailablePoints.put(24, new GraphPoints(0,2));
-        algorithmAvailablePoints.put(35, new GraphPoints(11,2));
-        algorithmAvailablePoints.put(36, new GraphPoints(11,3));
 
 
-        algorithmAvailablePoints.put(37, new GraphPoints(10,3));
-        algorithmAvailablePoints.put(38, new GraphPoints(9,3));
-        algorithmAvailablePoints.put(39, new GraphPoints(8,3));
-        algorithmAvailablePoints.put(40, new GraphPoints(7,3));
-        algorithmAvailablePoints.put(41, new GraphPoints(6,3));
-        algorithmAvailablePoints.put(42, new GraphPoints(5,3));
-        algorithmAvailablePoints.put(43, new GraphPoints(4,3));
-        algorithmAvailablePoints.put(44, new GraphPoints(3,3));
-        algorithmAvailablePoints.put(45, new GraphPoints(2,3));
-        algorithmAvailablePoints.put(46, new GraphPoints(1,3));
-        algorithmAvailablePoints.put(47, new GraphPoints(0,3));
+        astar.test(1,15,15,0,0,11,3,astarBlockedPoints );
 
-        Map <Integer,GraphPoints> algorithmBlockedPoints=new HashMap<Integer, GraphPoints>();
-        algorithmBlockedPoints.put(13, new GraphPoints(10,1));
-        algorithmBlockedPoints.put(14, new GraphPoints(9,1));
-        algorithmBlockedPoints.put(15, new GraphPoints(8,1));
-        algorithmBlockedPoints.put(16, new GraphPoints(7,1));
-        algorithmBlockedPoints.put(17, new GraphPoints(6,1));
-        algorithmBlockedPoints.put(18, new GraphPoints(5,1));
-        algorithmBlockedPoints.put(19, new GraphPoints(4,1));
-        algorithmBlockedPoints.put(20, new GraphPoints(3,1));
-        algorithmBlockedPoints.put(21, new GraphPoints(2,1));
-        algorithmBlockedPoints.put(22, new GraphPoints(1,1));
+        algorithmAvailablePoints.put(0, new AstarPoints(0,0));
+        algorithmAvailablePoints.put(1, new AstarPoints(1,0));
+        algorithmAvailablePoints.put(2, new AstarPoints(2,0));
+        algorithmAvailablePoints.put(3, new AstarPoints(3,0));
+        algorithmAvailablePoints.put(4, new AstarPoints(4,0));
+        algorithmAvailablePoints.put(5, new AstarPoints(5,0));
+        algorithmAvailablePoints.put(6, new AstarPoints(6,0));
+        algorithmAvailablePoints.put(7, new AstarPoints(7,0));
+        algorithmAvailablePoints.put(8, new AstarPoints(8,0));
+        algorithmAvailablePoints.put(9, new AstarPoints(9,0));
+        algorithmAvailablePoints.put(10, new AstarPoints(10,0));
+        algorithmAvailablePoints.put(11, new AstarPoints(11,0));
+        algorithmAvailablePoints.put(12, new AstarPoints(11,1));
+        algorithmAvailablePoints.put(13, new AstarPoints(-1,-1));
+        algorithmAvailablePoints.put(14, new AstarPoints(-1,-1));
+        algorithmAvailablePoints.put(15, new AstarPoints(-1,-1));
+        algorithmAvailablePoints.put(16, new AstarPoints(-1,-1));
+        algorithmAvailablePoints.put(17, new AstarPoints(-1,-1));
+        algorithmAvailablePoints.put(18, new AstarPoints(-1,-1));
+        algorithmAvailablePoints.put(19, new AstarPoints(-1,-1));
+        algorithmAvailablePoints.put(20, new AstarPoints(-1,-1));
+        algorithmAvailablePoints.put(21, new AstarPoints(-1,-1));
+        algorithmAvailablePoints.put(22, new AstarPoints(-1,-1));
+        algorithmAvailablePoints.put(23, new AstarPoints(0,1));
+        algorithmAvailablePoints.put(24, new AstarPoints(0,2));
+        algorithmAvailablePoints.put(25, new AstarPoints(-1,-1));
 
-        algorithmBlockedPoints.put(25, new GraphPoints(1,2));
-        algorithmBlockedPoints.put(26, new GraphPoints(2,2));
-        algorithmBlockedPoints.put(27, new GraphPoints(3,2));
-        algorithmBlockedPoints.put(28, new GraphPoints(4,2));
-        algorithmBlockedPoints.put(29, new GraphPoints(5,2));
-        algorithmBlockedPoints.put(30, new GraphPoints(6,2));
-        algorithmBlockedPoints.put(31, new GraphPoints(7,2));
-        algorithmBlockedPoints.put(32, new GraphPoints(8,2));
-        algorithmBlockedPoints.put(33, new GraphPoints(9,2));
-        algorithmBlockedPoints.put(34, new GraphPoints(10,2));
+        algorithmAvailablePoints.put(26, new AstarPoints(-1,-1));
+        algorithmAvailablePoints.put(27, new AstarPoints(-1,-1));
+        algorithmAvailablePoints.put(28, new AstarPoints(-1,-1));
+        algorithmAvailablePoints.put(29, new AstarPoints(-1,-1));
+        algorithmAvailablePoints.put(30, new AstarPoints(-1,-1));
+        algorithmAvailablePoints.put(31, new AstarPoints(-1,-1));
+        algorithmAvailablePoints.put(32, new AstarPoints(-1,-1));
+        algorithmAvailablePoints.put(33, new AstarPoints(-1,-1));
+        algorithmAvailablePoints.put(34, new AstarPoints(-1,-1));
 
 
 
+        algorithmAvailablePoints.put(35, new AstarPoints(11,2));
+        algorithmAvailablePoints.put(36, new AstarPoints(11,3));
 
-        Map <Integer,GraphPoints> multiplePoints=new HashMap<Integer, GraphPoints>();
-        multiplePoints.put(11, new GraphPoints(110, 548));
-        multiplePoints.put(10, new GraphPoints(110, 482));
-        multiplePoints.put(9, new GraphPoints(110, 441));
-        multiplePoints.put(8, new GraphPoints(110, 387));
-        multiplePoints.put(7, new GraphPoints(110, 353));
-        multiplePoints.put(6, new GraphPoints(110, 297));
-        multiplePoints.put(5, new GraphPoints(110, 269));
-        multiplePoints.put(4, new GraphPoints(110, 207));
-        multiplePoints.put(3, new GraphPoints(110, 174));
-        multiplePoints.put(2, new GraphPoints(110, 115));
-        multiplePoints.put(1, new GraphPoints(110, 78));
-        multiplePoints.put(0, new GraphPoints(110, 12));
 
-        multiplePoints.put(12, new GraphPoints(137, 548));
-        multiplePoints.put(23, new GraphPoints(137, 12));
-        multiplePoints.put(24, new GraphPoints(198, 12));
-        multiplePoints.put(23, new GraphPoints(198, 548));
-        multiplePoints.put(47, new GraphPoints(242, 12));
-        multiplePoints.put(46, new GraphPoints(242, 78));
-        multiplePoints.put(45, new GraphPoints(242, 115));
-        multiplePoints.put(44, new GraphPoints(242, 174));
-        multiplePoints.put(43, new GraphPoints(242, 207));
-        multiplePoints.put(42, new GraphPoints(242, 269));
-        multiplePoints.put(41, new GraphPoints(242, 297));
-        multiplePoints.put(40, new GraphPoints(242, 353));
-        multiplePoints.put(39, new GraphPoints(242, 387));
-        multiplePoints.put(38, new GraphPoints(242, 441));
-        multiplePoints.put(37, new GraphPoints(242, 482));
-        multiplePoints.put(36, new GraphPoints(242, 548));
+        algorithmAvailablePoints.put(37, new AstarPoints(10,3));
+        algorithmAvailablePoints.put(38, new AstarPoints(9,3));
+        algorithmAvailablePoints.put(39, new AstarPoints(8,3));
+        algorithmAvailablePoints.put(40, new AstarPoints(7,3));
+        algorithmAvailablePoints.put(41, new AstarPoints(6,3));
+        algorithmAvailablePoints.put(42, new AstarPoints(5,3));
+        algorithmAvailablePoints.put(43, new AstarPoints(4,3));
+        algorithmAvailablePoints.put(44, new AstarPoints(3,3));
+        algorithmAvailablePoints.put(45, new AstarPoints(2,3));
+        algorithmAvailablePoints.put(46, new AstarPoints(1,3));
+        algorithmAvailablePoints.put(47, new AstarPoints(0,3));
+
+
+        multiplePoints.put(11, new AstarPoints(110, 548));
+        multiplePoints.put(10, new AstarPoints(110, 482));
+        multiplePoints.put(9, new AstarPoints(110, 441));
+        multiplePoints.put(8, new AstarPoints(110, 387));
+        multiplePoints.put(7, new AstarPoints(110, 353));
+        multiplePoints.put(6, new AstarPoints(110, 297));
+        multiplePoints.put(5, new AstarPoints(110, 269));
+        multiplePoints.put(4, new AstarPoints(110, 207));
+        multiplePoints.put(3, new AstarPoints(110, 174));
+        multiplePoints.put(2, new AstarPoints(110, 115));
+        multiplePoints.put(1, new AstarPoints(110, 78));
+        multiplePoints.put(0, new AstarPoints(110, 12));
+
+        multiplePoints.put(12, new AstarPoints(137, 548));
+        multiplePoints.put(23, new AstarPoints(137, 12));
+        multiplePoints.put(24, new AstarPoints(198, 12));
+        multiplePoints.put(47, new AstarPoints(242, 12));
+        multiplePoints.put(46, new AstarPoints(242, 78));
+        multiplePoints.put(45, new AstarPoints(242, 115));
+        multiplePoints.put(44, new AstarPoints(242, 174));
+        multiplePoints.put(43, new AstarPoints(242, 207));
+        multiplePoints.put(42, new AstarPoints(242, 269));
+        multiplePoints.put(41, new AstarPoints(242, 297));
+        multiplePoints.put(40, new AstarPoints(242, 353));
+        multiplePoints.put(39, new AstarPoints(242, 387));
+        multiplePoints.put(38, new AstarPoints(242, 441));
+        multiplePoints.put(37, new AstarPoints(242, 482));
+        multiplePoints.put(36, new AstarPoints(242, 548));
+
+
 
 
 /*
-        multiplePoints.put(23, new GraphPoints(242, 548));
-        multiplePoints.put(22, new GraphPoints(242, 482));
-        multiplePoints.put(21, new GraphPoints(242, 441));
-        multiplePoints.put(20, new GraphPoints(242, 387));
-        multiplePoints.put(19, new GraphPoints(242, 353));
-        multiplePoints.put(18, new GraphPoints(242, 297));
-        multiplePoints.put(17, new GraphPoints(242, 269));
-        multiplePoints.put(16, new GraphPoints(242, 207));
-        multiplePoints.put(15, new GraphPoints(242, 174));
-        multiplePoints.put(14, new GraphPoints(242, 115));
-        multiplePoints.put(13, new GraphPoints(242, 78));
-        multiplePoints.put(12, new GraphPoints(242, 12));
+        multiplePoints.put(23, new AstarPoints(242, 548));
+        multiplePoints.put(22, new AstarPoints(242, 482));
+        multiplePoints.put(21, new AstarPoints(242, 441));
+        multiplePoints.put(20, new AstarPoints(242, 387));
+        multiplePoints.put(19, new AstarPoints(242, 353));
+        multiplePoints.put(18, new AstarPoints(242, 297));
+        multiplePoints.put(17, new AstarPoints(242, 269));
+        multiplePoints.put(16, new AstarPoints(242, 207));
+        multiplePoints.put(15, new AstarPoints(242, 174));
+        multiplePoints.put(14, new AstarPoints(242, 115));
+        multiplePoints.put(13, new AstarPoints(242, 78));
+        multiplePoints.put(12, new AstarPoints(242, 12));
 
-        multiplePoints.put(24, new GraphPoints(266, 548));
-        multiplePoints.put(25, new GraphPoints(266, 482));
-        multiplePoints.put(26, new GraphPoints(266, 441));
-        multiplePoints.put(27, new GraphPoints(266, 387));
-        multiplePoints.put(28, new GraphPoints(266, 353));
-        multiplePoints.put(29, new GraphPoints(266, 297));
-        multiplePoints.put(30, new GraphPoints(266, 269));
-        multiplePoints.put(31, new GraphPoints(266, 207));
-        multiplePoints.put(32, new GraphPoints(266, 174));
-        multiplePoints.put(33, new GraphPoints(266, 115));
-        multiplePoints.put(34, new GraphPoints(266, 78));
-        multiplePoints.put(35, new GraphPoints(266, 12));
+        multiplePoints.put(24, new AstarPoints(266, 548));
+        multiplePoints.put(25, new AstarPoints(266, 482));
+        multiplePoints.put(26, new AstarPoints(266, 441));
+        multiplePoints.put(27, new AstarPoints(266, 387));
+        multiplePoints.put(28, new AstarPoints(266, 353));
+        multiplePoints.put(29, new AstarPoints(266, 297));
+        multiplePoints.put(30, new AstarPoints(266, 269));
+        multiplePoints.put(31, new AstarPoints(266, 207));
+        multiplePoints.put(32, new AstarPoints(266, 174));
+        multiplePoints.put(33, new AstarPoints(266, 115));
+        multiplePoints.put(34, new AstarPoints(266, 78));
+        multiplePoints.put(35, new AstarPoints(266, 12));
 
-        multiplePoints.put(47, new GraphPoints(392, 548));
-        multiplePoints.put(46, new GraphPoints(392, 482));
-        multiplePoints.put(45, new GraphPoints(392, 441));
-        multiplePoints.put(44, new GraphPoints(392, 387));
-        multiplePoints.put(43, new GraphPoints(392, 353));
-        multiplePoints.put(42, new GraphPoints(392, 297));
-        multiplePoints.put(41, new GraphPoints(392, 269));
-        multiplePoints.put(40, new GraphPoints(392, 207));
-        multiplePoints.put(39, new GraphPoints(392, 174));
-        multiplePoints.put(38, new GraphPoints(392, 115));
-        multiplePoints.put(37, new GraphPoints(392, 78));
-        multiplePoints.put(36, new GraphPoints(392, 12));
+        multiplePoints.put(47, new AstarPoints(392, 548));
+        multiplePoints.put(46, new AstarPoints(392, 482));
+        multiplePoints.put(45, new AstarPoints(392, 441));
+        multiplePoints.put(44, new AstarPoints(392, 387));
+        multiplePoints.put(43, new AstarPoints(392, 353));
+        multiplePoints.put(42, new AstarPoints(392, 297));
+        multiplePoints.put(41, new AstarPoints(392, 269));
+        multiplePoints.put(40, new AstarPoints(392, 207));
+        multiplePoints.put(39, new AstarPoints(392, 174));
+        multiplePoints.put(38, new AstarPoints(392, 115));
+        multiplePoints.put(37, new AstarPoints(392, 78));
+        multiplePoints.put(36, new AstarPoints(392, 12));
 
-        multiplePoints.put(48, new GraphPoints(420, 548));
-        multiplePoints.put(49, new GraphPoints(420, 482));
-        multiplePoints.put(50, new GraphPoints(420, 441));
-        multiplePoints.put(51, new GraphPoints(420, 387));
-        multiplePoints.put(52, new GraphPoints(420, 353));
-        multiplePoints.put(53, new GraphPoints(420, 297));
-        multiplePoints.put(54, new GraphPoints(420, 269));
-        multiplePoints.put(55, new GraphPoints(420, 207));
-        multiplePoints.put(56, new GraphPoints(420, 174));
-        multiplePoints.put(57, new GraphPoints(420, 115));
-        multiplePoints.put(58, new GraphPoints(420, 78));
-        multiplePoints.put(59, new GraphPoints(420, 12));
+        multiplePoints.put(48, new AstarPoints(420, 548));
+        multiplePoints.put(49, new AstarPoints(420, 482));
+        multiplePoints.put(50, new AstarPoints(420, 441));
+        multiplePoints.put(51, new AstarPoints(420, 387));
+        multiplePoints.put(52, new AstarPoints(420, 353));
+        multiplePoints.put(53, new AstarPoints(420, 297));
+        multiplePoints.put(54, new AstarPoints(420, 269));
+        multiplePoints.put(55, new AstarPoints(420, 207));
+        multiplePoints.put(56, new AstarPoints(420, 174));
+        multiplePoints.put(57, new AstarPoints(420, 115));
+        multiplePoints.put(58, new AstarPoints(420, 78));
+        multiplePoints.put(59, new AstarPoints(420, 12));
 
-        multiplePoints.put(71, new GraphPoints(554, 548));
-        multiplePoints.put(70, new GraphPoints(554, 482));
-        multiplePoints.put(69, new GraphPoints(554, 441));
-        multiplePoints.put(68, new GraphPoints(554, 387));
-        multiplePoints.put(67, new GraphPoints(554, 353));
-        multiplePoints.put(66, new GraphPoints(554, 297));
-        multiplePoints.put(65, new GraphPoints(554, 269));
-        multiplePoints.put(64, new GraphPoints(554, 207));
-        multiplePoints.put(63, new GraphPoints(554, 174));
-        multiplePoints.put(62, new GraphPoints(554, 115));
-        multiplePoints.put(61, new GraphPoints(554, 78));
-        multiplePoints.put(60, new GraphPoints(554, 12));
+        multiplePoints.put(71, new AstarPoints(554, 548));
+        multiplePoints.put(70, new AstarPoints(554, 482));
+        multiplePoints.put(69, new AstarPoints(554, 441));
+        multiplePoints.put(68, new AstarPoints(554, 387));
+        multiplePoints.put(67, new AstarPoints(554, 353));
+        multiplePoints.put(66, new AstarPoints(554, 297));
+        multiplePoints.put(65, new AstarPoints(554, 269));
+        multiplePoints.put(64, new AstarPoints(554, 207));
+        multiplePoints.put(63, new AstarPoints(554, 174));
+        multiplePoints.put(62, new AstarPoints(554, 115));
+        multiplePoints.put(61, new AstarPoints(554, 78));
+        multiplePoints.put(60, new AstarPoints(554, 12));
 
-        multiplePoints.put(72, new GraphPoints(578, 548));
-        multiplePoints.put(73, new GraphPoints(578, 482));
-        multiplePoints.put(74, new GraphPoints(578, 441));
-        multiplePoints.put(75, new GraphPoints(578, 387));
-        multiplePoints.put(76, new GraphPoints(578, 353));
-        multiplePoints.put(77, new GraphPoints(578, 297));
-        multiplePoints.put(78, new GraphPoints(578, 269));
-        multiplePoints.put(79, new GraphPoints(578, 207));
-        multiplePoints.put(80, new GraphPoints(578, 174));
-        multiplePoints.put(81, new GraphPoints(578, 115));
-        multiplePoints.put(82, new GraphPoints(578, 78));
-        multiplePoints.put(83, new GraphPoints(578, 12));
+        multiplePoints.put(72, new AstarPoints(578, 548));
+        multiplePoints.put(73, new AstarPoints(578, 482));
+        multiplePoints.put(74, new AstarPoints(578, 441));
+        multiplePoints.put(75, new AstarPoints(578, 387));
+        multiplePoints.put(76, new AstarPoints(578, 353));
+        multiplePoints.put(77, new AstarPoints(578, 297));
+        multiplePoints.put(78, new AstarPoints(578, 269));
+        multiplePoints.put(79, new AstarPoints(578, 207));
+        multiplePoints.put(80, new AstarPoints(578, 174));
+        multiplePoints.put(81, new AstarPoints(578, 115));
+        multiplePoints.put(82, new AstarPoints(578, 78));
+        multiplePoints.put(83, new AstarPoints(578, 12));
 
-        multiplePoints.put(95, new GraphPoints(705, 548));
-        multiplePoints.put(94, new GraphPoints(705, 482));
-        multiplePoints.put(93, new GraphPoints(705, 441));
-        multiplePoints.put(92, new GraphPoints(705, 387));
-        multiplePoints.put(91, new GraphPoints(705, 353));
-        multiplePoints.put(90, new GraphPoints(705, 297));
-        multiplePoints.put(89, new GraphPoints(705, 269));
-        multiplePoints.put(88, new GraphPoints(705, 207));
-        multiplePoints.put(87, new GraphPoints(705, 174));
-        multiplePoints.put(86, new GraphPoints(705, 115));
-        multiplePoints.put(85, new GraphPoints(705, 78));
-        multiplePoints.put(84, new GraphPoints(705, 12));
+        multiplePoints.put(95, new AstarPoints(705, 548));
+        multiplePoints.put(94, new AstarPoints(705, 482));
+        multiplePoints.put(93, new AstarPoints(705, 441));
+        multiplePoints.put(92, new AstarPoints(705, 387));
+        multiplePoints.put(91, new AstarPoints(705, 353));
+        multiplePoints.put(90, new AstarPoints(705, 297));
+        multiplePoints.put(89, new AstarPoints(705, 269));
+        multiplePoints.put(88, new AstarPoints(705, 207));
+        multiplePoints.put(87, new AstarPoints(705, 174));
+        multiplePoints.put(86, new AstarPoints(705, 115));
+        multiplePoints.put(85, new AstarPoints(705, 78));
+        multiplePoints.put(84, new AstarPoints(705, 12));
 
-        multiplePoints.put(96, new GraphPoints(734, 548));
-        multiplePoints.put(97, new GraphPoints(734, 482));
-        multiplePoints.put(98, new GraphPoints(734, 441));
-        multiplePoints.put(99, new GraphPoints(734, 387));
-        multiplePoints.put(100, new GraphPoints(734, 353));
-        multiplePoints.put(101, new GraphPoints(734, 297));
-        multiplePoints.put(102, new GraphPoints(734, 269));
-        multiplePoints.put(103, new GraphPoints(734, 207));
-        multiplePoints.put(104, new GraphPoints(734, 174));
-        multiplePoints.put(105, new GraphPoints(734, 115));
-        multiplePoints.put(106, new GraphPoints(734, 78));
-        multiplePoints.put(107, new GraphPoints(734, 12));
+        multiplePoints.put(96, new AstarPoints(734, 548));
+        multiplePoints.put(97, new AstarPoints(734, 482));
+        multiplePoints.put(98, new AstarPoints(734, 441));
+        multiplePoints.put(99, new AstarPoints(734, 387));
+        multiplePoints.put(100, new AstarPoints(734, 353));
+        multiplePoints.put(101, new AstarPoints(734, 297));
+        multiplePoints.put(102, new AstarPoints(734, 269));
+        multiplePoints.put(103, new AstarPoints(734, 207));
+        multiplePoints.put(104, new AstarPoints(734, 174));
+        multiplePoints.put(105, new AstarPoints(734, 115));
+        multiplePoints.put(106, new AstarPoints(734, 78));
+        multiplePoints.put(107, new AstarPoints(734, 12));
 
-        multiplePoints.put(119, new GraphPoints(862, 548));
-        multiplePoints.put(118, new GraphPoints(862, 482));
-        multiplePoints.put(117, new GraphPoints(862, 441));
-        multiplePoints.put(116, new GraphPoints(862, 387));
-        multiplePoints.put(115, new GraphPoints(862, 353));
-        multiplePoints.put(114, new GraphPoints(862, 297));
-        multiplePoints.put(113, new GraphPoints(862, 269));
-        multiplePoints.put(112, new GraphPoints(862, 207));
-        multiplePoints.put(111, new GraphPoints(862, 174));
-        multiplePoints.put(110, new GraphPoints(862, 115));
-        multiplePoints.put(109, new GraphPoints(862, 78));
-        multiplePoints.put(108, new GraphPoints(862, 12));
+        multiplePoints.put(119, new AstarPoints(862, 548));
+        multiplePoints.put(118, new AstarPoints(862, 482));
+        multiplePoints.put(117, new AstarPoints(862, 441));
+        multiplePoints.put(116, new AstarPoints(862, 387));
+        multiplePoints.put(115, new AstarPoints(862, 353));
+        multiplePoints.put(114, new AstarPoints(862, 297));
+        multiplePoints.put(113, new AstarPoints(862, 269));
+        multiplePoints.put(112, new AstarPoints(862, 207));
+        multiplePoints.put(111, new AstarPoints(862, 174));
+        multiplePoints.put(110, new AstarPoints(862, 115));
+        multiplePoints.put(109, new AstarPoints(862, 78));
+        multiplePoints.put(108, new AstarPoints(862, 12));
 
-        multiplePoints.put(120, new GraphPoints(895, 548));
-        multiplePoints.put(121, new GraphPoints(895, 482));
-        multiplePoints.put(122, new GraphPoints(895, 441));
-        multiplePoints.put(123, new GraphPoints(895, 387));
-        multiplePoints.put(124, new GraphPoints(895, 353));
-        multiplePoints.put(125, new GraphPoints(895, 297));
-        multiplePoints.put(126, new GraphPoints(895, 269));
-        multiplePoints.put(127, new GraphPoints(895, 207));
-        multiplePoints.put(128, new GraphPoints(895, 174));
-        multiplePoints.put(129, new GraphPoints(895, 115));
-        multiplePoints.put(130, new GraphPoints(895, 78));
-        multiplePoints.put(131, new GraphPoints(895, 12));
+        multiplePoints.put(120, new AstarPoints(895, 548));
+        multiplePoints.put(121, new AstarPoints(895, 482));
+        multiplePoints.put(122, new AstarPoints(895, 441));
+        multiplePoints.put(123, new AstarPoints(895, 387));
+        multiplePoints.put(124, new AstarPoints(895, 353));
+        multiplePoints.put(125, new AstarPoints(895, 297));
+        multiplePoints.put(126, new AstarPoints(895, 269));
+        multiplePoints.put(127, new AstarPoints(895, 207));
+        multiplePoints.put(128, new AstarPoints(895, 174));
+        multiplePoints.put(129, new AstarPoints(895, 115));
+        multiplePoints.put(130, new AstarPoints(895, 78));
+        multiplePoints.put(131, new AstarPoints(895, 12));
 
-        multiplePoints.put(143, new GraphPoints(1024, 548));
-        multiplePoints.put(142, new GraphPoints(1024, 482));
-        multiplePoints.put(141, new GraphPoints(1024, 441));
-        multiplePoints.put(140, new GraphPoints(1024, 387));
-        multiplePoints.put(139, new GraphPoints(1024, 353));
-        multiplePoints.put(138, new GraphPoints(1024, 297));
-        multiplePoints.put(137, new GraphPoints(1024, 269));
-        multiplePoints.put(136, new GraphPoints(1024, 207));
-        multiplePoints.put(135, new GraphPoints(1024, 174));
-        multiplePoints.put(134, new GraphPoints(1024, 115));
-        multiplePoints.put(133, new GraphPoints(1024, 78));
-        multiplePoints.put(132, new GraphPoints(1024, 12));
+        multiplePoints.put(143, new AstarPoints(1024, 548));
+        multiplePoints.put(142, new AstarPoints(1024, 482));
+        multiplePoints.put(141, new AstarPoints(1024, 441));
+        multiplePoints.put(140, new AstarPoints(1024, 387));
+        multiplePoints.put(139, new AstarPoints(1024, 353));
+        multiplePoints.put(138, new AstarPoints(1024, 297));
+        multiplePoints.put(137, new AstarPoints(1024, 269));
+        multiplePoints.put(136, new AstarPoints(1024, 207));
+        multiplePoints.put(135, new AstarPoints(1024, 174));
+        multiplePoints.put(134, new AstarPoints(1024, 115));
+        multiplePoints.put(133, new AstarPoints(1024, 78));
+        multiplePoints.put(132, new AstarPoints(1024, 12));
 */
 
         Map<String, List<String>> knowledgeBase = Main.knowledgeBase.getKnowledgeBase();
         System.out.println(knowledgeBase.toString());
         // Declare random case spawn-points
         // X
-        /*
 
-
-
-        IntStream.range(0, 10).forEach(
-                n -> {
-                    casePoints[n][0] = 156.5;
-                    casePoints[n+10][0] = 210.0;
-                    casePoints[n+20][0] = 313.5;
-                    casePoints[n+30][0] = 367.5;
-                    casePoints[n+40][0] = 472.0;
-                    casePoints[n+50][0] = 525.5;
-                    casePoints[n+60][0] = 629.0;
-                    casePoints[n+70][0] = 682.0;
-                    casePoints[n+80][0] = 784.0;
-                    casePoints[n+90][0] = 837.0;
-                    casePoints[n+100][0] = 945.5;
-                    casePoints[n+110][0] = 999.0;
-                }
-        );*/
 
         for (int n = 0; n < 109; n += 12) casePoints[n][0] = 156.5;
         for (int n = 1; n < 110; n += 12) casePoints[n][0] = 210.0;
@@ -435,7 +417,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("sample.fxml"));
         AnchorPane page = (AnchorPane) loader.load();
         mainStage.setTitle("Inteligentny wozek widlowy");
-       // Group root = new Group();
+     //   Group root = new Group();
         mainScene = new Scene(page);
         mainStage.setScene(mainScene);
 
@@ -446,16 +428,19 @@ public class Main extends Application {
         prepareActionHandlers();
         graphicsContext = canvas.getGraphicsContext2D();
         loadGraphics();
-            setCase();
+
+            getFieldNumber();
         /**
          * Main "game" loop
          */
+            setCase();
         new AnimationTimer()
         {
             public void handle(long currentNanoTime) {
-                tickAndRender();
-                setStatement();
-                conveyorAnimated();
+
+            tickAndRender();
+            setStatement();
+            conveyorAnimated();
 
             }
         }.start();
@@ -463,7 +448,7 @@ public class Main extends Application {
         mainStage.show();
         } catch (IOException e) {
            e.printStackTrace();
-        }
+      }
 
         // Get random spawn points and random cases.
         IntStream.range(0,20).forEach(
@@ -568,21 +553,21 @@ public class Main extends Application {
                 }
         );
 
-
-
-
-
-
-
-
         // delete case from bookstand
         casesToSpawn[numberOfCase] = null;
 
         // if the forklift approaches the tape, we remove the pack
-        if(actualPositionW <= 60) {
+       if(actualPositionW <= 60) {
             caseNotToSpawn = false;
             actualCase = null;
         }
+
+            //leftOrRight = false;
+
+            graphicsContext.drawImage(forklift,actualPositionW, actualPositionH);
+
+
+
         // Arrow keys moving
         if (currentlyActiveKeys.contains("LEFT"))
         {
@@ -612,7 +597,7 @@ public class Main extends Application {
                 graphicsContext.drawImage(forklift2, actualPositionW, actualPositionH);
             }
        }
-        else {
+       else {
             if (leftOrRight == true) {
                 graphicsContext.drawImage(forklift, actualPositionW, actualPositionH);
             } else {
@@ -622,16 +607,34 @@ public class Main extends Application {
 
     }
 
-    private static void setCase() {
+    private static void getFieldNumber() {
+        int it = 0;
+        for (int i = astar.pathXY.size()-1; i >=0; i--) {
+            for (int j = 0; j < algorithmAvailablePoints.size(); j++) {
+                if ((algorithmAvailablePoints.get(j).getX())==(astar.pathXY.get(i).getX()) && (algorithmAvailablePoints.get(j).getY())==(astar.pathXY.get(i).getY())) {
+                    fieldNumber[it] = j;
+                    it++;
+                }
+
+            }
+        }
+    }
+
+
+    private void setCase() {
         mainScene.addEventHandler(MouseEvent.MOUSE_RELEASED,
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
+                        if(iterator < astar.pathXY.size()) {
+                        actualPositionW = multiplePoints.get(fieldNumber[iterator]).getX();
+                        actualPositionH = multiplePoints.get(fieldNumber[iterator]).getY();
+                            iterator++;
 
-
-
-                        drawCase(mouseEvent.getX(),mouseEvent.getY());
-                        System.out.print(mouseEvent.getX()+" "+mouseEvent.getY()+"\n");
+                        }
+                        System.out.print(algorithmAvailablePoints.size());
+                   //     drawCase(mouseEvent.getX(),mouseEvent.getY());
+                    //    System.out.print(mouseEvent.getX()+" "+mouseEvent.getY()+"\n");
                     }
 
                 });
