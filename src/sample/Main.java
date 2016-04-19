@@ -77,11 +77,17 @@ public class Main extends Application {
 
     // True if right, false if left
     static boolean leftOrRight = true;
+    static boolean unlockPack = false;
+    static boolean returnMode = false;
 
     static int[][] astarBlockedPoints = {{10,1},{9,1},{8,1},{7,1},{6,1},{5,1},{4,1},{3,1},{2,1},{1,1},{1,2},{2,2},{3,2},{4,2},{5,2},{6,2},{7,2},{8,2},{9,2},{10,2}};
     public int iterator = 0;
     @Override
     public void start(Stage mainStage) throws Exception {
+
+
+        astar.test(1,15,15,0,0,6,0,astarBlockedPoints );
+
         knowledgeBase = new KnowledgeBase();
         knowledgeBase.addData("car parts", "gray" );
         knowledgeBase.addData("car parts", "metal");
@@ -131,7 +137,6 @@ public class Main extends Application {
         knowledgeBase.addData("electronics", "solid");
 
 
-        astar.test(1,15,15,0,0,11,3,astarBlockedPoints );
 
         algorithmAvailablePoints.put(0, new AstarPoints(0,0));
         algorithmAvailablePoints.put(1, new AstarPoints(1,0));
@@ -532,21 +537,21 @@ public class Main extends Application {
                                             2)));
 
                     // if distance of forklift and case is greater than 30 draw all random cases
-                    if (distance > 30) {
+                    if (distance > 55 ) {
                         graphicsContext.drawImage(casesToSpawn[n], casePoints[locOfCases[n]][0],
                                 casePoints[locOfCases[n]][1]);
 
                         // if distance of forklift and case < 30 change state that forklift is busy
-                    } else {
+                    } else if  (distance < 55 && unlockPack){
                         caseNotToSpawn = true;
                         numberOfCase = n;
 
                     }
-                    if(casesToSpawn[numberOfCase]!= null) {
+                    if(casesToSpawn[numberOfCase]!= null && unlockPack) {
                         actualCase = casesToSpawn[numberOfCase];
                     }
                     // if forklift is busy draw case on the forklift
-                    if (caseNotToSpawn == true) {
+                    if (caseNotToSpawn == true && unlockPack) {
                         graphicsContext
                                 .drawImage(actualCase, actualPositionW + 10, actualPositionH);
                     }
@@ -622,21 +627,32 @@ public class Main extends Application {
 
 
     private void setCase() {
+
         mainScene.addEventHandler(MouseEvent.MOUSE_RELEASED,
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
-                        if(iterator < astar.pathXY.size()) {
+
+                        if (iterator < astar.pathXY.size() && returnMode == false) {
+                            actualPositionW = multiplePoints.get(fieldNumber[iterator]).getX();
+                            actualPositionH = multiplePoints.get(fieldNumber[iterator]).getY();
+                            iterator++;
+                            unlockPack = false;
+                        } else {
+                            returnMode = true;
+                            unlockPack = true;
+                        }
+                        if (iterator >= 0 && returnMode == true) {
+                            iterator--;
                         actualPositionW = multiplePoints.get(fieldNumber[iterator]).getX();
                         actualPositionH = multiplePoints.get(fieldNumber[iterator]).getY();
-                            iterator++;
-
-                        }
-                        System.out.print(algorithmAvailablePoints.size());
-                   //     drawCase(mouseEvent.getX(),mouseEvent.getY());
-                    //    System.out.print(mouseEvent.getX()+" "+mouseEvent.getY()+"\n");
                     }
 
+                    if(iterator == 0) {
+                        System.out.print("END");
+                        returnMode = false;
+                    }
+                    }
                 });
 
     }
