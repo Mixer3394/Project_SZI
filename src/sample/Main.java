@@ -80,13 +80,20 @@ public class Main extends Application {
     static boolean unlockPack = false;
     static boolean returnMode = false;
 
-    static int[][] astarBlockedPoints = {{10,1},{9,1},{8,1},{7,1},{6,1},{5,1},{4,1},{3,1},{2,1},{1,1},{1,2},{2,2},{3,2},{4,2},{5,2},{6,2},{7,2},{8,2},{9,2},{10,2}};
+    static int[][] astarBlockedPoints = {
+            {12,1},{11,1},{10,1},{9,1},{8,1},{7,1},{6,1},{5,1},{4,1},{3,1},{3,2},{4,2},{5,2},{6,2},{7,2},{8,2},{9,2},{10,2},{11,2},{12,2},
+            {12,5},{11,5},{10,5},{9,5},{8,5},{7,5},{6,5},{5,5},{4,5},{3,5},{3,6},{4,6},{5,6},{6,6},{7,6},{8,6},{9,6},{10,6},{11,6},{12,6},
+            {12,9},{11,9},{10,9},{9,9},{8,9},{7,9},{6,9},{5,9},{4,9},{3,9},{3,10},{4,10},{5,10},{6,10},{7,10},{8,10},{9,10},{10,10},{11,10},{12,10},
+            {12,13},{11,13},{10,13},{9,13},{8,13},{7,13},{6,13},{5,13},{4,13},{3,13},{3,14},{4,14},{5,14},{6,14},{7,14},{8,14},{9,14},{10,14},{11,14},{12,14},
+
+
+    };
     public int iterator = 0;
     @Override
     public void start(Stage mainStage) throws Exception {
 
 
-        astar.test(1,15,15,0,0,6,0,astarBlockedPoints );
+        astar.test(1,16,16,0,0,6,0,astarBlockedPoints );
 
         knowledgeBase = new KnowledgeBase();
         knowledgeBase.addData("car parts", "gray" );
@@ -137,75 +144,36 @@ public class Main extends Application {
         knowledgeBase.addData("electronics", "solid");
 
 
+        int x = 0;
+        int y = 0;
+        for(int i = 0; i <= 255; i++) {
+            algorithmAvailablePoints.put(i, new AstarPoints(x,y));
+            x++;
+            if(x > 15 ) {
+                y++;
+                x = 0;
+            }
+        }
+        System.out.print(algorithmAvailablePoints.get(255).getX());
 
-        algorithmAvailablePoints.put(0, new AstarPoints(0,0));
-        algorithmAvailablePoints.put(1, new AstarPoints(1,0));
-        algorithmAvailablePoints.put(2, new AstarPoints(2,0));
-        algorithmAvailablePoints.put(3, new AstarPoints(3,0));
-        algorithmAvailablePoints.put(4, new AstarPoints(4,0));
-        algorithmAvailablePoints.put(5, new AstarPoints(5,0));
-        algorithmAvailablePoints.put(6, new AstarPoints(6,0));
-        algorithmAvailablePoints.put(7, new AstarPoints(7,0));
-        algorithmAvailablePoints.put(8, new AstarPoints(8,0));
-        algorithmAvailablePoints.put(9, new AstarPoints(9,0));
-        algorithmAvailablePoints.put(10, new AstarPoints(10,0));
-        algorithmAvailablePoints.put(11, new AstarPoints(11,0));
-        algorithmAvailablePoints.put(12, new AstarPoints(11,1));
-        algorithmAvailablePoints.put(13, new AstarPoints(-1,-1));
-        algorithmAvailablePoints.put(14, new AstarPoints(-1,-1));
-        algorithmAvailablePoints.put(15, new AstarPoints(-1,-1));
-        algorithmAvailablePoints.put(16, new AstarPoints(-1,-1));
-        algorithmAvailablePoints.put(17, new AstarPoints(-1,-1));
-        algorithmAvailablePoints.put(18, new AstarPoints(-1,-1));
-        algorithmAvailablePoints.put(19, new AstarPoints(-1,-1));
-        algorithmAvailablePoints.put(20, new AstarPoints(-1,-1));
-        algorithmAvailablePoints.put(21, new AstarPoints(-1,-1));
-        algorithmAvailablePoints.put(22, new AstarPoints(-1,-1));
-        algorithmAvailablePoints.put(23, new AstarPoints(0,1));
-        algorithmAvailablePoints.put(24, new AstarPoints(0,2));
-        algorithmAvailablePoints.put(25, new AstarPoints(-1,-1));
+        // TODO  implement all points
 
-        algorithmAvailablePoints.put(26, new AstarPoints(-1,-1));
-        algorithmAvailablePoints.put(27, new AstarPoints(-1,-1));
-        algorithmAvailablePoints.put(28, new AstarPoints(-1,-1));
-        algorithmAvailablePoints.put(29, new AstarPoints(-1,-1));
-        algorithmAvailablePoints.put(30, new AstarPoints(-1,-1));
-        algorithmAvailablePoints.put(31, new AstarPoints(-1,-1));
-        algorithmAvailablePoints.put(32, new AstarPoints(-1,-1));
-        algorithmAvailablePoints.put(33, new AstarPoints(-1,-1));
-        algorithmAvailablePoints.put(34, new AstarPoints(-1,-1));
-
-
-
-        algorithmAvailablePoints.put(35, new AstarPoints(11,2));
-        algorithmAvailablePoints.put(36, new AstarPoints(11,3));
-
-
-        algorithmAvailablePoints.put(37, new AstarPoints(10,3));
-        algorithmAvailablePoints.put(38, new AstarPoints(9,3));
-        algorithmAvailablePoints.put(39, new AstarPoints(8,3));
-        algorithmAvailablePoints.put(40, new AstarPoints(7,3));
-        algorithmAvailablePoints.put(41, new AstarPoints(6,3));
-        algorithmAvailablePoints.put(42, new AstarPoints(5,3));
-        algorithmAvailablePoints.put(43, new AstarPoints(4,3));
-        algorithmAvailablePoints.put(44, new AstarPoints(3,3));
-        algorithmAvailablePoints.put(45, new AstarPoints(2,3));
-        algorithmAvailablePoints.put(46, new AstarPoints(1,3));
-        algorithmAvailablePoints.put(47, new AstarPoints(0,3));
-
-
-        multiplePoints.put(11, new AstarPoints(110, 548));
-        multiplePoints.put(10, new AstarPoints(110, 482));
-        multiplePoints.put(9, new AstarPoints(110, 441));
-        multiplePoints.put(8, new AstarPoints(110, 387));
-        multiplePoints.put(7, new AstarPoints(110, 353));
-        multiplePoints.put(6, new AstarPoints(110, 297));
-        multiplePoints.put(5, new AstarPoints(110, 269));
-        multiplePoints.put(4, new AstarPoints(110, 207));
-        multiplePoints.put(3, new AstarPoints(110, 174));
-        multiplePoints.put(2, new AstarPoints(110, 115));
-        multiplePoints.put(1, new AstarPoints(110, 78));
-        multiplePoints.put(0, new AstarPoints(110, 12));
+        multiplePoints.put(15, new AstarPoints(110, 670));
+        multiplePoints.put(14, new AstarPoints(110, 635));
+        multiplePoints.put(13, new AstarPoints(110, 600));
+        multiplePoints.put(12, new AstarPoints(110, 548));
+        multiplePoints.put(11, new AstarPoints(110, 482));
+        multiplePoints.put(10, new AstarPoints(110, 441));
+        multiplePoints.put(9, new AstarPoints(110, 387));
+        multiplePoints.put(8, new AstarPoints(110, 353));
+        multiplePoints.put(7, new AstarPoints(110, 297));
+        multiplePoints.put(6, new AstarPoints(110, 269));
+        multiplePoints.put(5, new AstarPoints(110, 207));
+        multiplePoints.put(4, new AstarPoints(110, 174));
+        multiplePoints.put(3, new AstarPoints(110, 143));
+        multiplePoints.put(2, new AstarPoints(110, 70));
+        multiplePoints.put(0, new AstarPoints(110, 0));
+        multiplePoints.put(1, new AstarPoints(110, 35));
 
         multiplePoints.put(12, new AstarPoints(137, 548));
         multiplePoints.put(23, new AstarPoints(137, 12));
@@ -224,9 +192,6 @@ public class Main extends Application {
         multiplePoints.put(36, new AstarPoints(242, 548));
 
 
-
-
-/*
         multiplePoints.put(23, new AstarPoints(242, 548));
         multiplePoints.put(22, new AstarPoints(242, 482));
         multiplePoints.put(21, new AstarPoints(242, 441));
@@ -235,10 +200,7 @@ public class Main extends Application {
         multiplePoints.put(18, new AstarPoints(242, 297));
         multiplePoints.put(17, new AstarPoints(242, 269));
         multiplePoints.put(16, new AstarPoints(242, 207));
-        multiplePoints.put(15, new AstarPoints(242, 174));
-        multiplePoints.put(14, new AstarPoints(242, 115));
-        multiplePoints.put(13, new AstarPoints(242, 78));
-        multiplePoints.put(12, new AstarPoints(242, 12));
+
 
         multiplePoints.put(24, new AstarPoints(266, 548));
         multiplePoints.put(25, new AstarPoints(266, 482));
@@ -369,7 +331,7 @@ public class Main extends Application {
         multiplePoints.put(134, new AstarPoints(1024, 115));
         multiplePoints.put(133, new AstarPoints(1024, 78));
         multiplePoints.put(132, new AstarPoints(1024, 12));
-*/
+
 
         Map<String, List<String>> knowledgeBase = Main.knowledgeBase.getKnowledgeBase();
         System.out.println(knowledgeBase.toString());
@@ -507,7 +469,7 @@ public class Main extends Application {
     {
         forklift = new Image("images/forklift.png");
         forklift2 = new Image("images/forklift2.png");
-        background = new Image("images/background.png");
+        background = new Image("images/background_new.png");
         conveyor = new Image("images/conveyor.png");
         cover = new Image("images/cover.png");
         caseOne = new Image("images/case1.png");
