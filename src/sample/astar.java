@@ -5,6 +5,8 @@ import java.util.*;
  * Created by jakubjanicki on 19.04.2016.
  */
 public class astar {
+
+    /// There are reversed X and Y
     public static final int DIAGONAL_COST = 14;
     public static final int V_H_COST = 10;
 
