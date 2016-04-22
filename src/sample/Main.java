@@ -2,6 +2,7 @@ package sample;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -18,6 +19,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 
@@ -281,7 +283,17 @@ public class Main extends Application {
         int randX = randPoints.nextInt(15);
         int randY = randPoints.nextInt(15);
 
-        astar.test(2, 16, 16, 0, 0, randY, randX, astarBlockedPoints);
+        while (astar.foundPath == false) {
+            randX = randPoints.nextInt(15);
+            randY = randPoints.nextInt(15);
+            astar.test(1, 16, 16, 0, 0, randY, randX, astarBlockedPoints);
+
+        }
+//        if (astar.foundPath == true) {
+//            astar.test(2, 16, 16, 0, 0, randY, randX, astarBlockedPoints);
+//        } else {
+//
+//        }
 
         knowledgeBase = new KnowledgeBase();
         knowledgeBase.addData("car parts", "gray");
@@ -652,7 +664,6 @@ public class Main extends Application {
         for (int n =5; n < 78; n += 8) casePoints[n][0] = 525.5;
         for (int n =6; n < 79; n += 8) casePoints[n][0] = 629.0;
         for (int n =7; n < 80; n += 8) casePoints[n][0] = 682.0;
-
         // Y
 
         IntStream.range(0, 80).forEach(
@@ -810,6 +821,19 @@ public class Main extends Application {
 
                         // System.out.print("X:" + mouseEvent.getX() + " " + "Y:" + mouseEvent.getY() + "\n");
 
+
+//                        while (iterator < astar.pathXY.size() && returnMode == false) {
+//                            actualPositionW = multiplePoints.get(fieldNumber[iterator]).getX();
+//                            actualPositionH = multiplePoints.get(fieldNumber[iterator]).getY();
+//                            iterator++;
+//                            unlockPack = false;
+//                        }
+//
+//                        if (iterator >= astar.pathXY.size()) {
+//                            returnMode = true;
+//                            unlockPack = true;
+//                        }
+
                         if (iterator < astar.pathXY.size() && returnMode == false) {
                             actualPositionW = multiplePoints.get(fieldNumber[iterator]).getX();
                             actualPositionH = multiplePoints.get(fieldNumber[iterator]).getY();
@@ -840,6 +864,4 @@ public class Main extends Application {
         }
         return false;
     }
-
-
 }
