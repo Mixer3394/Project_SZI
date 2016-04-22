@@ -64,6 +64,12 @@ public class Main extends Application {
     static Random caseNumber = new Random();
     static Image casesToSpawn[] = new Image[20];
 
+    // Random for algorithm points
+    static Random randPoints = new Random();
+
+    // Boolean for pathfinding (true if came back, false if still walking)
+    static boolean didComeBack = false;
+
     // actual case on forklift
     static Image actualCase;
     static int locOfCases[] = new int[20];
@@ -169,46 +175,46 @@ public class Main extends Application {
 
         //leftOrRight = false;
 
-        //graphicsContext.drawImage(forklift, actualPositionW, actualPositionH);
+        graphicsContext.drawImage(forklift, actualPositionW, actualPositionH);
 
 
 
         // Arrow keys moving
-        if (currentlyActiveKeys.contains("LEFT"))
-        {
-            actualPositionW = actualPositionW - 1.5;
-            graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
-            leftOrRight = false;
-        }
-        else if (currentlyActiveKeys.contains("RIGHT"))
-        {
-            actualPositionW = actualPositionW + 1.5;
-            graphicsContext.drawImage(caseOne, actualPositionW , actualPositionH);
-            leftOrRight = true;
-        }
-        else if (currentlyActiveKeys.contains("DOWN")) {
-            actualPositionH = actualPositionH + 1.5;
-            if (leftOrRight == true) {
-                graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
-            } else {
-                graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
-            }
-        }
-        else if (currentlyActiveKeys.contains("UP")) {
-            actualPositionH = actualPositionH - 1.5;
-            if (leftOrRight == true) {
-                graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
-            } else {
-                graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
-            }
-       }
-       else {
-            if (leftOrRight == true) {
-                graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
-            } else {
-                graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
-            }
-        }
+//        if (currentlyActiveKeys.contains("LEFT"))
+//        {
+//            actualPositionW = actualPositionW - 1.5;
+//            graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
+//            leftOrRight = false;
+//        }
+//        else if (currentlyActiveKeys.contains("RIGHT"))
+//        {
+//            actualPositionW = actualPositionW + 1.5;
+//            graphicsContext.drawImage(caseOne, actualPositionW , actualPositionH);
+//            leftOrRight = true;
+//        }
+//        else if (currentlyActiveKeys.contains("DOWN")) {
+//            actualPositionH = actualPositionH + 1.5;
+//            if (leftOrRight == true) {
+//                graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
+//            } else {
+//                graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
+//            }
+//        }
+//        else if (currentlyActiveKeys.contains("UP")) {
+//            actualPositionH = actualPositionH - 1.5;
+//            if (leftOrRight == true) {
+//                graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
+//            } else {
+//                graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
+//            }
+//       }
+//       else {
+//            if (leftOrRight == true) {
+//                graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
+//            } else {
+//                graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
+//            }
+//        }
 
     }
 
@@ -269,8 +275,13 @@ public class Main extends Application {
         z - array with blocked points
 
                    n   a   a  sy  sx dy dx    z                       */
-        astar.test(1, 16, 16, 0, 0, 10, 8, astarBlockedPoints);
+        // astar.test(1, 16, 16, 0, 0, 10, 8, astarBlockedPoints);
 
+
+        int randX = randPoints.nextInt(15);
+        int randY = randPoints.nextInt(15);
+
+        astar.test(2, 16, 16, 0, 0, randY, randX, astarBlockedPoints);
 
         knowledgeBase = new KnowledgeBase();
         knowledgeBase.addData("car parts", "gray");
@@ -784,6 +795,9 @@ public class Main extends Application {
 
                 }
         );
+//        for (int i = 0; i < algorithmAvailablePoints.size(); i++) {
+//            System.out.print("[" + algorithmAvailablePoints.get(i).getX() + " " + algorithmAvailablePoints.get(i).getY() + "]\n");
+//        }
 
     }
 
@@ -794,7 +808,7 @@ public class Main extends Application {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
 
-                        System.out.print("X:" + mouseEvent.getX() + " " + "Y:" + mouseEvent.getY() + "\n");
+                        // System.out.print("X:" + mouseEvent.getX() + " " + "Y:" + mouseEvent.getY() + "\n");
 
                         if (iterator < astar.pathXY.size() && returnMode == false) {
                             actualPositionW = multiplePoints.get(fieldNumber[iterator]).getX();
@@ -822,9 +836,10 @@ public class Main extends Application {
 
     public static boolean contains(int[] arr, int targetValue) {
         for(int s: arr){
-            if(s == targetValue)
-                return true;
+            if(s == targetValue) return true;
         }
         return false;
     }
+
+
 }

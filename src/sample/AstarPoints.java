@@ -20,6 +20,7 @@ public class AstarPoints {
     public int getY() {
         return Y;
     }
+    // public String getXY() { return (X + ";" + Y); }
     public void setX(int X) {
         this.X = X;
     }
