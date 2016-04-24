@@ -19,12 +19,14 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 
 public class Main extends Application {
-
+    static Executor pool = Executors.newFixedThreadPool(5);
     static int WIDTH = 1800;
     static int HEIGHT = 800;
     static Scene mainScene;
@@ -180,7 +182,6 @@ public class Main extends Application {
         graphicsContext.drawImage(forklift, actualPositionW, actualPositionH);
 
 
-
         // Arrow keys moving
 //        if (currentlyActiveKeys.contains("LEFT"))
 //        {
@@ -233,7 +234,6 @@ public class Main extends Application {
             }
         }
     }
-
 
 
     private static void setStatement() {
@@ -354,7 +354,6 @@ public class Main extends Application {
                 x = 0;
             }
         }
-
 
 
         multiplePoints.put(0, new AstarPoints(110, 0));
@@ -639,7 +638,6 @@ public class Main extends Application {
         //System.out.println(knowledgeBase.toString());
 
 
-
         // Declare random case spawn-points
 
         // X
@@ -656,14 +654,14 @@ public class Main extends Application {
 //        for (int n = 10; n < 119; n += 12) casePoints[n][0] = 945.5;
 //        for (int n = 11; n < 120; n += 12) casePoints[n][0] = 999.0;
 
-        for (int n =0; n < 73; n += 8) casePoints[n][0] = 156.0;
-        for (int n =1; n < 74; n += 8) casePoints[n][0] = 210.0;
-        for (int n =2; n < 75; n += 8) casePoints[n][0] = 313.5;
-        for (int n =3; n < 76; n += 8) casePoints[n][0] = 367.5;
-        for (int n =4; n < 77; n += 8) casePoints[n][0] = 472.0;
-        for (int n =5; n < 78; n += 8) casePoints[n][0] = 525.5;
-        for (int n =6; n < 79; n += 8) casePoints[n][0] = 629.0;
-        for (int n =7; n < 80; n += 8) casePoints[n][0] = 682.0;
+        for (int n = 0; n < 73; n += 8) casePoints[n][0] = 156.0;
+        for (int n = 1; n < 74; n += 8) casePoints[n][0] = 210.0;
+        for (int n = 2; n < 75; n += 8) casePoints[n][0] = 313.5;
+        for (int n = 3; n < 76; n += 8) casePoints[n][0] = 367.5;
+        for (int n = 4; n < 77; n += 8) casePoints[n][0] = 472.0;
+        for (int n = 5; n < 78; n += 8) casePoints[n][0] = 525.5;
+        for (int n = 6; n < 79; n += 8) casePoints[n][0] = 629.0;
+        for (int n = 7; n < 80; n += 8) casePoints[n][0] = 682.0;
         // Y
 
         IntStream.range(0, 80).forEach(
@@ -835,9 +833,33 @@ public class Main extends Application {
 //                        }
 
                         if (iterator < astar.pathXY.size() && returnMode == false) {
-                            actualPositionW = multiplePoints.get(fieldNumber[iterator]).getX();
-                            actualPositionH = multiplePoints.get(fieldNumber[iterator]).getY();
                             iterator++;
+//                            actualPositionW = multiplePoints.get(fieldNumber[iterator]).getX();
+//                            actualPositionH = multiplePoints.get(fieldNumber[iterator]).getY();
+
+
+                            int movingTicks = 3;
+
+                            double xIterator = (multiplePoints.get(fieldNumber[iterator]).getX() - actualPositionW) / movingTicks;
+                            double yIterator = (multiplePoints.get(fieldNumber[iterator]).getY() - actualPositionH) / movingTicks;
+
+                            Runnable runnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                    for (int i = 0; i < movingTicks; i++) {
+                                        actualPositionW += xIterator;
+                                        actualPositionH += yIterator;
+                                        try {
+                                            Thread.sleep(100);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
+                            };
+
+                            pool.execute(runnable);
+
                             unlockPack = false;
                         } else {
                             returnMode = true;
@@ -845,8 +867,30 @@ public class Main extends Application {
                         }
                         if (iterator >= 0 && returnMode == true) {
                             iterator--;
-                            actualPositionW = multiplePoints.get(fieldNumber[iterator]).getX();
-                            actualPositionH = multiplePoints.get(fieldNumber[iterator]).getY();
+//                            actualPositionW = multiplePoints.get(fieldNumber[iterator]).getX();
+//                            actualPositionH = multiplePoints.get(fieldNumber[iterator]).getY();
+
+                            int movingTicks = 3;
+
+                            double xIterator = (multiplePoints.get(fieldNumber[iterator]).getX() - actualPositionW) / movingTicks;
+                            double yIterator = (multiplePoints.get(fieldNumber[iterator]).getY() - actualPositionH) / movingTicks;
+
+                            Runnable runnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                    for (int i = 0; i < movingTicks; i++) {
+                                        actualPositionW += xIterator;
+                                        actualPositionH += yIterator;
+                                        try {
+                                            Thread.sleep(100);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
+                            };
+
+                            pool.execute(runnable);
                         }
 
                         if (iterator == 0) {
@@ -859,8 +903,8 @@ public class Main extends Application {
     }
 
     public static boolean contains(int[] arr, int targetValue) {
-        for(int s: arr){
-            if(s == targetValue) return true;
+        for (int s : arr) {
+            if (s == targetValue) return true;
         }
         return false;
     }
