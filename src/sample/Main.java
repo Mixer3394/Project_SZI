@@ -78,6 +78,8 @@ public class Main extends Application {
     static Image actualCase;
     static int locOfCases[] = new int[20];
 
+    static int movingTicks = 3;
+
     // state if forklift is busy
     static Boolean caseNotToSpawn = false;
 
@@ -822,13 +824,6 @@ public class Main extends Application {
 
     }
 
-    private void handleReturning() {
-        if (iterator >= 0 && returnMode) {
-                iterator--;
-                move();
-        }
-    }
-
     private void handleGoingForPackage() {
         if (iterator < astar.pathXY.size() - 1 && !returnMode) {
             iterator++;
@@ -842,24 +837,39 @@ public class Main extends Application {
     }
 
     private void move() {
-        int movingTicks = 3;
-
-        double xIterator = (multiplePoints.get(fieldNumber[iterator]).getX() - actualPositionW) / movingTicks;
-        double yIterator = (multiplePoints.get(fieldNumber[iterator]).getY() - actualPositionH) / movingTicks;
-
-        Runnable runnable = () -> {
-            for (int i = 0; i < movingTicks; i++) {
-                actualPositionW += xIterator;
-                actualPositionH += yIterator;
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
+        double xIterator = calculateXIterator();
+        double yIterator = calculateYIterator();
+        Runnable runnable = prepareRunableForMovingSlowly(xIterator, yIterator);
         pool.execute(runnable);
+    }
+
+    private double calculateXIterator() {
+        return (multiplePoints.get(fieldNumber[iterator]).getX() - actualPositionW) / movingTicks;
+    }
+
+    private double calculateYIterator() {
+        return (multiplePoints.get(fieldNumber[iterator]).getY() - actualPositionH) / movingTicks;
+    }
+
+    private Runnable prepareRunableForMovingSlowly(double xIterator, double yIterator) {
+        return () -> {
+                for (int i = 0; i < movingTicks; i++) {
+                    actualPositionW += xIterator;
+                    actualPositionH += yIterator;
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+    }
+
+    private void handleReturning() {
+        if (iterator >= 0 && returnMode) {
+            iterator--;
+            move();
+        }
     }
 
     public static boolean contains(int[] arr, int targetValue) {
