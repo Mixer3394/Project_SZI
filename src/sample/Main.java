@@ -804,24 +804,22 @@ public class Main extends Application {
     private void setCase() {
 
         mainScene.addEventHandler(MouseEvent.MOUSE_RELEASED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                    boolean isRunning = true;
+                mouseEvent -> mouseClicked());
+
+    }
+
+    private void mouseClicked() {
+        boolean isRunning = true;
 
 //                        while (isRunning) {
 
-                        handleGoingForPackage();
-                        handleReturning();
-                        if (iterator == 0) {
-                                System.out.print("END");
-                                returnMode = false;
+        handleGoingForPackage();
+        handleReturning();
+        if (iterator == 0) {
+                System.out.print("END");
+                returnMode = false;
 //                                isRunning = false;
-                            }
-                        }
-//                    }
-                });
-
+            }
     }
 
     private void handleGoingForPackage() {
