@@ -19,14 +19,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.stream.IntStream;
 
 
 public class Main extends Application {
-    static Executor pool = Executors.newFixedThreadPool(5);
+    static ExecutorService mainPool = Executors.newFixedThreadPool(1);
+    static ExecutorService pool = Executors.newFixedThreadPool(1);
     static int WIDTH = 1800;
     static int HEIGHT = 800;
     static Scene mainScene;
@@ -808,29 +807,43 @@ public class Main extends Application {
     }
 
     private void mouseClicked() {
-        boolean isRunning = true;
+        mainPool.execute(() -> {
+            while (iterator < astar.pathXY.size() - 1) {
+                handleGoingForPackage();
+//                try {
+//                    Thread.sleep(100*movingTicks);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+            }
+            returnMode = true;
+            unlockPack = true;
 
-//                        while (isRunning) {
-
-        handleGoingForPackage();
-        handleReturning();
-        if (iterator == 0) {
-            System.out.print("END");
-            returnMode = false;
-//                                isRunning = false;
-        }
+            while (iterator > 0 && returnMode) {
+                handleReturning();
+//                try {
+//                    Thread.sleep(100*movingTicks);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+            }
+            if (iterator == 0) {
+                System.out.print("END");
+                returnMode = false;
+            }
+        });
     }
 
     private void handleGoingForPackage() {
-        if (iterator < astar.pathXY.size() - 1 && !returnMode) {
+//        if (iterator < astar.pathXY.size() - 1 && !returnMode) {
             iterator++;
             move();
 
             unlockPack = false;
-        } else {
-            returnMode = true;
+//        } else {
+//            returnMode = true;
             unlockPack = true;
-        }
+//        }
     }
 
     private void move() {
@@ -838,6 +851,25 @@ public class Main extends Application {
         double yIterator = calculateYIterator();
         Runnable runnable = prepareRunableForMovingSlowly(xIterator, yIterator);
         pool.execute(runnable);
+
+        try {
+            Thread.sleep(100*movingTicks);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+//        List<Callable<Object>> todo = new ArrayList<>();
+//        todo.add(Executors.callable(runnable));
+//        try {
+//            pool.invokeAll(todo);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            Thread.sleep(100*movingTicks);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
     private double calculateXIterator() {
