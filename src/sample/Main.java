@@ -809,58 +809,9 @@ public class Main extends Application {
 
 //                        while (isRunning) {
 
-                            if (iterator < astar.pathXY.size() - 1 && returnMode == false) {
-                                iterator++;
-
-
-                                int movingTicks = 3;
-
-                                double xIterator = (multiplePoints.get(fieldNumber[iterator]).getX() - actualPositionW) / movingTicks;
-                                double yIterator = (multiplePoints.get(fieldNumber[iterator]).getY() - actualPositionH) / movingTicks;
-
-                                Runnable runnable = () -> {
-                                    for (int i = 0; i < movingTicks; i++) {
-                                        actualPositionW += xIterator;
-                                        actualPositionH += yIterator;
-                                        try {
-                                            Thread.sleep(100);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                };
-
-                                pool.execute(runnable);
-
-                                unlockPack = false;
-                            } else {
-                                returnMode = true;
-                                unlockPack = true;
-                            }
-                            if (iterator >= 0 && returnMode == true) {
-                                iterator--;
-
-                                int movingTicks = 3;
-
-                                double xIterator = (multiplePoints.get(fieldNumber[iterator]).getX() - actualPositionW) / movingTicks;
-                                double yIterator = (multiplePoints.get(fieldNumber[iterator]).getY() - actualPositionH) / movingTicks;
-
-                                Runnable runnable = () -> {
-                                    for (int i = 0; i < movingTicks; i++) {
-                                        actualPositionW += xIterator;
-                                        actualPositionH += yIterator;
-                                        try {
-                                            Thread.sleep(100);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                };
-
-                                pool.execute(runnable);
-                            }
-
-                            if (iterator == 0) {
+                        handleGoingForPackage();
+                        handleReturning();
+                        if (iterator == 0) {
                                 System.out.print("END");
                                 returnMode = false;
 //                                isRunning = false;
@@ -869,6 +820,46 @@ public class Main extends Application {
 //                    }
                 });
 
+    }
+
+    private void handleReturning() {
+        if (iterator >= 0 && returnMode) {
+                iterator--;
+                move();
+        }
+    }
+
+    private void handleGoingForPackage() {
+        if (iterator < astar.pathXY.size() - 1 && !returnMode) {
+            iterator++;
+            move();
+
+            unlockPack = false;
+        } else {
+            returnMode = true;
+            unlockPack = true;
+        }
+    }
+
+    private void move() {
+        int movingTicks = 3;
+
+        double xIterator = (multiplePoints.get(fieldNumber[iterator]).getX() - actualPositionW) / movingTicks;
+        double yIterator = (multiplePoints.get(fieldNumber[iterator]).getY() - actualPositionH) / movingTicks;
+
+        Runnable runnable = () -> {
+            for (int i = 0; i < movingTicks; i++) {
+                actualPositionW += xIterator;
+                actualPositionH += yIterator;
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        pool.execute(runnable);
     }
 
     public static boolean contains(int[] arr, int targetValue) {
