@@ -810,22 +810,12 @@ public class Main extends Application {
         mainPool.execute(() -> {
             while (iterator < astar.pathXY.size() - 1) {
                 handleGoingForPackage();
-//                try {
-//                    Thread.sleep(100*movingTicks);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
             }
             returnMode = true;
             unlockPack = true;
 
             while (iterator > 0 && returnMode) {
                 handleReturning();
-//                try {
-//                    Thread.sleep(100*movingTicks);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
             }
             if (iterator == 0) {
                 System.out.print("END");
@@ -835,15 +825,8 @@ public class Main extends Application {
     }
 
     private void handleGoingForPackage() {
-//        if (iterator < astar.pathXY.size() - 1 && !returnMode) {
             iterator++;
             move();
-
-            unlockPack = false;
-//        } else {
-//            returnMode = true;
-            unlockPack = true;
-//        }
     }
 
     private void move() {
@@ -857,19 +840,6 @@ public class Main extends Application {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-//        List<Callable<Object>> todo = new ArrayList<>();
-//        todo.add(Executors.callable(runnable));
-//        try {
-//            pool.invokeAll(todo);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            Thread.sleep(100*movingTicks);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
     }
 
     private double calculateXIterator() {
