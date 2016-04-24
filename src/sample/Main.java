@@ -279,7 +279,6 @@ public class Main extends Application {
 
 
        /* ********************************* START ALGORITHM!!!!!!!!!!! *************************************************
-        n - numboer of test
         a - array size (our map has 16x16)
         sy - start point y
         sx - start point x
@@ -287,8 +286,8 @@ public class Main extends Application {
         dx - destination point x
         z - array with blocked points
 
-                   n   a   a  sy  sx dy dx    z                       */
-        // astar.test(1, 16, 16, 0, 0, 10, 8, astarBlockedPoints);
+                      a   a  sy  sx dy dx    z                       */
+        // astar.test(16, 16, 0, 0, 10, 8, astarBlockedPoints);
 
 
 //        int randX = randPoints.nextInt(15);
@@ -297,12 +296,12 @@ public class Main extends Application {
 //        while (astar.foundPath == false) {
 //            randX = randPoints.nextInt(15);
 //            randY = randPoints.nextInt(15);
-//            astar.test(1, 16, 16, 0, 0, randY, randX, astarBlockedPoints);
+//            astar.test(16, 16, 0, 0, randY, randX, astarBlockedPoints);
 //
 //        }
 
         int randCasePoint = randPoints.nextInt(80);
-        astar.test(1, 16, 16, 0, 0, casesCoordinates[randCasePoint][0], casesCoordinates[randCasePoint][1], astarBlockedPoints);
+        astar.test(16, 16, 0, 0, casesCoordinates[randCasePoint][0], casesCoordinates[randCasePoint][1], astarBlockedPoints);
 
         prepareKnowledgeBase();
 
@@ -818,7 +817,7 @@ public class Main extends Application {
                 handleReturning();
             }
             if (iterator == 0) {
-                System.out.print("END");
+                System.out.print("END\n");
                 returnMode = false;
             }
         });

@@ -13,8 +13,10 @@ public class Astar {
     public static Map <Integer, AstarPoints> pathXY=new HashMap<Integer, AstarPoints>();
 
     static class Cell{
-        int heuristicCost = 0; //Heuristic cost
-        int finalCost = 0; //G+H
+        int heuristicCost = 0;
+
+        // Koszt całkowity przejścia G + H
+        int finalCost = 0;
         int i, j;
         Cell parent;
 
@@ -81,40 +83,48 @@ public class Astar {
             }
 
             Cell t;
+
+            // Dół
             if(current.i-1>=0){
                 t = grid[current.i-1][current.j];
                 checkAndUpdateCost(current, t, current.finalCost+V_H_COST);
 
+                // Skos lewo
                 if(current.j-1>=0){
                     t = grid[current.i-1][current.j-1];
                     checkAndUpdateCost(current, t, current.finalCost+DIAGONAL_COST);
                 }
-
+                // Skos w prawo
                 if(current.j+1<grid[0].length){
                     t = grid[current.i-1][current.j+1];
                     checkAndUpdateCost(current, t, current.finalCost+DIAGONAL_COST);
                 }
             }
 
+            // W lewo
             if(current.j-1>=0){
                 t = grid[current.i][current.j-1];
                 checkAndUpdateCost(current, t, current.finalCost+V_H_COST);
             }
 
+            // W prawo
             if(current.j+1<grid[0].length){
                 t = grid[current.i][current.j+1];
                 checkAndUpdateCost(current, t, current.finalCost+V_H_COST);
             }
 
+            // Góra
             if(current.i+1<grid.length){
                 t = grid[current.i+1][current.j];
                 checkAndUpdateCost(current, t, current.finalCost+V_H_COST);
 
+                // Skos lewo
                 if(current.j-1>=0){
                     t = grid[current.i+1][current.j-1];
                     checkAndUpdateCost(current, t, current.finalCost+DIAGONAL_COST);
                 }
 
+                // Skos prawo
                 if(current.j+1<grid[0].length){
                     t = grid[current.i+1][current.j+1];
                     checkAndUpdateCost(current, t, current.finalCost+DIAGONAL_COST);
@@ -124,9 +134,9 @@ public class Astar {
     }
 
 
-    public static void test(int tCase, int x, int y, int si, int sj, int ei, int ej, int[][] blocked) {
-        System.out.println("\n\nTest Case #" + tCase);
-        //Reset
+    public static void test(int x, int y, int si, int sj, int ei, int ej, int[][] blocked) {
+
+        // Override X and Y of grid
         grid = new Cell[x][y];
         closed = new boolean[x][y];
         open = new PriorityQueue<>((Object o1, Object o2) -> {
@@ -137,7 +147,7 @@ public class Astar {
                     c1.finalCost > c2.finalCost ? 1 : 0;
         });
         //Set start position
-        setStartCell(si, sj);  //Setting to 0,0 by default. Will be useful for the UI part
+        setStartCell(si, sj);
 
         //Set End Location
         setEndCell(ei, ej);
@@ -145,17 +155,15 @@ public class Astar {
         for (int i = 0; i < x; ++i) {
             for (int j = 0; j < y; ++j) {
                 grid[i][j] = new Cell(i, j);
+
+                // Manhattan Distance
                 grid[i][j].heuristicCost = Math.abs(i - endI) + Math.abs(j - endJ);
-//                  System.out.print(grid[i][j].heuristicCost+" ");
+
             }
-//              System.out.println();
         }
         grid[si][sj].finalCost = 0;
 
-           /*
-             Set blocked cells. Simply set the cell values to null
-             for blocked cells.
-           */
+        // Set Blocked cells values to null
         for (int i = 0; i < blocked.length; ++i) {
             setBlocked(blocked[i][0], blocked[i][1]);
         }
@@ -164,9 +172,13 @@ public class Astar {
         System.out.println("Grid: ");
         for (int i = 0; i < x; ++i) {
             for (int j = 0; j < y; ++j) {
-                if (i == si && j == sj) System.out.print("SO  "); //Source
-                else if (i == ei && j == ej) System.out.print("DE  ");  //Destination
+
+                                                        // Source
+                if (i == si && j == sj) System.out.print("SO  ");
+                                                        // Destination
+                else if (i == ei && j == ej) System.out.print("DE  ");
                 else if (grid[i][j] != null) System.out.printf("%-3d ", 0);
+                                      // Blocked
                 else System.out.print("BL  ");
             }
             System.out.println();
@@ -174,7 +186,9 @@ public class Astar {
         System.out.println();
 
         AStar();
-        System.out.println("\nScores for cells: ");
+        System.out.println("\nMap with values: ");
+
+        // Fill the map with costs
         for (int i = 0; i < x; ++i) {
             for (int j = 0; j < x; ++j) {
                 if (grid[i][j] != null) System.out.printf("%-3d ", grid[i][j].finalCost);
@@ -185,6 +199,7 @@ public class Astar {
         System.out.println();
 
         if (closed[endI][endJ]) {
+
             //Trace back the path
             System.out.println("Path: ");
             Cell current = grid[endI][endJ];
