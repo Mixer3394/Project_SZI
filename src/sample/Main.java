@@ -835,8 +835,12 @@ public class Main extends Application {
         Runnable runnable = prepareRunableForMovingSlowly(xIterator, yIterator);
         pool.execute(runnable);
 
+        waitUntilRunThreadFinishes(100 * movingTicks);
+    }
+
+    private void waitUntilRunThreadFinishes(int millis) {
         try {
-            Thread.sleep(100*movingTicks);
+            Thread.sleep(millis);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
