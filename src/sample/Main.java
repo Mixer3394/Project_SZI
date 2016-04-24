@@ -805,78 +805,68 @@ public class Main extends Application {
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
+                    boolean isRunning = true;
 
-                        // System.out.print("X:" + mouseEvent.getX() + " " + "Y:" + mouseEvent.getY() + "\n");
+//                        while (isRunning) {
 
-
-//                        while (iterator < astar.pathXY.size() && returnMode == false) {
-//                            actualPositionW = multiplePoints.get(fieldNumber[iterator]).getX();
-//                            actualPositionH = multiplePoints.get(fieldNumber[iterator]).getY();
-//                            iterator++;
-//                            unlockPack = false;
-//                        }
-//
-//                        if (iterator >= astar.pathXY.size()) {
-//                            returnMode = true;
-//                            unlockPack = true;
-//                        }
-
-                        if (iterator < astar.pathXY.size()-1 && returnMode == false) {
-                            iterator++;
+                            if (iterator < astar.pathXY.size() - 1 && returnMode == false) {
+                                iterator++;
 
 
-                            int movingTicks = 3;
+                                int movingTicks = 3;
 
-                            double xIterator = (multiplePoints.get(fieldNumber[iterator]).getX() - actualPositionW) / movingTicks;
-                            double yIterator = (multiplePoints.get(fieldNumber[iterator]).getY() - actualPositionH) / movingTicks;
+                                double xIterator = (multiplePoints.get(fieldNumber[iterator]).getX() - actualPositionW) / movingTicks;
+                                double yIterator = (multiplePoints.get(fieldNumber[iterator]).getY() - actualPositionH) / movingTicks;
 
-                            Runnable runnable = () -> {
-                                for (int i = 0; i < movingTicks; i++) {
-                                    actualPositionW += xIterator;
-                                    actualPositionH += yIterator;
-                                    try {
-                                        Thread.sleep(100);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
+                                Runnable runnable = () -> {
+                                    for (int i = 0; i < movingTicks; i++) {
+                                        actualPositionW += xIterator;
+                                        actualPositionH += yIterator;
+                                        try {
+                                            Thread.sleep(100);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
-                                }
-                            };
+                                };
 
-                            pool.execute(runnable);
+                                pool.execute(runnable);
 
-                            unlockPack = false;
-                        } else {
-                            returnMode = true;
-                            unlockPack = true;
-                        }
-                        if (iterator >= 0 && returnMode == true) {
-                            iterator--;
+                                unlockPack = false;
+                            } else {
+                                returnMode = true;
+                                unlockPack = true;
+                            }
+                            if (iterator >= 0 && returnMode == true) {
+                                iterator--;
 
-                            int movingTicks = 3;
+                                int movingTicks = 3;
 
-                            double xIterator = (multiplePoints.get(fieldNumber[iterator]).getX() - actualPositionW) / movingTicks;
-                            double yIterator = (multiplePoints.get(fieldNumber[iterator]).getY() - actualPositionH) / movingTicks;
+                                double xIterator = (multiplePoints.get(fieldNumber[iterator]).getX() - actualPositionW) / movingTicks;
+                                double yIterator = (multiplePoints.get(fieldNumber[iterator]).getY() - actualPositionH) / movingTicks;
 
-                            Runnable runnable = () -> {
-                                for (int i = 0; i < movingTicks; i++) {
-                                    actualPositionW += xIterator;
-                                    actualPositionH += yIterator;
-                                    try {
-                                        Thread.sleep(100);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
+                                Runnable runnable = () -> {
+                                    for (int i = 0; i < movingTicks; i++) {
+                                        actualPositionW += xIterator;
+                                        actualPositionH += yIterator;
+                                        try {
+                                            Thread.sleep(100);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
-                                }
-                            };
+                                };
 
-                            pool.execute(runnable);
-                        }
+                                pool.execute(runnable);
+                            }
 
-                        if (iterator == 0) {
-                            System.out.print("END");
-                            returnMode = false;
+                            if (iterator == 0) {
+                                System.out.print("END");
+                                returnMode = false;
+//                                isRunning = false;
+                            }
                         }
-                    }
+//                    }
                 });
 
     }
