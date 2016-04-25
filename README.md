@@ -25,7 +25,7 @@
 * A*
 
 **Krótki opis:**
-   Wózek widłowy porusza się po mapie, która prezentuje magazyn. W magazynie generują się losowo paczki z różnymi materiałami, a następnie wózek rozwozi je na odpowiednie dla nich regały. Wózek pobiera również paczki z taśmociągu i transportuje je dla odpowiednich dla nich miejsc.
+   Program prezentuje podstawową funkcjonalność inteligentnego wózka widłowego. Wózek porusza się płynnie po mapie, wykorzystując w pełni algorytm A* do planowania swoich podróży. Algorytm działa bardzo oszczędnie, dzięki czemu mamy gwarancję przemieszczania się między punktami z możliwymi najniższymi kosztami. Mapa prezentuję magazyn, w którym znajduje się sześć sektorów różnej charakterystyki. Dodatkowo mapa została wyposażona w taśmę, która losowo przewija paczki z różnymi towarami, inteligentny wózek widłowy może pobrać wybraną paczkę, a następnie przetransportować ją w miejsce na nią przeznaczone.  
    
 ***Aktualne postępy:***
 
@@ -36,3 +36,12 @@
 * Wstępna reprezentacja wiedzy
 * Losowe generowanie skrzynek(paczek)
 * Umiejętność transportu paczek
+
+
+**25.04.2016:**
+*	Gotowy algorytm A*, dzięki któremu wózek odnajduje najkrótszą drogę do paczki
+*	Płynne działanie wózka – płynne poruszanie się po mapie 
+*	Reprezentacja wiedzy dotycząca paczek
+*	Nowy schemat mapy – przystosowany do algorytmu A*
+*  Mapa 16x16
+
