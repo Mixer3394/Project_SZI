@@ -45,3 +45,7 @@
 *	Nowy schemat mapy – przystosowany do algorytmu A*
 *  Mapa 16x16
 
+***Modyfikacje do 2 etapu:***
+*  Obrót wózka
+*  Plamy oleju
+*  Inny sposób wypisywania ścieżki - akcje 
