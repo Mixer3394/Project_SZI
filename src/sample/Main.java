@@ -62,11 +62,18 @@ public class Main extends Application {
     static Image caseEight;
     static double casePoints[][] = new double[80][2];
 
+    // Oil
+    static Image oilSlick;
+
     // Randoms for cases-spawns
     static Random caseSpawn = new Random();
     static Random caseNumber = new Random();
     static Image casesToSpawn[] = new Image[20];
 
+    // Random for oil spawns
+    static Random oilRandom = new Random();
+    // Array for oil spawns
+    static int oilArray[] = new int[10];
     // Random for algorithm points
     static Random randPoints = new Random();
 
@@ -119,6 +126,16 @@ public class Main extends Application {
             {3, 12}, {4, 12}, {5, 12}, {6, 12}, {7, 12}, {8, 12}, {9, 12}, {10, 12}, {11, 12}, {12, 12},
             {3, 15}, {4, 15}, {5, 15}, {6, 15}, {7, 15}, {8, 15}, {9, 15}, {10, 15}, {11, 15}, {12, 15},
     };
+
+    static int[][] pointsForOil = {
+            {0, 2}, {0, 3}, {0, 4}, {0, 5}, {0, 6}, {0, 7}, {0, 8}, {0, 9}, {0, 10}, {0, 11}, {0, 12},
+            {0, 13}, {0, 14}, {0, 15}, {1, 2}, {1, 3}, {1, 4}, {1, 5}, {1, 6}, {1, 7}, {1, 8}, {1, 9}, {1, 10}, {1, 11}, {1, 12},
+            {1, 13}, {1, 14}, {1, 15},{2, 0}, {2, 1}, {2, 2}, {2, 3}, {2, 4}, {2, 5}, {2, 6}, {2, 7}, {2, 8}, {2, 9}, {2, 10}, {2, 11}, {2, 12},
+            {2, 13}, {2, 14}, {2, 15}, {3, 0}, {3, 1}, {3, 2}, {3, 3}, {3, 4}, {3, 5}, {3, 6}, {3, 7}, {3, 8}, {3, 9}, {3, 10}, {3, 11}, {3, 12},
+            {3, 13}, {3, 14}, {3, 15}, {14, 0}, {14, 1}, {14, 2}, {14, 3}, {14, 4}, {14, 5}, {14, 6}, {14, 7}, {14, 8}, {14, 9}, {14, 10}, {14, 11}, {14, 12},
+            {14, 13}, {14, 14}, {14, 15}, {15, 0}, {15, 1}, {15, 2}, {15, 3}, {15, 4}, {15, 5}, {15, 6}, {15, 7}, {15, 8}, {15, 9}, {15, 10}, {15, 11}, {15, 12},
+            {15, 13}, {15, 14}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}
+    };
     public int iterator = 0;
 
     private static void prepareActionHandlers() {
@@ -140,6 +157,7 @@ public class Main extends Application {
         caseSix = new Image("images/case6.png");
         caseSeven = new Image("images/case7.png");
         caseEight = new Image("images/case8.png");
+        oilSlick = new Image("images/oil.png");
 
     }
 
@@ -147,6 +165,12 @@ public class Main extends Application {
         // clear canvas
         graphicsContext.clearRect(0, 0, WIDTH, HEIGHT);
         graphicsContext.drawImage(background, 0, 0);
+
+
+        // ZAMIANA NA WSPÓŁRZĘDNE
+        for(int i = 0; i < oilArray.length; i++) {
+            graphicsContext.drawImage(oilSlick, astarBlockedPoints[70 + i][0], astarBlockedPoints[70 + 1][1]);
+        }
 
 
         // Spawn Cases.
@@ -278,6 +302,11 @@ public class Main extends Application {
     public void start(Stage mainStage) throws Exception {
 
 
+//        for(int i = 0; i < 5; i++) {
+//            int oilRandomPoint = oilRandom.nextInt(algorithmAvailablePoints.size());
+//        }
+
+
        /* ********************************* START ALGORITHM!!!!!!!!!!! *************************************************
         a - array size (our map has 16x16)
         sy - start point y
@@ -299,6 +328,23 @@ public class Main extends Application {
 //            astar.test(16, 16, 0, 0, randY, randX, astarBlockedPoints);
 //
 //        }
+        for(int i = 0; i < 10; i++) {
+
+            int randOil = oilRandom.nextInt(pointsForOil.length) - 1;
+//            while(!contains(oilArray, randOil)) {
+//
+//                randOil = oilRandom.nextInt(pointsForOil.length) - 1;
+//            }
+            oilArray[i] = randOil;
+            astarBlockedPoints[70 + i] = pointsForOil[randOil];
+
+        }
+
+        for(int i=0;i<10;i++) {
+            System.out.print(oilArray[i] + "\n");
+        }
+        System.out.print(astarBlockedPoints[71][0] + " " + astarBlockedPoints[71][1]);
+
 
         int randCasePoint = randPoints.nextInt(80);
         astar.test(16, 16, 0, 0, casesCoordinates[randCasePoint][0], casesCoordinates[randCasePoint][1], astarBlockedPoints);
@@ -315,6 +361,7 @@ public class Main extends Application {
                 x = 0;
             }
         }
+
 
 
         prepareMultiplePoints();
@@ -450,7 +497,7 @@ public class Main extends Application {
                 }
         );
 
-//        for (int i = 0; i < astar.pathXY.size(); i++) {
+//        for (int i = 0; i < algorithmAvailablePoints.size(); i++) {
 //            System.out.print("X:" + algorithmAvailablePoints.get(i).getX() + " Y:" + algorithmAvailablePoints.get(i).getY() + "\n");
 //        }
 
