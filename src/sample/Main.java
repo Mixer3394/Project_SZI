@@ -72,8 +72,11 @@ public class Main extends Application {
 
     // Random for oil spawns
     static Random oilRandom = new Random();
-    // Array for oil spawns
+    // Arrays for oil spawns
     static int oilArray[] = new int[10];
+    static int oilsToDraw[] = new int[10];
+    static int oilsCoordinates[][] = new int[10][2];
+
     // Random for algorithm points
     static Random randPoints = new Random();
 
@@ -169,7 +172,7 @@ public class Main extends Application {
 
         // ZAMIANA NA WSPÓŁRZĘDNE
         for(int i = 0; i < oilArray.length; i++) {
-            graphicsContext.drawImage(oilSlick, astarBlockedPoints[70 + i][0], astarBlockedPoints[70 + 1][1]);
+            graphicsContext.drawImage(oilSlick, oilsCoordinates[i][0] + 21, oilsCoordinates[i][1] - 15);
         }
 
 
@@ -270,6 +273,30 @@ public class Main extends Application {
         }
     }
 
+    // Get coordinates of oil slicks
+
+    private static void getOilSlickNumber() {
+
+        for(int i = 0; i < oilArray.length; i ++) {
+            for(int j = 0; j < algorithmAvailablePoints.size(); j++) {
+                if((algorithmAvailablePoints.get(j).getX() == astarBlockedPoints[70 + i][0]) &&
+                        algorithmAvailablePoints.get(j).getY() == astarBlockedPoints[70 + i][1]) {
+
+                    System.out.print(j + "Dla: X: " + astarBlockedPoints[70 + i][0] + " Y: " + astarBlockedPoints[70 + i][1] + "\n");
+                    oilsToDraw[i] = j;
+                }
+            }
+        }
+    }
+
+    private static void convertOilNumberToCoordinates() {
+        for(int i = 0; i < oilsToDraw.length; i++) {
+            System.out.print("X: " + multiplePoints.get(oilsToDraw[i]).getX() + " Y: " + multiplePoints.get(oilsToDraw[i]).getY() + "\n");
+            oilsCoordinates[i][0] = multiplePoints.get(oilsToDraw[i]).getX();
+            oilsCoordinates[i][1] = multiplePoints.get(oilsToDraw[i]).getY();
+        }
+    }
+
 
     private static void setStatement() {
         Font theFont = Font.font("Helvetica", FontWeight.BOLD, 24);
@@ -340,10 +367,11 @@ public class Main extends Application {
 
         }
 
-        for(int i=0;i<10;i++) {
-            System.out.print(oilArray[i] + "\n");
-        }
-        System.out.print(astarBlockedPoints[71][0] + " " + astarBlockedPoints[71][1]);
+
+//        for(int i=0;i<10;i++) {
+//            System.out.print(oilArray[i] + "\n");
+//        }
+//        System.out.print(astarBlockedPoints[71][0] + " " + astarBlockedPoints[71][1]);
 
 
         int randCasePoint = randPoints.nextInt(80);
@@ -364,7 +392,12 @@ public class Main extends Application {
 
 
 
+
+
         prepareMultiplePoints();
+
+        getOilSlickNumber();
+        convertOilNumberToCoordinates();
 
         Map<String, List<String>> knowledgeBase = Main.knowledgeBase.getKnowledgeBase();
         //System.out.println(knowledgeBase.toString());
@@ -408,6 +441,7 @@ public class Main extends Application {
                 }
         );
 
+
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("sample.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
@@ -443,6 +477,8 @@ public class Main extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
 
         // Get random spawn points and random cases.
         IntStream.range(0, 20).forEach(
