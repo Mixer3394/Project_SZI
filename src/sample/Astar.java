@@ -133,6 +133,39 @@ public class Astar {
         }
     }
 
+    public static void operationCommond(int pointX, int pointY, int pointX_parent, int pointY_parent ) {
+        if(pointX>pointX_parent){
+            if(pointY>pointY_parent){
+                System.out.print("Idę w prawy dół\n");
+            }
+            if(pointY<pointY_parent){
+                System.out.print("Idę w lewy dół\n");
+            }
+            if(pointY == pointY_parent){
+                System.out.print("Idę w dół\n");
+            }
+
+        }
+        else if(pointX<pointX_parent){
+            if(pointY>pointY_parent){
+                System.out.print("Idę w prawą górę\n");
+            }
+            if(pointY<pointY_parent){
+                System.out.print("Idę w lewą górę\n");
+            }
+            if(pointY == pointY_parent){
+                System.out.print("Idę w górę\n");
+            }
+        }
+        else if(pointY>pointY_parent){
+            System.out.print("Idę w prawo\n");
+        }
+        else if(pointY<pointY_parent){
+            System.out.print("Idę w lewo\n");
+        }
+    }
+
+
 
     public static void test(int x, int y, int si, int sj, int ei, int ej, int[][] blocked) {
 
@@ -203,11 +236,13 @@ public class Astar {
             //Trace back the path
             System.out.println("Path: ");
             Cell current = grid[endI][endJ];
-            System.out.print(current);
+           // System.out.print(current);
             int it = 0;
             pathXY.put(it, new AstarPoints(current.i, current.j));
             while (current.parent != null) {
-                System.out.print(" -> " + current.parent);
+                System.out.print(" <- " );
+                operationCommond(current.i, current.j, current.parent.i, current.parent.j);
+
                 current = current.parent;
                 it++;
                 pathXY.put(it, new AstarPoints(current.i, current.j));
