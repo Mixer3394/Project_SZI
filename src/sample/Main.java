@@ -116,9 +116,8 @@ public class Main extends Application {
             {12, 13}, {11, 13}, {10, 13}, {9, 13}, {8, 13}, {7, 13}, {6, 13}, {5, 13}, {4, 13},
             {3, 13}, {3, 14}, {4, 14}, {5, 14}, {6, 14}, {7, 14}, {8, 14}, {9, 14}, {10, 14},
             {11, 14}, {12, 14}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}
-
-
     };
+
     static int[][] casesCoordinates = {
             {3, 0}, {4, 0}, {5, 0}, {6, 0}, {7, 0}, {8, 0}, {9, 0}, {10, 0}, {11, 0}, {12, 0},
             {3, 3}, {4, 3}, {5, 3}, {6, 3}, {7, 3}, {8, 3}, {9, 3}, {10, 3}, {11, 3}, {12, 3},
@@ -367,7 +366,27 @@ public class Main extends Application {
             astarBlockedPoints[80 + i] = pointsForOil[randOil];
 
         }
-
+       // scenario for oil
+  /*      oilArray[0] = 0;
+        astarBlockedPoints[81] = pointsForOil[0];
+        oilArray[1] = 15;
+        astarBlockedPoints[82] = pointsForOil[15];
+        oilArray[2] = 30;
+        astarBlockedPoints[83] = pointsForOil[30];
+        oilArray[3] = 32;
+        astarBlockedPoints[84] = pointsForOil[32];
+        oilArray[4] = 34;
+        astarBlockedPoints[85] = pointsForOil[34];
+        oilArray[5] = 36;
+        astarBlockedPoints[86] = pointsForOil[36];
+        oilArray[6] = 37;
+        astarBlockedPoints[87] = pointsForOil[37];
+        oilArray[7] = 17;
+        astarBlockedPoints[88] = pointsForOil[17];
+        astarBlockedPoints[89] = pointsForOil[21];
+        oilArray[9] = 7;
+        astarBlockedPoints[80] = pointsForOil[7];
+*/
 
 //        for(int i=0;i<10;i++) {
 //            System.out.print(oilArray[i] + "\n");
@@ -376,7 +395,21 @@ public class Main extends Application {
 
 
         int randCasePoint = randPoints.nextInt(80);
+        //random
         astar.test(16, 16, 0, 0, casesCoordinates[randCasePoint][0], casesCoordinates[randCasePoint][1], astarBlockedPoints);
+
+        //scenario 1
+      //  astar.test(16,16,0,0,15,15,astarBlockedPoints);
+
+        //scenrio 2
+      //  astar.test(16,16,0,0,12,8,astarBlockedPoints);
+
+        //scenario 3
+      //  astar.test(16,16,0,0,4,15,astarBlockedPoints);
+
+        //scenario 4 not possible
+      //  astar.test(16,16,0,0,3,2,astarBlockedPoints);
+
 
         prepareKnowledgeBase();
 
