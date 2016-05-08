@@ -283,7 +283,7 @@ public class Main extends Application {
                 if((algorithmAvailablePoints.get(j).getX() == astarBlockedPoints[80 + i][0]) &&
                         algorithmAvailablePoints.get(j).getY() == astarBlockedPoints[80 + i][1]) {
 
-                    System.out.print(j + "Dla: X: " + astarBlockedPoints[80 + i][0] + " Y: " + astarBlockedPoints[80 + i][1] + "\n");
+//                    System.out.print(j + "Dla: X: " + astarBlockedPoints[80 + i][0] + " Y: " + astarBlockedPoints[80 + i][1] + "\n");
                     oilsToDraw[i] = j;
                 }
             }
@@ -292,7 +292,7 @@ public class Main extends Application {
 
     private static void convertOilNumberToCoordinates() {
         for(int i = 0; i < oilsToDraw.length; i++) {
-            System.out.print("X: " + multiplePoints.get(oilsToDraw[i]).getX() + " Y: " + multiplePoints.get(oilsToDraw[i]).getY() + "\n");
+//            System.out.print("X: " + multiplePoints.get(oilsToDraw[i]).getX() + " Y: " + multiplePoints.get(oilsToDraw[i]).getY() + "\n");
             oilsCoordinates[i][0] = multiplePoints.get(oilsToDraw[i]).getX();
             oilsCoordinates[i][1] = multiplePoints.get(oilsToDraw[i]).getY();
         }
