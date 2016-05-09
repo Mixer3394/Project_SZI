@@ -136,10 +136,12 @@ public class Astar {
     public static void operationCommond(int pointX, int pointY, int pointX_parent, int pointY_parent ) {
         if(pointX>pointX_parent){
             if(pointY>pointY_parent){
-                System.out.print("Idę w prawy dół\n");
+                System.out.print("Obracam się o 45 stopni prawo. ");
+                System.out.print("Idę w dół\n");
             }
             if(pointY<pointY_parent){
-                System.out.print("Idę w lewy dół\n");
+                System.out.print("Obracam się o 45 stopni w lewo. ");
+                System.out.print("Idę w dół\n");
             }
             if(pointY == pointY_parent){
                 System.out.print("Idę w dół\n");
@@ -148,10 +150,12 @@ public class Astar {
         }
         else if(pointX<pointX_parent){
             if(pointY>pointY_parent){
-                System.out.print("Idę w prawą górę\n");
+                System.out.print("Obracam się o 45 stopni w prawo, do góry. ");
+                System.out.print("Idę do góry\n");
             }
             if(pointY<pointY_parent){
-                System.out.print("Idę w lewą górę\n");
+                System.out.print("Obracam się o 45 stopni w lewo, do góry. ");
+                System.out.print("Idę do góry\n");
             }
             if(pointY == pointY_parent){
                 System.out.print("Idę w górę\n");
