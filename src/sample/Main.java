@@ -355,19 +355,19 @@ public class Main extends Application {
 //            astar.test(16, 16, 0, 0, randY, randX, astarBlockedPoints);
 //
 //        }
-        for(int i = 0; i < 10; i++) {
-
-            int randOil = oilRandom.nextInt(pointsForOil.length);
-//            while(!contains(oilArray, randOil)) {
+//        for(int i = 0; i < 10; i++) {
 //
-//                randOil = oilRandom.nextInt(pointsForOil.length) - 1;
-//            }
-            oilArray[i] = randOil;
-            astarBlockedPoints[80 + i] = pointsForOil[randOil];
-
-        }
+//            int randOil = oilRandom.nextInt(pointsForOil.length);
+////            while(!contains(oilArray, randOil)) {
+////
+////                randOil = oilRandom.nextInt(pointsForOil.length) - 1;
+////            }
+//            oilArray[i] = randOil;
+//            astarBlockedPoints[80 + i] = pointsForOil[randOil];
+//
+//        }
        // scenario for oil
-  /*      oilArray[0] = 0;
+        oilArray[0] = 0;
         astarBlockedPoints[81] = pointsForOil[0];
         oilArray[1] = 15;
         astarBlockedPoints[82] = pointsForOil[15];
@@ -386,7 +386,7 @@ public class Main extends Application {
         astarBlockedPoints[89] = pointsForOil[21];
         oilArray[9] = 7;
         astarBlockedPoints[80] = pointsForOil[7];
-*/
+
 
 //        for(int i=0;i<10;i++) {
 //            System.out.print(oilArray[i] + "\n");
@@ -396,10 +396,10 @@ public class Main extends Application {
 
         int randCasePoint = randPoints.nextInt(80);
         //random
-        astar.test(16, 16, 0, 0, casesCoordinates[randCasePoint][0], casesCoordinates[randCasePoint][1], astarBlockedPoints);
+//        astar.test(16, 16, 0, 0, casesCoordinates[randCasePoint][0], casesCoordinates[randCasePoint][1], astarBlockedPoints);
 
         //scenario 1
-      //  astar.test(16,16,0,0,15,15,astarBlockedPoints);
+        astar.test(16,16,0,0,15,15,astarBlockedPoints);
 
         //scenrio 2
       //  astar.test(16,16,0,0,12,8,astarBlockedPoints);
