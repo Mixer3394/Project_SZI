@@ -399,13 +399,13 @@ public class Main extends Application {
 //        astar.test(16, 16, 0, 0, casesCoordinates[randCasePoint][0], casesCoordinates[randCasePoint][1], astarBlockedPoints);
 
         //scenario 1
-        astar.test(16,16,0,0,15,15,astarBlockedPoints);
+      //  astar.test(16,16,0,0,15,15,astarBlockedPoints);
 
         //scenrio 2
       //  astar.test(16,16,0,0,12,8,astarBlockedPoints);
 
         //scenario 3
-      //  astar.test(16,16,0,0,4,15,astarBlockedPoints);
+        astar.test(16,16,0,0,4,15,astarBlockedPoints);
 
         //scenario 4 not possible
       //  astar.test(16,16,0,0,3,2,astarBlockedPoints);

@@ -44,6 +44,12 @@ public class Astar {
         grid[i][j] = null;
     }
 
+    public static void setOilCost(int i, int j){
+        Cell current;
+        current = grid[i][j];
+        current.heuristicCost = 400;
+    }
+
     public static void setStartCell(int i, int j){
         startI = i;
         startJ = j;
@@ -201,8 +207,12 @@ public class Astar {
         grid[si][sj].finalCost = 0;
 
         // Set Blocked cells values to null
-        for (int i = 0; i < blocked.length; ++i) {
+        for (int i = 0; i < blocked.length-10; ++i) {
             setBlocked(blocked[i][0], blocked[i][1]);
+        }
+
+        for(int i=blocked.length-10; i < blocked.length; ++i) {
+            setOilCost(blocked[i][0], blocked[i][1]);
         }
 
         //Display initial map
