@@ -10,6 +10,7 @@ public class Astar {
     public static final int V_H_COST = 10;
     public static boolean foundPath = false;
 
+
     public static Map <Integer, AstarPoints> pathXY=new HashMap<Integer, AstarPoints>();
 
     static class Cell{
@@ -136,36 +137,36 @@ public class Astar {
     public static void operationCommond(int pointX, int pointY, int pointX_parent, int pointY_parent ) {
         if(pointX>pointX_parent){
             if(pointY>pointY_parent){
-                System.out.print("Obracam się o 45 stopni prawo. ");
-                System.out.print("Idę w dół\n");
+//                System.out.print("Obracam się o 45 stopni prawo. ");
+//                System.out.print("Idę w dół\n");
             }
             if(pointY<pointY_parent){
-                System.out.print("Obracam się o 45 stopni w lewo. ");
-                System.out.print("Idę w dół\n");
+//                System.out.print("Obracam się o 45 stopni w lewo. ");
+//                System.out.print("Idę w dół\n");
             }
             if(pointY == pointY_parent){
-                System.out.print("Idę w dół\n");
+//                System.out.print("Idę w dół\n");
             }
 
         }
         else if(pointX<pointX_parent){
             if(pointY>pointY_parent){
-                System.out.print("Obracam się o 45 stopni w prawo, do góry. ");
-                System.out.print("Idę do góry\n");
+//                System.out.print("Obracam się o 45 stopni w prawo, do góry. ");
+//                System.out.print("Idę do góry\n");
             }
             if(pointY<pointY_parent){
-                System.out.print("Obracam się o 45 stopni w lewo, do góry. ");
-                System.out.print("Idę do góry\n");
+//                System.out.print("Obracam się o 45 stopni w lewo, do góry. ");
+//                System.out.print("Idę do góry\n");
             }
             if(pointY == pointY_parent){
-                System.out.print("Idę w górę\n");
+//                System.out.print("Idę w górę\n");
             }
         }
         else if(pointY>pointY_parent){
-            System.out.print("Idę w prawo\n");
+//            System.out.print("Idę w prawo\n");
         }
         else if(pointY<pointY_parent){
-            System.out.print("Idę w lewo\n");
+//            System.out.print("Idę w lewo\n");
         }
     }
 
@@ -187,6 +188,7 @@ public class Astar {
         setStartCell(si, sj);
 
         //Set End Location
+//        setEndCell(5,5);
         setEndCell(ei, ej);
 
         for (int i = 0; i < x; ++i) {
@@ -206,7 +208,7 @@ public class Astar {
         }
 
         //Display initial map
-        System.out.println("Grid: ");
+//        System.out.println("Grid: ");
         for (int i = 0; i < x; ++i) {
             for (int j = 0; j < y; ++j) {
 

@@ -99,6 +99,8 @@ public class Main extends Application {
     static double actualPositionW = 110;
     static double conveyorPos = 0.0;
 
+    static LearningStrategy learningStrategy;
+
 
     // True if right, false if left
     static boolean leftOrRight = true;
@@ -219,44 +221,6 @@ public class Main extends Application {
 
         graphicsContext.drawImage(forklift, actualPositionW, actualPositionH);
 
-
-        // Arrow keys moving
-//        if (currentlyActiveKeys.contains("LEFT"))
-//        {
-//            actualPositionW = actualPositionW - 1.5;
-//            graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
-//            leftOrRight = false;
-//        }
-//        else if (currentlyActiveKeys.contains("RIGHT"))
-//        {
-//            actualPositionW = actualPositionW + 1.5;
-//            graphicsContext.drawImage(caseOne, actualPositionW , actualPositionH);
-//            leftOrRight = true;
-//        }
-//        else if (currentlyActiveKeys.contains("DOWN")) {
-//            actualPositionH = actualPositionH + 1.5;
-//            if (leftOrRight == true) {
-//                graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
-//            } else {
-//                graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
-//            }
-//        }
-//        else if (currentlyActiveKeys.contains("UP")) {
-//            actualPositionH = actualPositionH - 1.5;
-//            if (leftOrRight == true) {
-//                graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
-//            } else {
-//                graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
-//            }
-//       }
-//       else {
-//            if (leftOrRight == true) {
-//                graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
-//            } else {
-//                graphicsContext.drawImage(caseOne, actualPositionW, actualPositionH);
-//            }
-//        }
-
     }
 
     // Get points that algorithm returns [x,y] and change them to map points for example [ 15,15 ] -> 255
@@ -327,7 +291,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage mainStage) throws Exception {
-
+        learningStrategy = new CandidateEleminationLearningStrategy();
 
 //        for(int i = 0; i < 5; i++) {
 //            int oilRandomPoint = oilRandom.nextInt(algorithmAvailablePoints.size());
@@ -399,13 +363,13 @@ public class Main extends Application {
 //        astar.test(16, 16, 0, 0, casesCoordinates[randCasePoint][0], casesCoordinates[randCasePoint][1], astarBlockedPoints);
 
         //scenario 1
-        astar.test(16,16,0,0,15,15,astarBlockedPoints);
+//        astar.test(16,16,0,0,15,15,astarBlockedPoints);
 
         //scenrio 2
-      //  astar.test(16,16,0,0,12,8,astarBlockedPoints);
+//        astar.test(16,16,0,0,12,8,astarBlockedPoints);
 
         //scenario 3
-      //  astar.test(16,16,0,0,4,15,astarBlockedPoints);
+//        astar.test(16,16,0,0,4,15,astarBlockedPoints);
 
         //scenario 4 not possible
       //  astar.test(16,16,0,0,3,2,astarBlockedPoints);
@@ -424,10 +388,6 @@ public class Main extends Application {
             }
         }
 
-
-
-
-
         prepareMultiplePoints();
 
         getOilSlickNumber();
@@ -436,17 +396,16 @@ public class Main extends Application {
         Map<String, List<String>> knowledgeBase = Main.knowledgeBase.getKnowledgeBase();
         //System.out.println(knowledgeBase.toString());
 
-
         // Declare random case spawn-points
 
-        for (int n = 0; n < 73; n += 8) casePoints[n][0] = 156.0;
-        for (int n = 1; n < 74; n += 8) casePoints[n][0] = 210.0;
-        for (int n = 2; n < 75; n += 8) casePoints[n][0] = 313.5;
-        for (int n = 3; n < 76; n += 8) casePoints[n][0] = 367.5;
-        for (int n = 4; n < 77; n += 8) casePoints[n][0] = 472.0;
-        for (int n = 5; n < 78; n += 8) casePoints[n][0] = 525.5;
-        for (int n = 6; n < 79; n += 8) casePoints[n][0] = 629.0;
-        for (int n = 7; n < 80; n += 8) casePoints[n][0] = 682.0;
+//        for (int n = 0; n < 73; n += 8) casePoints[n][0] = 156.0;
+//        for (int n = 1; n < 74; n += 8) casePoints[n][0] = 210.0;
+//        for (int n = 2; n < 75; n += 8) casePoints[n][0] = 313.5;
+//        for (int n = 3; n < 76; n += 8) casePoints[n][0] = 367.5;
+//        for (int n = 4; n < 77; n += 8) casePoints[n][0] = 472.0;
+//        for (int n = 5; n < 78; n += 8) casePoints[n][0] = 525.5;
+//        for (int n = 6; n < 79; n += 8) casePoints[n][0] = 629.0;
+//        for (int n = 7; n < 80; n += 8) casePoints[n][0] = 682.0;
         // Y
 
         IntStream.range(0, 80).forEach(
@@ -489,14 +448,19 @@ public class Main extends Application {
             page.getChildren().add(canvas);
 
             prepareActionHandlers();
+
             graphicsContext = canvas.getGraphicsContext2D();
             loadGraphics();
 
             getFieldNumber();
+//            astar.test(16,16,0,0,15,15,astarBlockedPoints);
+
             /**
              * Main "game" loop
              */
+
             setCase();
+
             new AnimationTimer() {
                 public void handle(long currentNanoTime) {
 
@@ -589,47 +553,33 @@ public class Main extends Application {
         knowledgeBase.addData("wood", "wooden");
         knowledgeBase.addData("wood", "heavy");
         knowledgeBase.addData("wood", "solid");
-        knowledgeBase.addData("paper", "brown");
         knowledgeBase.addData("paper", "white");
         knowledgeBase.addData("paper", "paper");
-        knowledgeBase.addData("paper", "middleweight");
         knowledgeBase.addData("paper", "light");
         knowledgeBase.addData("paper", "solid");
         knowledgeBase.addData("explosives", "red");
         knowledgeBase.addData("explosives", "labelled");
-        knowledgeBase.addData("explosives", "dangerous");
         knowledgeBase.addData("explosives", "middleweight");
         knowledgeBase.addData("explosives", "solid");
         knowledgeBase.addData("chemicals", "black");
-        knowledgeBase.addData("chemicals", "yellow");
         knowledgeBase.addData("chemicals", "labelled");
-        knowledgeBase.addData("chemicals", "dangerous");
         knowledgeBase.addData("chemicals", "middleweight");
         knowledgeBase.addData("chemicals", "liquid");
         knowledgeBase.addData("water", "blue");
-        knowledgeBase.addData("water", "water");
+        knowledgeBase.addData("water", "metal");
         knowledgeBase.addData("water", "heavy");
         knowledgeBase.addData("water", "liquid");
         knowledgeBase.addData("oil", "yellow");
-        knowledgeBase.addData("oil", "oil");
+        knowledgeBase.addData("oil", "metal");
         knowledgeBase.addData("oil", "middleweight");
         knowledgeBase.addData("oil", "liquid");
         knowledgeBase.addData("glass", "blue");
         knowledgeBase.addData("glass", "transparent");
-        knowledgeBase.addData("glass", "caution");
         knowledgeBase.addData("glass", "light");
-        knowledgeBase.addData("glass", "delicate");
         knowledgeBase.addData("glass", "solid");
-        knowledgeBase.addData("electronics", "gold");
-        knowledgeBase.addData("electronics", "silver");
-        knowledgeBase.addData("electronics", "light");
-        knowledgeBase.addData("electronics", "middleweight");
-        knowledgeBase.addData("electronics", "delicate");
-        knowledgeBase.addData("electronics", "solid");
     }
 
     private void setCase() {
-
         mainScene.addEventHandler(MouseEvent.MOUSE_RELEASED,
                 mouseEvent -> mouseClicked());
 
@@ -637,6 +587,11 @@ public class Main extends Application {
 
     private void mouseClicked() {
         mainPool.execute(() -> {
+//            getRandomCase();
+            int[] destinationXY = findPlace();
+            astar.test(16,16,0,0,destinationXY[0],destinationXY[1],astarBlockedPoints);
+            getFieldNumber();
+
             while (iterator < astar.pathXY.size() - 1) {
                 handleGoingForPackage();
             }
@@ -651,6 +606,25 @@ public class Main extends Application {
                 returnMode = false;
             }
         });
+    }
+
+    private void getRandomCase() {
+        int random = new Random().nextInt(7);
+//        if (random == 0)
+//
+    }
+
+
+    private int[] findPlace() {
+//        int[] result = new int[2];
+//        result[0] = 15;
+//        result[1] = 15;
+//        return result;
+//        String caseName = "glass";
+        String caseName = "explosives";
+//        String caseName = "oil";
+//        String caseName = "wood";
+        return learningStrategy.findDestinationPlace(knowledgeBase, caseName);
     }
 
     private void handleGoingForPackage() {
