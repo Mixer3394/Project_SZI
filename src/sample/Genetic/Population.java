@@ -22,16 +22,20 @@ public class Population {
                 newIndividual.generateIndividual("110101101011010");
                 saveIndividual(0, newIndividual);
 
+                newIndividual = new Individual();
                 newIndividual.generateIndividual("101010010100101");
                 saveIndividual(1, newIndividual);
 
+                newIndividual = new Individual();
                 newIndividual.generateIndividual("110010101100100");
                 saveIndividual(2, newIndividual);
 
+                newIndividual = new Individual();
                 newIndividual.generateIndividual("100001100010011");
                 saveIndividual(3, newIndividual);
 
-                newIndividual.generateIndividual("001010101100100");
+                newIndividual = new Individual();
+                newIndividual.generateIndividual("010100101100101");
                 saveIndividual(4, newIndividual);
            // }
         }

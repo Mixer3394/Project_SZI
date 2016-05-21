@@ -13,8 +13,9 @@ public class Individual {
     // Create a random individual
     public void generateIndividual(String learningGenes) {
         for (int i = 0; i < learningGenes.length(); i++) {
-            //            byte gene = (byte) Math.round(Math.random());
+                    //   byte gene = (byte) Math.round(Math.random());
             byte gene = Byte.parseByte(learningGenes.substring(i,i+1));
+
             genes[i] = gene;
         }
     }

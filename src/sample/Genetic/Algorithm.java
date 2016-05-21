@@ -58,7 +58,6 @@ public class Algorithm {
                 newSol.setGene(i, indiv2.getGene(i));
             }
         }
-       // System.out.print("Crossover genes: "+ newSol);
         return newSol;
     }
 
@@ -70,6 +69,8 @@ public class Algorithm {
                 // Create random gene
                 byte gene = (byte) Math.round(Math.random());
                 indiv.setGene(i, gene);
+                System.out.print("");
+                System.out.print(" Mutation!");
             }
         }
     }
