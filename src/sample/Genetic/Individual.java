@@ -7,24 +7,22 @@ public class Individual {
 
     static int defaultGeneLength = 15;
     private byte[] genes = new byte[defaultGeneLength];
-    // Cache
+
     private int fitness = 0;
 
-    // Create a random individual
-    public void generateIndividual(String learningGenes) {
-        for (int i = 0; i < learningGenes.length(); i++) {
-                    //   byte gene = (byte) Math.round(Math.random());
-            byte gene = Byte.parseByte(learningGenes.substring(i,i+1));
+    // Stwórz losowego lub zadanego osobnika
+    public void generateIndividual() {
+        for (int i = 0; i < defaultGeneLength; i++) {
+                       byte gene = (byte) Math.round(Math.random());
+           // byte gene = Byte.parseByte(learningGenes.substring(i,i+1));
 
             genes[i] = gene;
         }
     }
 
-    /* Getters and setters */
-    // Use this if you want to create individuals with different gene lengths
-    public static void setDefaultGeneLength(int length) {
-        defaultGeneLength = length;
-    }
+  //  public static void setDefaultGeneLength(int length) {
+   //     defaultGeneLength = length;
+   // }
 
     public byte getGene(int index) {
         return genes[index];
@@ -35,7 +33,6 @@ public class Individual {
         fitness = 0;
     }
 
-    /* Public methods */
     public int size() {
         return genes.length;
     }

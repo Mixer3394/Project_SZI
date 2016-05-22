@@ -7,19 +7,18 @@ public class Population {
 
     Individual[] individuals;
 
-    /*
-     * Constructors
-     */
-    // Create a population
-    public Population(int populationSize, boolean initialise) {
+     public Population(int populationSize, boolean initialise) {
         individuals = new Individual[populationSize];
-        // Initialise population
+        // Stwórz populację
         if (initialise) {
-            // Loop and create individuals
-        //    for (int i = 0; i < size(); i++) {
+            // Stwórz nowe osobniki
+            for (int i = 0; i < size(); i++) {
                 Individual newIndividual = new Individual();
 
-                newIndividual.generateIndividual("110101101011010");
+                newIndividual.generateIndividual();
+                saveIndividual(i, newIndividual);
+
+          /*      newIndividual.generateIndividual("110101101011010");
                 saveIndividual(0, newIndividual);
 
                 newIndividual = new Individual();
@@ -35,20 +34,20 @@ public class Population {
                 saveIndividual(3, newIndividual);
 
                 newIndividual = new Individual();
-                newIndividual.generateIndividual("010100101100101");
-                saveIndividual(4, newIndividual);
-           // }
+                newIndividual.generateIndividual("001010101100100");
+                saveIndividual(4, newIndividual);*/
+
+            }
         }
     }
 
-    /* Getters */
     public Individual getIndividual(int index) {
         return individuals[index];
     }
 
     public Individual getFittest() {
         Individual fittest = individuals[0];
-        // Loop through individuals to find fittest
+        // Znajdź najlepiej dopasowane osobniki
         for (int i = 0; i < size(); i++) {
             if (fittest.getFitness() <= getIndividual(i).getFitness()) {
                 fittest = getIndividual(i);
@@ -57,13 +56,10 @@ public class Population {
         return fittest;
     }
 
-    /* Public methods */
-    // Get population size
     public int size() {
         return individuals.length;
     }
 
-    // Save individual
     public void saveIndividual(int index, Individual indiv) {
         individuals[index] = indiv;
     }

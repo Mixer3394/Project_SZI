@@ -8,8 +8,7 @@ public class FitnessCalc {
 
     static byte[] solution = new byte[15];
 
-    /* Public methods */
-    // Set a candidate solution as a byte array
+    // Ustaw rozwiązanie
     public static void setSolution(byte[] newSolution) {
         solution = newSolution;
     }
@@ -18,8 +17,7 @@ public class FitnessCalc {
         return solution;
     }
 
-    // To make it easier we can use this method to set our candidate solution
-    // with string of 0s and 1s
+    // Ustaw rozwiązanie ze stringa zer i jedynek.
     static void setSolution(String newSolution) {
         solution = new byte[newSolution.length()];
         // Loop through each character of our string and save it in our byte
@@ -34,10 +32,10 @@ public class FitnessCalc {
         }
     }
 
-    // Calculate inidividuals fittness by comparing it to our candidate solution
+    // Dla danego osobnika sprawdź jego przystosowanie w stosunku do rozwiązania
     static int getFitness(Individual individual) {
         int fitness = 0;
-        // Loop through our individuals genes and compare them to our cadidates
+
         for (int i = 0; i < individual.size() && i < solution.length; i++) {
             if (individual.getGene(i) == solution[i]) {
                 fitness++;
@@ -46,7 +44,7 @@ public class FitnessCalc {
         return fitness;
     }
 
-    // Get optimum fitness
+    // Zwróć max dopasowanie
     static int getMaxFitness() {
         int maxFitness = solution.length;
         return maxFitness;

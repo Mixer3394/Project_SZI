@@ -12,9 +12,12 @@ public class Start {
     public static String YELLOW_AREA ="100000110010001";
     public static String RED_AREA ="010100100001110";
     public static int finalEstimation = 0;
+
     public Start() {
+
         startAlgorithm(BLACK_AREA);
     }
+
     public static void main(String[] args) {
 
       //  startAlgorithm(BLACK_AREA);
@@ -23,23 +26,26 @@ public class Start {
 
     }
     public static void startAlgorithm(String area) {
-        // Set solution
+        // Ustaw oczekiwane rozwiązanie (genotyp odpowiedniej strefy)
         FitnessCalc.setSolution(area);
 
-        // Create an initial population
-        Population myPop = new Population(5, true);
+        // Stwórz losowo lub z wcześniej zdefiniowanych osobników nową populację
+        Population myPop = new Population(20, true);
 
-        // Evolve our population until we reach an optimum solution
+        // Liczba generacji
         int generationCount = 0;
      //   while (myPop.getFittest().getFitness() < FitnessCalc.getMaxFitness()) {
-      //    for(int i=0; i<50; i++) {
+         // for(int i=0; i<500; i++) {
+
         while(calculateEstimation(myPop.getFittest(), area) < calculateSolutionEstimation(area)) {
             generationCount++;
             System.out.println("");
-            for(int i=0; i< 5; i++) {
-                System.out.println("Current genes package" + getCaseGenes(myPop.getIndividual(i)));
+            for(int j=0; j< 5; j++) {
+                System.out.println("Current genes package" + getCaseGenes(myPop.getIndividual(j)));
             }
             System.out.println("Generation: " + generationCount + "      Fittest: " + myPop.getFittest().getFitness() + "       Case genes: " + getCaseGenes(myPop.getFittest()) + "      Estimation: " + calculateEstimation(myPop.getFittest(), area));
+
+            //następna generacja
             myPop = Algorithm.evolvePopulation(myPop);
         }
         System.out.println("");
