@@ -12,13 +12,21 @@ public class Individual {
 
     // Stwórz losowego lub zadanego osobnika
     public void generateIndividual() {
-        for (int i = 0; i < defaultGeneLength; i++) {
-                       byte gene = (byte) Math.round(Math.random());
-           // byte gene = Byte.parseByte(learningGenes.substring(i,i+1));
+        for (int i = 0; i < size(); i++) {
+            byte gene = (byte) Math.round(Math.random());
+            genes[i] = gene;
+        }
+    }
+
+    public void generateIndividual(String learningGenes) {
+        for (int i = 0; i < size(); i++) {
+            byte gene = Byte.parseByte(learningGenes.substring(i,i+1));
 
             genes[i] = gene;
         }
     }
+
+
 
   //  public static void setDefaultGeneLength(int length) {
    //     defaultGeneLength = length;

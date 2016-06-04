@@ -1,5 +1,7 @@
 package sample.Genetic;
 
+import com.sun.org.apache.bcel.internal.generic.POP;
+
 /**
  * Created by mariusz on 20/05/16.
  */
@@ -9,7 +11,7 @@ public class Start {
     public static String BLUE_AREA = "001000010001011";
     public static String GREEN_AREA ="100010100000011";
     public static String BROWN_AREA ="001010101100100";
-    public static String YELLOW_AREA ="100000110010001";
+    public static String YELLOW_AREA ="100000100010001";
     public static String RED_AREA ="010100100001110";
     public static int finalEstimation = 0;
 
@@ -30,31 +32,76 @@ public class Start {
         FitnessCalc.setSolution(area);
 
         // Stwórz losowo lub z wcześniej zdefiniowanych osobników nową populację
-        Population myPop = new Population(20, true);
+        Population myPopBlack = new Population(50, true);
+        getResults(myPopBlack,area);
+        myPopBlack.deleteBestIndividual();
 
-        // Liczba generacji
-        int generationCount = 0;
-     //   while (myPop.getFittest().getFitness() < FitnessCalc.getMaxFitness()) {
-         // for(int i=0; i<500; i++) {
+        FitnessCalc.setSolution(BLUE_AREA);
+        Population myPopBlue = new Population(50, false);
+        rewritePopulation(myPopBlack,myPopBlue);
+        getResults(myPopBlue,BLUE_AREA);
+        myPopBlue.deleteBestIndividual();
 
-        while(calculateEstimation(myPop.getFittest(), area) < calculateSolutionEstimation(area)) {
-            generationCount++;
-            System.out.println("");
-            for(int j=0; j< 5; j++) {
-                System.out.println("Current genes package" + getCaseGenes(myPop.getIndividual(j)));
-            }
-            System.out.println("Generation: " + generationCount + "      Fittest: " + myPop.getFittest().getFitness() + "       Case genes: " + getCaseGenes(myPop.getFittest()) + "      Estimation: " + calculateEstimation(myPop.getFittest(), area));
+        FitnessCalc.setSolution(GREEN_AREA);
+        Population myPopGreen = new Population(50, false);
+        rewritePopulation(myPopBlue,myPopGreen);
+        getResults(myPopGreen,GREEN_AREA);
+        myPopGreen.deleteBestIndividual();
 
-            //następna generacja
-            myPop = Algorithm.evolvePopulation(myPop);
+        FitnessCalc.setSolution(BROWN_AREA);
+        Population myPopBrown = new Population(50, false);
+        rewritePopulation(myPopGreen,myPopBrown);
+        getResults(myPopBrown,BROWN_AREA);
+        myPopBrown.deleteBestIndividual();
+
+        FitnessCalc.setSolution(YELLOW_AREA);
+        Population myPopYellow = new Population(50, false);
+        rewritePopulation(myPopBrown,myPopYellow);
+        getResults(myPopYellow,YELLOW_AREA);
+        myPopYellow.deleteBestIndividual();
+
+        FitnessCalc.setSolution(RED_AREA);
+        Population myPopRed = new Population(50, false);
+        rewritePopulation(myPopYellow,myPopRed);
+        getResults(myPopRed,RED_AREA);
+        myPopRed.deleteBestIndividual();
+
+    }
+
+    public static void rewritePopulation(Population myPopOld, Population myPopNew) {
+        for (int x = 0; x < myPopOld.size(); x++) {
+            myPopNew.saveIndividual(x, myPopOld.getIndividual(x));
         }
-        System.out.println("");
-        System.out.println("Solution:");
-        System.out.println("Generation: " + generationCount);
-        System.out.println("Best current case genes:");
-        System.out.println(getCaseGenes(myPop.getFittest()));
-        System.out.println( "Final Estimation: " + calculateEstimation(myPop.getFittest(), area));
-        System.out.println("Max estimation: " + calculateSolutionEstimation(area));
+    }
+        // Liczba generacji
+
+        public static void getResults(Population myPop, String area) {
+            int generationCount = 0;
+            //   while (myPop.getFittest().getFitness() < FitnessCalc.getMaxFitness()) {
+             //for(int j=0; i<5; i++) {
+
+            while ((calculateEstimation(myPop.getFittest(), area) < calculateSolutionEstimation(area)) && generationCount<200) {
+                generationCount++;
+                System.out.println("");
+                for (int j = 0; j < 5; j++) {
+                    System.out.println("Current genes package" + getCaseGenes(myPop.getIndividual(j)));
+                }
+                System.out.println("Generation: " + generationCount + "      Fittest: " + myPop.getFittest().getFitness() + "       Case genes: " + getCaseGenes(myPop.getFittest()) + "      Estimation: " + calculateEstimation(myPop.getFittest(), area));
+
+                //następna generacja
+                myPop = Algorithm.evolvePopulation(myPop);
+            }
+
+
+            System.out.println("");
+            System.out.println("Solution:");
+            System.out.println("Generation: " + generationCount);
+            System.out.println("Best current case genes:");
+            System.out.println(getCaseGenes(myPop.getFittest()));
+            System.out.println("Final Estimation: " + calculateEstimation(myPop.getFittest(), area));
+            System.out.println("Max estimation: " + calculateSolutionEstimation(area));
+
+
 
     }
 
