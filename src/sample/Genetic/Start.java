@@ -29,6 +29,8 @@ public class Start {
     }
     public static void startAlgorithm(String area) {
         // Ustaw oczekiwane rozwiązanie (genotyp odpowiedniej strefy)
+
+   //  for(int i=0; i<20; i++) {
         FitnessCalc.setSolution(area);
 
         // Stwórz losowo lub z wcześniej zdefiniowanych osobników nową populację
@@ -39,38 +41,50 @@ public class Start {
         FitnessCalc.setSolution(BLUE_AREA);
         Population myPopBlue = new Population(50, false);
         rewritePopulation(myPopBlack,myPopBlue);
+        rewriteMutants(myPopBlack,myPopBlue);
         getResults(myPopBlue,BLUE_AREA);
         myPopBlue.deleteBestIndividual();
 
         FitnessCalc.setSolution(GREEN_AREA);
         Population myPopGreen = new Population(50, false);
         rewritePopulation(myPopBlue,myPopGreen);
+        rewriteMutants(myPopBlue,myPopGreen);
         getResults(myPopGreen,GREEN_AREA);
         myPopGreen.deleteBestIndividual();
 
         FitnessCalc.setSolution(BROWN_AREA);
         Population myPopBrown = new Population(50, false);
         rewritePopulation(myPopGreen,myPopBrown);
+        rewriteMutants(myPopGreen,myPopBrown);
         getResults(myPopBrown,BROWN_AREA);
         myPopBrown.deleteBestIndividual();
 
         FitnessCalc.setSolution(YELLOW_AREA);
         Population myPopYellow = new Population(50, false);
         rewritePopulation(myPopBrown,myPopYellow);
+        rewriteMutants(myPopBrown,myPopYellow);
         getResults(myPopYellow,YELLOW_AREA);
         myPopYellow.deleteBestIndividual();
 
         FitnessCalc.setSolution(RED_AREA);
         Population myPopRed = new Population(50, false);
         rewritePopulation(myPopYellow,myPopRed);
+        rewriteMutants(myPopYellow,myPopRed);
         getResults(myPopRed,RED_AREA);
         myPopRed.deleteBestIndividual();
 
     }
+//}
 
     public static void rewritePopulation(Population myPopOld, Population myPopNew) {
         for (int x = 0; x < myPopOld.size(); x++) {
             myPopNew.saveIndividual(x, myPopOld.getIndividual(x));
+        }
+    }
+
+    public static void rewriteMutants(Population myPopOld, Population myPopNew) {
+        for (int x = 0; x < 20; x++) {
+            myPopNew.saveMutant(x, myPopOld.getMutant(x));
         }
     }
         // Liczba generacji

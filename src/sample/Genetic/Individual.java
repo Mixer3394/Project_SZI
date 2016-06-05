@@ -7,7 +7,7 @@ public class Individual {
 
     static int defaultGeneLength = 15;
     private byte[] genes = new byte[defaultGeneLength];
-
+  //  private byte[] mutantGenes = new byte[defaultGeneLength];
     private int fitness = 0;
 
     // Stwórz losowego lub zadanego osobnika
@@ -40,6 +40,7 @@ public class Individual {
         genes[index] = value;
         fitness = 0;
     }
+
 
     public int size() {
         return genes.length;

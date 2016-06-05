@@ -7,7 +7,7 @@ public class Algorithm {
 
     // parametry algorytmu
     private static final double uniformRate = 0.5;
-    private static final double mutationRate = 0.01;
+    private static final double mutationRate = 0.015;
     private static final int tournamentSize = 5;
     private static final boolean elitism = true;
 
@@ -32,20 +32,20 @@ public class Algorithm {
             Individual indiv1 = tournamentSelection(pop);
             Individual indiv2 = tournamentSelection(pop);
             Individual newIndiv = crossover(indiv1, indiv2);
+          //  Individual temp =
             newPopulation.saveIndividual(i, newIndiv);
         }
         for (int i = 0; i < 20; i++) {
-            Individual mut1 = tournamentSelection(pop);
-            Individual mut2 = tournamentSelection(pop);
-            Individual newMut = crossover(mut1, mut2);
-            newPopulation.saveMutant(i, newMut);
+            newPopulation.saveMutant(i, pop.getMutant(i));
         }
 
         // Zmutuj populację
         for (int i = 0; i < newPopulation.size(); i++) {
             if (Math.random() <= mutationRate) {
                 int randomId = (int) (Math.random() * 20);
-                mutate(newPopulation.getIndividual(i), newPopulation.getMutant(randomId));
+                Individual temp = newPopulation.getIndividual(i);
+                newPopulation.saveIndividual(i,pop.getMutant(randomId));
+                pop.saveMutant(randomId, temp);
                 System.out.print("");
                 System.out.print(" Mutation!");
             }
@@ -58,31 +58,20 @@ public class Algorithm {
     // Jeżeli wylosowana liczba jest mniejsza od 0.5 weź gen pierwszego osobnika w przeciwnym razie weź gen drugiego
     private static Individual crossover(Individual indiv1, Individual indiv2) {
         Individual newSol = new Individual();
+      //  byte temp = 0;
         // Loop through genes
         for (int i = 0; i < indiv1.size(); i++) {
             if (Math.random() <= uniformRate) {
+             //   temp = newSol.getGene(i);
                 newSol.setGene(i, indiv1.getGene(i));
+              //  indiv1.setGene(i, temp);
             } else {
+             //   temp = newSol.getGene(i);
                 newSol.setGene(i, indiv2.getGene(i));
+              //  indiv2.setGene(i, temp);
             }
         }
         return newSol;
-    }
-
-    // Zmutuj osobnika
-    private static void mutate(Individual indiv, Individual randomIndiv) {
-        // Przejdź po wszystkich genach osobnika
-        for (int i = 0; i < indiv.size(); i++) {
-          //  if (Math.random() <= mutationRate) {
-                // Jeżeli wylosowana liczba jest mniejsza od mutation rate losuj gen 0 lub 1
-            int firstGen = (int) (Math.random() * 15);
-            int secondGen = (int) (Math.random() * 15);
-                byte tempGen = indiv.getGene(firstGen);
-                indiv.setGene(firstGen, randomIndiv.getGene(secondGen));
-                randomIndiv.setGene(secondGen,tempGen);
-
-          //  }
-        }
     }
 
     // losowanie 100 paczek rozlowosanie do 8 skrzyń, mutacje za pozostałych paczek
@@ -91,7 +80,7 @@ public class Algorithm {
         // Stwórz populację do konkursu
         Population tournament = new Population(tournamentSize, false);
         // Dla każdego z miejsc w konkursie weź losowego osobnika
-        for (int i = 0; i < tournamentSize; i++) {
+        for (int i =0; i < tournamentSize; i++) {
             int randomId = (int) (Math.random() * pop.size());
             tournament.saveIndividual(i, pop.getIndividual(randomId));
         }
