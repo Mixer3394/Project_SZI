@@ -499,7 +499,7 @@ public class CandidateEleminationLearningStrategy implements LearningStrategy {
         //destinationPlace[0] is x and destinationPlace[1] is y
 
         List<String> properties = knowledgeBase.getKnowledgeBase().get(caseName);
-        System.out.println("Current case properties: " + properties);
+     //   System.out.println("Current case properties: " + properties);
 
         if (hypothesisDoesCover(properties, blackArea)) System.out.println("Black");
         if (hypothesisDoesCover(properties, blueArea)) System.out.println("Blue");

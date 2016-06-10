@@ -23,6 +23,8 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.IntStream;
 
+import static jdk.nashorn.internal.objects.Global.print;
+
 
 public class Main extends Application {
     static ExecutorService mainPool = Executors.newFixedThreadPool(1);
@@ -101,7 +103,6 @@ public class Main extends Application {
     static double conveyorPos = 0.0;
 
     static LearningStrategy learningStrategy;
-
 
     // True if right, false if left
     static boolean leftOrRight = true;
@@ -294,6 +295,9 @@ public class Main extends Application {
     public void start(Stage mainStage) throws Exception {
         learningStrategy = new CandidateEleminationLearningStrategy();
         Start geneticAlgotithm = new Start();
+
+
+
 //        for(int i = 0; i < 5; i++) {
 //            int oilRandomPoint = oilRandom.nextInt(algorithmAvailablePoints.size());
 //        }
@@ -331,7 +335,7 @@ public class Main extends Application {
 //            astarBlockedPoints[80 + i] = pointsForOil[randOil];
 //
 //        }
-       // scenario for oil
+        // scenario for oil
         oilArray[0] = 0;
         astarBlockedPoints[81] = pointsForOil[0];
         oilArray[1] = 15;
@@ -364,7 +368,7 @@ public class Main extends Application {
 //        astar.test(16, 16, 0, 0, casesCoordinates[randCasePoint][0], casesCoordinates[randCasePoint][1], astarBlockedPoints);
 
         //scenario 1
-      //  astar.test(16,16,0,0,15,15,astarBlockedPoints);
+        //  astar.test(16,16,0,0,15,15,astarBlockedPoints);
 
         //scenrio 2
 //        astar.test(16,16,0,0,12,8,astarBlockedPoints);
@@ -373,7 +377,7 @@ public class Main extends Application {
 //        astar.test(16,16,0,0,4,15,astarBlockedPoints);
 
         //scenario 4 not possible
-      //  astar.test(16,16,0,0,3,2,astarBlockedPoints);
+        //  astar.test(16,16,0,0,3,2,astarBlockedPoints);
 
 
         prepareKnowledgeBase();
@@ -457,7 +461,7 @@ public class Main extends Application {
 //            astar.test(16,16,0,0,15,15,astarBlockedPoints);
 
             /**
-             * Main "game" loop
+             * Main.java "game" loop
              */
 
             setCase();
@@ -587,8 +591,8 @@ public class Main extends Application {
     }
 
     private void mouseClicked() {
+        System.out.print(Start.casesBase.getCasesBase());
         mainPool.execute(() -> {
-//            getRandomCase();
             int[] destinationXY = findPlace();
             astar.test(16,16,0,0,destinationXY[0],destinationXY[1],astarBlockedPoints);
             getFieldNumber();
@@ -604,6 +608,8 @@ public class Main extends Application {
             }
             if (iterator == 0) {
                 System.out.print("END\n");
+                Start.getResults();
+
                 returnMode = false;
             }
         });
@@ -629,8 +635,8 @@ public class Main extends Application {
     }
 
     private void handleGoingForPackage() {
-            iterator++;
-            move();
+        iterator++;
+        move();
     }
 
     private void move() {
