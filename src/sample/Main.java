@@ -387,23 +387,6 @@ public class Main extends Application {
         oilArray[9] = 7;
         astarBlockedPoints[80] = pointsForOil[7];
 
-
-        //random
-//        astar.test(16, 16, 0, 0, casesCoordinates[randCasePoint][0], casesCoordinates[randCasePoint][1], astarBlockedPoints);
-
-        //scenario 1
-        //  astar.test(16,16,0,0,15,15,astarBlockedPoints);
-
-        //scenrio 2
-//        astar.test(16,16,0,0,12,8,astarBlockedPoints);
-
-        //scenario 3
-//        astar.test(16,16,0,0,4,15,astarBlockedPoints);
-
-        //scenario 4 not possible
-        //  astar.test(16,16,0,0,3,2,astarBlockedPoints);
-
-
         prepareKnowledgeBase();
         prepareAreasData();
 
@@ -468,8 +451,6 @@ public class Main extends Application {
             loadGraphics();
 
             getFieldNumber();
-//            astar.test(16,16,0,0,15,15,astarBlockedPoints);
-
             /**
              * Main.java "game" loop
              */
@@ -650,15 +631,6 @@ public class Main extends Application {
     }
 
     private int[] findPlace() {
-//        int[] result = new int[2];
-//        result[0] = 15;
-//        result[1] = 15;
-//        return result;
-//        String caseName = "glass";
-//        String caseName = "water";
-//        String caseName = "explosives";
-//        String caseName = "oil";
-//        String caseName = "wood";
         String caseName = getRandomCase();
         return learningStrategy.findDestinationPlace(knowledgeBase, caseName, areasData);
     }
