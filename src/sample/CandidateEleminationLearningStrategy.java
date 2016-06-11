@@ -496,12 +496,7 @@ public class CandidateEleminationLearningStrategy implements LearningStrategy {
     }
 
     @Override
-    public int[] findDestinationPlace(KnowledgeBase knowledgeBase, String caseName, Map<String, List<int[]>> areasData) {
-        //destinationPlace[0] is x and destinationPlace[1] is y
-
-        List<String> properties = knowledgeBase.getKnowledgeBase().get(caseName);
-     //   System.out.println("Current case properties: " + properties);
-
+    public int[] findDestinationPlace(List<String> properties, Map<String, List<int[]>> areasData) {
         int[] destinationPlace = new int[2];
 
 
@@ -531,6 +526,14 @@ public class CandidateEleminationLearningStrategy implements LearningStrategy {
         }
 
         return destinationPlace;
+    }
+
+    @Override
+    public int[] findDestinationPlace(KnowledgeBase knowledgeBase, String caseName, Map<String, List<int[]>> areasData) {
+        //destinationPlace[0] is x and destinationPlace[1] is y
+
+        List<String> properties = knowledgeBase.getKnowledgeBase().get(caseName);
+        return findDestinationPlace(properties, areasData);
     }
 
     private int[] findNextPlaceInArea(String area, Map<String, List<int[]>> areasData) {
