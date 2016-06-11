@@ -253,9 +253,6 @@ public class Main extends Application {
             graphicsContext.drawImage(oilSlick, oilsCoordinates[i][0] + 5, oilsCoordinates[i][1] + 25);
         }
 
-        // delete case from bookstand
-        casesToSpawn[numberOfCase] = null;
-
         // if the forklift approaches the tape, we remove the pack
         if (actualPositionW <= 60) {
             caseNotToSpawn = false;
@@ -264,6 +261,9 @@ public class Main extends Application {
 
 
         graphicsContext.drawImage(forklift, actualPositionW, actualPositionH);
+        if (currentCase != null) {
+            graphicsContext.drawImage(currentCase, actualPositionW, actualPositionH);
+        }
 
     }
 
@@ -567,6 +567,8 @@ public class Main extends Application {
             }
             returnMode = true;
             unlockPack = true;
+
+            currentCase = null;
 
             while (iterator > 0 && returnMode) {
                 handleReturning();
