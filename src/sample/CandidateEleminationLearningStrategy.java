@@ -101,7 +101,7 @@ public class CandidateEleminationLearningStrategy implements LearningStrategy {
         properties = new ArrayList<>();
         properties.add("yellow");
         properties.add("transparent");
-        properties.add("light");
+        properties.add("heavy");
         properties.add("solid");
         propertyDecision.put(properties, true);
         properties = new ArrayList<>();
@@ -284,7 +284,7 @@ public class CandidateEleminationLearningStrategy implements LearningStrategy {
     }
 
     private Map<List<String>, Boolean> prepareBlackAreaLearningSet() {
-        //Should be heavy, solid and metal - color doesn't matter
+        //Should be solid and metal - color and weight don't matter
         Map<List<String>, Boolean> propertyDecision = new HashMap<>();
 
         List<String> properties;
@@ -306,7 +306,7 @@ public class CandidateEleminationLearningStrategy implements LearningStrategy {
         properties.add("metal");
         properties.add("light");
         properties.add("solid");
-        propertyDecision.put(properties, false);
+        propertyDecision.put(properties, true);
         properties = new ArrayList<>();
         properties.add("gray");
         properties.add("metal");

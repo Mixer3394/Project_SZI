@@ -141,7 +141,6 @@ public class Main extends Application {
         point[0] = 6;
         blueAreaCoordinates.add(point);
         point = new int[2];
-        point = new int[2];
         point[1] = 0;
         point[0] = 7;
         blueAreaCoordinates.add(point);
@@ -166,18 +165,6 @@ public class Main extends Application {
         point[0] = 12;
         blueAreaCoordinates.add(point);
         point = new int[2];
-        point[1] = 0;
-        point[0] = 13;
-        blueAreaCoordinates.add(point);
-        point = new int[2];
-        point[1] = 0;
-        point[0] = 14;
-        blueAreaCoordinates.add(point);
-        point = new int[2];
-        point[1] = 0;
-        point[0] = 15;
-        blueAreaCoordinates.add(point);
-        point = new int[2];
         point[1] = 3;
         point[0] = 3;
         blueAreaCoordinates.add(point);
@@ -189,10 +176,6 @@ public class Main extends Application {
         point[1] = 3;
         point[0] = 5;
         blueAreaCoordinates.add(point);
-        point = new int[2];
-        point[1] = 3;
-        point[0] = 6;
-        blueAreaCoordinates.add(point);
         areasData.put("blue", blueAreaCoordinates);
 
         //TODO complete it
@@ -200,21 +183,21 @@ public class Main extends Application {
         List<int[]> greenAreaCoordinates = new ArrayList<>();
         point = new int[2];
         point[1] = 3;
-        point[0] = 7;
+        point[0] = 12;
         greenAreaCoordinates.add(point);
         areasData.put("green", greenAreaCoordinates);
 
         List<int[]> blackAreaCoordinates = new ArrayList<>();
         point = new int[2];
         point[1] = 4;
-        point[0] = 17;
+        point[0] = 12;
         blackAreaCoordinates.add(point);
         areasData.put("black", blackAreaCoordinates);
 
         List<int[]> brownAreaCoordinates = new ArrayList<>();
         point = new int[2];
         point[1] = 8;
-        point[0] = 17;
+        point[0] = 12;
         brownAreaCoordinates.add(point);
         areasData.put("brown", brownAreaCoordinates);
 
@@ -228,7 +211,7 @@ public class Main extends Application {
         List<int[]> redAreaCoordinates = new ArrayList<>();
         point = new int[2];
         point[1] = 12;
-        point[0] = 17;
+        point[0] = 12;
         redAreaCoordinates.add(point);
         areasData.put("red", redAreaCoordinates);
         System.out.println("areas data ready");
@@ -611,11 +594,28 @@ public class Main extends Application {
     }
 
     private void mouseClicked() {
-        System.out.print(Start.casesBase.getCasesBase());
+        System.out.println("Case base: " + Start.casesBase.getCasesBase());
         mainPool.execute(() -> {
+            //TODO not sure how to do it
+//            Start.casesBase.getCasesBase()
+//            System.out.println("key set: " + Start.casesBase.getCasesBase().keySet().);
+
+//            System.out.println("current case base properties" + Start.casesBase.getCasesBase().get(Start.casesBase.getCasesBase().));
+//            System.out.println();
+//            int currentKey = Start.casesBase.getCasesBase().keySet().stream().findAny().get();
+//            List<String> currentProperties = Start.casesBase.getCasesBase().get(currentKey);
+//            List<String> finalProperties = parseProperties(currentProperties);
+//            int[] destinationXY = findPlace(finalProperties);
+
+//            Astar.test(16, 16, 0, 0, destinationXY[0], destinationXY[1], astarBlockedPoints);
+
+
             int[] destinationXY = findPlace();
-            astar.test(16, 16, 0, 0, destinationXY[0], destinationXY[1], astarBlockedPoints);
             getFieldNumber();
+//DO IT!
+//            Astar.test(16, 16, 0, 0, 1, 10, astarBlockedPoints);
+            Astar.test(16, 16, 0, 0, destinationXY[0], destinationXY[1], astarBlockedPoints);
+
 
             while (iterator < astar.pathXY.size() - 1) {
                 handleGoingForPackage();
@@ -635,12 +635,19 @@ public class Main extends Application {
         });
     }
 
-    private void getRandomCase() {
-        int random = new Random().nextInt(7);
-//        if (random == 0)
-//
+    private List<String> parseProperties(List<String> currentProperties) {
+        List<String> result = new ArrayList<>();
+        List<String> colors = new ArrayList<>(Arrays.asList("gray", "brown", "white", "red", "black", "blue", "yellow"));
+        String color = currentProperties.stream().filter(colors::contains).findFirst().orElse("0");
+        List<String> materials = new ArrayList<>(Arrays.asList("metal", "wooden", "transparent", "labelled", "paper"));
+        String material = currentProperties.stream().filter(materials::contains).findFirst().orElse("0");
+        List<String> weights = new ArrayList<>(Arrays.asList("heavy", "light", "middleweight"));
+        String weight = currentProperties.stream().filter(weights::contains).findFirst().orElse("0");
+        List<String> states = new ArrayList<>(Arrays.asList("solid", "liquid"));
+        String state = currentProperties.stream().filter(states::contains).findFirst().orElse("0");
+        result.addAll(Arrays.asList(color, material, weight, state));
+        return result;
     }
-
 
     private int[] findPlace() {
 //        int[] result = new int[2];
@@ -648,11 +655,26 @@ public class Main extends Application {
 //        result[1] = 15;
 //        return result;
 //        String caseName = "glass";
-        String caseName = "water";
+//        String caseName = "water";
 //        String caseName = "explosives";
 //        String caseName = "oil";
 //        String caseName = "wood";
+        String caseName = getRandomCase();
         return learningStrategy.findDestinationPlace(knowledgeBase, caseName, areasData);
+    }
+
+
+    private String getRandomCase() {
+        List<String> casesNames = new ArrayList<>(Arrays.asList("car parts", "wood", "paper", "explosives", "chemicals", "water", "oil", "glass"));
+        int random = new Random().nextInt(casesNames.size());
+
+        String randomCase = casesNames.get(random);
+        System.out.println(randomCase);
+        return randomCase;
+    }
+
+    private int[] findPlace(List<String> properties) {
+        return learningStrategy.findDestinationPlace(properties, areasData);
     }
 
     private void handleGoingForPackage() {
