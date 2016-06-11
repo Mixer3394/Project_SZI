@@ -2,10 +2,7 @@ package sample;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.concurrent.Task;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -20,10 +17,9 @@ import sample.Genetic.Start;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
-
-import static jdk.nashorn.internal.objects.Global.print;
 
 
 public class Main extends Application {
@@ -37,9 +33,6 @@ public class Main extends Application {
     static Map<Integer, AstarPoints> algorithmAvailablePoints = new HashMap<Integer, AstarPoints>();
 
     static int[] tempArray = new int[20];
-    // Mouse events
-    static double mouseX = 0.0;
-    static double mouseY = 0.0;
 
     static Map<Integer, AstarPoints> multiplePoints = new HashMap<Integer, AstarPoints>();
     static KnowledgeBase knowledgeBase;
@@ -73,8 +66,6 @@ public class Main extends Application {
     static Random caseNumber = new Random();
     static Image casesToSpawn[] = new Image[20];
 
-    // Random for oil spawns
-    static Random oilRandom = new Random();
     // Arrays for oil spawns
     static int oilArray[] = new int[10];
     static int oilsToDraw[] = new int[10];
@@ -82,9 +73,6 @@ public class Main extends Application {
 
     // Random for algorithm points
     static Random randPoints = new Random();
-
-    // Boolean for pathfinding (true if came back, false if still walking)
-    static boolean didComeBack = false;
 
     // actual case on forklift
     static Image actualCase;
@@ -105,7 +93,6 @@ public class Main extends Application {
     static LearningStrategy learningStrategy;
 
     // True if right, false if left
-    static boolean leftOrRight = true;
     static boolean unlockPack = false;
     static boolean returnMode = false;
 
@@ -120,17 +107,6 @@ public class Main extends Application {
             {12, 13}, {11, 13}, {10, 13}, {9, 13}, {8, 13}, {7, 13}, {6, 13}, {5, 13}, {4, 13},
             {3, 13}, {3, 14}, {4, 14}, {5, 14}, {6, 14}, {7, 14}, {8, 14}, {9, 14}, {10, 14},
             {11, 14}, {12, 14}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}
-    };
-
-    static int[][] casesCoordinates = {
-            {3, 0}, {4, 0}, {5, 0}, {6, 0}, {7, 0}, {8, 0}, {9, 0}, {10, 0}, {11, 0}, {12, 0},
-            {3, 3}, {4, 3}, {5, 3}, {6, 3}, {7, 3}, {8, 3}, {9, 3}, {10, 3}, {11, 3}, {12, 3},
-            {3, 4}, {4, 4}, {5, 4}, {6, 4}, {7, 4}, {8, 4}, {9, 4}, {10, 4}, {11, 4}, {12, 4},
-            {3, 7}, {4, 7}, {5, 7}, {6, 7}, {7, 7}, {8, 7}, {9, 7}, {10, 7}, {11, 7}, {12, 7},
-            {3, 8}, {4, 8}, {5, 8}, {6, 8}, {7, 8}, {8, 8}, {9, 8}, {10, 8}, {11, 8}, {12, 8},
-            {3, 11}, {4, 11}, {5, 11}, {6, 11}, {7, 11}, {8, 11}, {9, 11}, {10, 11}, {11, 11}, {12, 11},
-            {3, 12}, {4, 12}, {5, 12}, {6, 12}, {7, 12}, {8, 12}, {9, 12}, {10, 12}, {11, 12}, {12, 12},
-            {3, 15}, {4, 15}, {5, 15}, {6, 15}, {7, 15}, {8, 15}, {9, 15}, {10, 15}, {11, 15}, {12, 15},
     };
 
     static int[][] pointsForOil = {
@@ -219,7 +195,6 @@ public class Main extends Application {
             actualCase = null;
         }
 
-        //leftOrRight = false;
 
         graphicsContext.drawImage(forklift, actualPositionW, actualPositionH);
 
@@ -248,7 +223,6 @@ public class Main extends Application {
                 if((algorithmAvailablePoints.get(j).getX() == astarBlockedPoints[80 + i][0]) &&
                         algorithmAvailablePoints.get(j).getY() == astarBlockedPoints[80 + i][1]) {
 
-//                    System.out.print(j + "Dla: X: " + astarBlockedPoints[80 + i][0] + " Y: " + astarBlockedPoints[80 + i][1] + "\n");
                     oilsToDraw[i] = j;
                 }
             }
@@ -295,7 +269,7 @@ public class Main extends Application {
     public void start(Stage mainStage) throws Exception {
         learningStrategy = new CandidateEleminationLearningStrategy();
         Start geneticAlgotithm = new Start();
-        
+
         // scenario for oil
         oilArray[0] = 0;
         astarBlockedPoints[81] = pointsForOil[0];
@@ -318,13 +292,6 @@ public class Main extends Application {
         astarBlockedPoints[80] = pointsForOil[7];
 
 
-//        for(int i=0;i<10;i++) {
-//            System.out.print(oilArray[i] + "\n");
-//        }
-//        System.out.print(astarBlockedPoints[71][0] + " " + astarBlockedPoints[71][1]);
-
-
-        int randCasePoint = randPoints.nextInt(80);
         //random
 //        astar.test(16, 16, 0, 0, casesCoordinates[randCasePoint][0], casesCoordinates[randCasePoint][1], astarBlockedPoints);
 
@@ -358,21 +325,6 @@ public class Main extends Application {
 
         getOilSlickNumber();
         convertOilNumberToCoordinates();
-
-        Map<String, List<String>> knowledgeBase = Main.knowledgeBase.getKnowledgeBase();
-        //System.out.println(knowledgeBase.toString());
-
-        // Declare random case spawn-points
-
-//        for (int n = 0; n < 73; n += 8) casePoints[n][0] = 156.0;
-//        for (int n = 1; n < 74; n += 8) casePoints[n][0] = 210.0;
-//        for (int n = 2; n < 75; n += 8) casePoints[n][0] = 313.5;
-//        for (int n = 3; n < 76; n += 8) casePoints[n][0] = 367.5;
-//        for (int n = 4; n < 77; n += 8) casePoints[n][0] = 472.0;
-//        for (int n = 5; n < 78; n += 8) casePoints[n][0] = 525.5;
-//        for (int n = 6; n < 79; n += 8) casePoints[n][0] = 629.0;
-//        for (int n = 7; n < 80; n += 8) casePoints[n][0] = 682.0;
-        // Y
 
         IntStream.range(0, 80).forEach(
                 n -> {
@@ -496,11 +448,6 @@ public class Main extends Application {
 
                 }
         );
-
-//        for (int i = 0; i < algorithmAvailablePoints.size(); i++) {
-//            System.out.print("X:" + algorithmAvailablePoints.get(i).getX() + " Y:" + algorithmAvailablePoints.get(i).getY() + "\n");
-//        }
-
 
     }
 
