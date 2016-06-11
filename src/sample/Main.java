@@ -253,37 +253,6 @@ public class Main extends Application {
             graphicsContext.drawImage(oilSlick, oilsCoordinates[i][0] + 5, oilsCoordinates[i][1] + 25);
         }
 
-
-        // Spawn Cases.
-//        IntStream.range(0, 20).forEach(
-//                n -> {
-//                    double distance = Math.sqrt(
-//                            (Math.pow((actualPositionH - casePoints[locOfCases[n]][1]), 2)) +
-//                                    (Math.pow((actualPositionW - casePoints[locOfCases[n]][0]),
-//                                            2)));
-//
-//                    // if distance of forklift and case is greater than 30 draw all random cases
-//                    if (distance > 55) {
-//                        graphicsContext.drawImage(casesToSpawn[n], casePoints[locOfCases[n]][0],
-//                                casePoints[locOfCases[n]][1]);
-//
-//                        // if distance of forklift and case < 30 change state that forklift is busy
-//                    } else if (distance < 55 && unlockPack) {
-//                        caseNotToSpawn = true;
-//                        numberOfCase = n;
-//
-//                    }
-//                    if (casesToSpawn[numberOfCase] != null && unlockPack) {
-//                        actualCase = casesToSpawn[numberOfCase];
-//                    }
-//                    // if forklift is busy draw case on the forklift
-//                    if (caseNotToSpawn == true && unlockPack) {
-//                        graphicsContext
-//                                .drawImage(actualCase, actualPositionW + 10, actualPositionH);
-//                    }
-//                }
-//        );
-
         // delete case from bookstand
         casesToSpawn[numberOfCase] = null;
 
