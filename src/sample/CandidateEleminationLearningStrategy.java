@@ -496,7 +496,7 @@ public class CandidateEleminationLearningStrategy implements LearningStrategy {
     }
 
     @Override
-    public int[] findDestinationPlace(KnowledgeBase knowledgeBase, String caseName) {
+    public int[] findDestinationPlace(KnowledgeBase knowledgeBase, String caseName, Map<String, List<int[]>> areasData) {
         //destinationPlace[0] is x and destinationPlace[1] is y
 
         List<String> properties = knowledgeBase.getKnowledgeBase().get(caseName);
@@ -506,38 +506,45 @@ public class CandidateEleminationLearningStrategy implements LearningStrategy {
 
 
         if (hypothesisDoesCover(properties, blackArea)) {
-            destinationPlace = findNextPlaceInArea("black");
+            destinationPlace = findNextPlaceInArea("black", areasData);
             System.out.println("Black");
         }
         if (hypothesisDoesCover(properties, blueArea)) {
-            destinationPlace = findNextPlaceInArea("blue");
+            destinationPlace = findNextPlaceInArea("blue", areasData);
             System.out.println("Blue");
         }
         if (hypothesisDoesCover(properties, greenArea)) {
-            destinationPlace = findNextPlaceInArea("green");
+            destinationPlace = findNextPlaceInArea("green", areasData);
             System.out.println("Green");
         }
         if (hypothesisDoesCover(properties, yellowArea)) {
-            destinationPlace = findNextPlaceInArea("yellow");
+            destinationPlace = findNextPlaceInArea("yellow", areasData);
             System.out.println("Yellow");
         }
         if (hypothesisDoesCover(properties, brownArea)) {
-            destinationPlace = findNextPlaceInArea("brown");
+            destinationPlace = findNextPlaceInArea("brown", areasData);
             System.out.println("Brown");
         }
         if (hypothesisDoesCover(properties, redArea)) {
-            destinationPlace = findNextPlaceInArea("red");
+            destinationPlace = findNextPlaceInArea("red", areasData);
             System.out.println("Red");
         }
 
         return destinationPlace;
     }
 
-    private int[] findNextPlaceInArea(String area) {
-        int[] result = new int[2];
+    private int[] findNextPlaceInArea(String area, Map<String, List<int[]>> areasData) {
+        int[] result;
+        List<int[]> areaPoints = areasData.get(area);
+        result = choosePlaceRoundRobin(areaPoints);
 
-        result[0] = 1;
-        result[1] = 1;
+        return result;
+    }
+
+    private int[] choosePlaceRoundRobin(List<int[]> areaPoints) {
+        //popping element and pushing it to the end
+        int[] result = areaPoints.remove(0);
+        areaPoints.add(result);
         return result;
     }
 }

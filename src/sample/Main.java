@@ -112,7 +112,7 @@ public class Main extends Application {
     static int[][] pointsForOil = {
             {0, 2}, {0, 3}, {0, 4}, {0, 5}, {0, 6}, {0, 7}, {0, 8}, {0, 9}, {0, 10}, {0, 11}, {0, 12},
             {0, 13}, {0, 14}, {0, 15}, {1, 2}, {1, 3}, {1, 4}, {1, 5}, {1, 6}, {1, 7}, {1, 8}, {1, 9}, {1, 10}, {1, 11}, {1, 12},
-            {1, 13}, {1, 14}, {1, 15},{2, 0}, {2, 1}, {2, 2}, {2, 3}, {2, 4}, {2, 5}, {2, 6}, {2, 7}, {2, 8}, {2, 9}, {2, 10}, {2, 11}, {2, 12},
+            {1, 13}, {1, 14}, {1, 15}, {2, 0}, {2, 1}, {2, 2}, {2, 3}, {2, 4}, {2, 5}, {2, 6}, {2, 7}, {2, 8}, {2, 9}, {2, 10}, {2, 11}, {2, 12},
             {2, 13}, {2, 14}, {2, 15}, {14, 0}, {14, 1}, {14, 2}, {14, 3}, {14, 4}, {14, 5}, {14, 6}, {14, 7}, {14, 8}, {14, 9}, {14, 10}, {14, 11}, {14, 12},
             {14, 13}, {14, 14}, {14, 15}, {15, 0}, {15, 1}, {15, 2}, {15, 3}, {15, 4}, {15, 5}, {15, 6}, {15, 7}, {15, 8}, {15, 9}, {15, 10}, {15, 11}, {15, 12},
             {15, 13}, {15, 14}, {15, 15},
@@ -120,6 +120,119 @@ public class Main extends Application {
 
     };
     public int iterator = 0;
+
+    private static Map<String, List<int[]>> areasData = new HashMap<>();
+
+    private static void prepareAreasData() {
+        int[] point = new int[2];
+        List<int[]> blueAreaCoordinates = new ArrayList<>();
+        point[0] = 0;
+        point[1] = 3;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[0] = 0;
+        point[1] = 4;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[0] = 0;
+        point[1] = 5;
+        blueAreaCoordinates.add(point);
+        point[0] = 0;
+        point[1] = 6;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point = new int[2];
+        point[0] = 0;
+        point[1] = 7;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[0] = 0;
+        point[1] = 8;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[0] = 0;
+        point[1] = 9;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[0] = 0;
+        point[1] = 10;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[0] = 0;
+        point[1] = 11;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[0] = 0;
+        point[1] = 12;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[0] = 0;
+        point[1] = 13;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[0] = 0;
+        point[1] = 14;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[0] = 0;
+        point[1] = 15;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[0] = 3;
+        point[1] = 3;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[0] = 3;
+        point[1] = 4;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[0] = 3;
+        point[1] = 5;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[0] = 3;
+        point[1] = 6;
+        blueAreaCoordinates.add(point);
+        areasData.put("blue", blueAreaCoordinates);
+
+        //TODO complete it
+
+        List<int[]> greenAreaCoordinates = new ArrayList<>();
+        point = new int[2];
+        point[0] = 3;
+        point[1] = 7;
+        greenAreaCoordinates.add(point);
+        areasData.put("green", greenAreaCoordinates);
+
+        List<int[]> blackAreaCoordinates = new ArrayList<>();
+        point = new int[2];
+        point[0] = 4;
+        point[1] = 17;
+        blackAreaCoordinates.add(point);
+        areasData.put("black", blackAreaCoordinates);
+
+        List<int[]> brownAreaCoordinates = new ArrayList<>();
+        point = new int[2];
+        point[0] = 8;
+        point[1] = 17;
+        brownAreaCoordinates.add(point);
+        areasData.put("brown", brownAreaCoordinates);
+
+        List<int[]> yellowAreaCoordinates = new ArrayList<>();
+        point = new int[2];
+        point[0] = 12;
+        point[1] = 3;
+        yellowAreaCoordinates.add(point);
+        areasData.put("yellow", yellowAreaCoordinates);
+
+        List<int[]> redAreaCoordinates = new ArrayList<>();
+        point = new int[2];
+        point[0] = 12;
+        point[1] = 17;
+        redAreaCoordinates.add(point);
+        areasData.put("red", redAreaCoordinates);
+        System.out.println("areas data ready");
+    }
 
     private static void prepareActionHandlers() {
         mainScene.setOnKeyPressed(event -> currentlyActiveKeys.add(event.getCode().toString()));
@@ -151,7 +264,7 @@ public class Main extends Application {
 
 
         // ZAMIANA NA WSPÓŁRZĘDNE
-        for(int i = 0; i < oilArray.length; i++) {
+        for (int i = 0; i < oilArray.length; i++) {
             graphicsContext.drawImage(oilSlick, oilsCoordinates[i][0] + 5, oilsCoordinates[i][1] + 25);
         }
 
@@ -218,9 +331,9 @@ public class Main extends Application {
 
     private static void getOilSlickNumber() {
 
-        for(int i = 0; i < oilArray.length; i ++) {
-            for(int j = 0; j < algorithmAvailablePoints.size(); j++) {
-                if((algorithmAvailablePoints.get(j).getX() == astarBlockedPoints[80 + i][0]) &&
+        for (int i = 0; i < oilArray.length; i++) {
+            for (int j = 0; j < algorithmAvailablePoints.size(); j++) {
+                if ((algorithmAvailablePoints.get(j).getX() == astarBlockedPoints[80 + i][0]) &&
                         algorithmAvailablePoints.get(j).getY() == astarBlockedPoints[80 + i][1]) {
 
                     oilsToDraw[i] = j;
@@ -230,7 +343,7 @@ public class Main extends Application {
     }
 
     private static void convertOilNumberToCoordinates() {
-        for(int i = 0; i < oilsToDraw.length; i++) {
+        for (int i = 0; i < oilsToDraw.length; i++) {
 //            System.out.print("X: " + multiplePoints.get(oilsToDraw[i]).getX() + " Y: " + multiplePoints.get(oilsToDraw[i]).getY() + "\n");
             oilsCoordinates[i][0] = multiplePoints.get(oilsToDraw[i]).getX();
             oilsCoordinates[i][1] = multiplePoints.get(oilsToDraw[i]).getY();
@@ -309,6 +422,7 @@ public class Main extends Application {
 
 
         prepareKnowledgeBase();
+        prepareAreasData();
 
         int x = 0;
         int y = 0;
@@ -395,7 +509,6 @@ public class Main extends Application {
         }
 
 
-
         // Get random spawn points and random cases.
         IntStream.range(0, 20).forEach(
                 n -> {
@@ -460,7 +573,6 @@ public class Main extends Application {
         knowledgeBase.addData("car parts", "gray");
         knowledgeBase.addData("car parts", "metal");
         knowledgeBase.addData("car parts", "heavy");
-        knowledgeBase.addData("car parts", "middleweight");
         knowledgeBase.addData("car parts", "solid");
         knowledgeBase.addData("wood", "brown");
         knowledgeBase.addData("wood", "wooden");
@@ -502,7 +614,7 @@ public class Main extends Application {
         System.out.print(Start.casesBase.getCasesBase());
         mainPool.execute(() -> {
             int[] destinationXY = findPlace();
-            astar.test(16,16,0,0,destinationXY[0],destinationXY[1],astarBlockedPoints);
+            astar.test(16, 16, 0, 0, destinationXY[0], destinationXY[1], astarBlockedPoints);
             getFieldNumber();
 
             while (iterator < astar.pathXY.size() - 1) {
@@ -536,10 +648,11 @@ public class Main extends Application {
 //        result[1] = 15;
 //        return result;
 //        String caseName = "glass";
-        String caseName = "explosives";
+        String caseName = "water";
+//        String caseName = "explosives";
 //        String caseName = "oil";
 //        String caseName = "wood";
-        return learningStrategy.findDestinationPlace(knowledgeBase, caseName);
+        return learningStrategy.findDestinationPlace(knowledgeBase, caseName, areasData);
     }
 
     private void handleGoingForPackage() {
