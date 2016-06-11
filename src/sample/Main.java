@@ -58,6 +58,7 @@ public class Main extends Application {
     static Image caseEight;
     static double casePoints[][] = new double[80][2];
 
+    static Image currentCase;
     // Oil
     static Image oilSlick;
 
@@ -238,6 +239,7 @@ public class Main extends Application {
         caseEight = new Image("images/case8.png");
         oilSlick = new Image("images/oil.png");
 
+
     }
 
     private static void tickAndRender() {
@@ -253,34 +255,34 @@ public class Main extends Application {
 
 
         // Spawn Cases.
-        IntStream.range(0, 20).forEach(
-                n -> {
-                    double distance = Math.sqrt(
-                            (Math.pow((actualPositionH - casePoints[locOfCases[n]][1]), 2)) +
-                                    (Math.pow((actualPositionW - casePoints[locOfCases[n]][0]),
-                                            2)));
-
-                    // if distance of forklift and case is greater than 30 draw all random cases
-                    if (distance > 55) {
-                        graphicsContext.drawImage(casesToSpawn[n], casePoints[locOfCases[n]][0],
-                                casePoints[locOfCases[n]][1]);
-
-                        // if distance of forklift and case < 30 change state that forklift is busy
-                    } else if (distance < 55 && unlockPack) {
-                        caseNotToSpawn = true;
-                        numberOfCase = n;
-
-                    }
-                    if (casesToSpawn[numberOfCase] != null && unlockPack) {
-                        actualCase = casesToSpawn[numberOfCase];
-                    }
-                    // if forklift is busy draw case on the forklift
-                    if (caseNotToSpawn == true && unlockPack) {
-                        graphicsContext
-                                .drawImage(actualCase, actualPositionW + 10, actualPositionH);
-                    }
-                }
-        );
+//        IntStream.range(0, 20).forEach(
+//                n -> {
+//                    double distance = Math.sqrt(
+//                            (Math.pow((actualPositionH - casePoints[locOfCases[n]][1]), 2)) +
+//                                    (Math.pow((actualPositionW - casePoints[locOfCases[n]][0]),
+//                                            2)));
+//
+//                    // if distance of forklift and case is greater than 30 draw all random cases
+//                    if (distance > 55) {
+//                        graphicsContext.drawImage(casesToSpawn[n], casePoints[locOfCases[n]][0],
+//                                casePoints[locOfCases[n]][1]);
+//
+//                        // if distance of forklift and case < 30 change state that forklift is busy
+//                    } else if (distance < 55 && unlockPack) {
+//                        caseNotToSpawn = true;
+//                        numberOfCase = n;
+//
+//                    }
+//                    if (casesToSpawn[numberOfCase] != null && unlockPack) {
+//                        actualCase = casesToSpawn[numberOfCase];
+//                    }
+//                    // if forklift is busy draw case on the forklift
+//                    if (caseNotToSpawn == true && unlockPack) {
+//                        graphicsContext
+//                                .drawImage(actualCase, actualPositionW + 10, actualPositionH);
+//                    }
+//                }
+//        );
 
         // delete case from bookstand
         casesToSpawn[numberOfCase] = null;
@@ -578,17 +580,10 @@ public class Main extends Application {
         System.out.println("Case base: " + Start.casesBase.getCasesBase());
         mainPool.execute(() -> {
             //TODO not sure how to do it
-//            Start.casesBase.getCasesBase()
-//            System.out.println("key set: " + Start.casesBase.getCasesBase().keySet().);
-
-//            System.out.println("current case base properties" + Start.casesBase.getCasesBase().get(Start.casesBase.getCasesBase().));
-//            System.out.println();
 //            int currentKey = Start.casesBase.getCasesBase().keySet().stream().findAny().get();
 //            List<String> currentProperties = Start.casesBase.getCasesBase().get(currentKey);
 //            List<String> finalProperties = parseProperties(currentProperties);
 //            int[] destinationXY = findPlace(finalProperties);
-
-//            Astar.test(16, 16, 0, 0, destinationXY[0], destinationXY[1], astarBlockedPoints);
 
 
             int[] destinationXY = findPlace();
@@ -599,7 +594,7 @@ public class Main extends Application {
 
 
             while (iterator < astar.pathXY.size() - 1) {
-                handleGoingForPackage();
+                handleGoingWithPackage();
             }
             returnMode = true;
             unlockPack = true;
@@ -642,6 +637,8 @@ public class Main extends Application {
 
         String randomCase = casesNames.get(random);
         System.out.println(randomCase);
+        currentCase = new Image("images/cases/"+randomCase+".png");
+
         return randomCase;
     }
 
@@ -649,7 +646,7 @@ public class Main extends Application {
         return learningStrategy.findDestinationPlace(properties, areasData);
     }
 
-    private void handleGoingForPackage() {
+    private void handleGoingWithPackage() {
         iterator++;
         move();
     }
