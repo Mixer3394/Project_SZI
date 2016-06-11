@@ -15,6 +15,7 @@ public class CandidateEleminationLearningStrategy implements LearningStrategy {
 
     private int numberOfProperties;
 
+
     public CandidateEleminationLearningStrategy() {
         System.out.println("Using CandidateEliminationLearningStrategy");
         numberOfProperties = 4;
@@ -501,17 +502,42 @@ public class CandidateEleminationLearningStrategy implements LearningStrategy {
         List<String> properties = knowledgeBase.getKnowledgeBase().get(caseName);
      //   System.out.println("Current case properties: " + properties);
 
-        if (hypothesisDoesCover(properties, blackArea)) System.out.println("Black");
-        if (hypothesisDoesCover(properties, blueArea)) System.out.println("Blue");
-        if (hypothesisDoesCover(properties, greenArea)) System.out.println("Green");
-        if (hypothesisDoesCover(properties, yellowArea)) System.out.println("Yellow");
-        if (hypothesisDoesCover(properties, brownArea)) System.out.println("Brown");
-        if (hypothesisDoesCover(properties, redArea)) System.out.println("Red");
-
         int[] destinationPlace = new int[2];
-        destinationPlace[0] = 15;
-        destinationPlace[1] = 15;
+
+
+        if (hypothesisDoesCover(properties, blackArea)) {
+            destinationPlace = findNextPlaceInArea("black");
+            System.out.println("Black");
+        }
+        if (hypothesisDoesCover(properties, blueArea)) {
+            destinationPlace = findNextPlaceInArea("blue");
+            System.out.println("Blue");
+        }
+        if (hypothesisDoesCover(properties, greenArea)) {
+            destinationPlace = findNextPlaceInArea("green");
+            System.out.println("Green");
+        }
+        if (hypothesisDoesCover(properties, yellowArea)) {
+            destinationPlace = findNextPlaceInArea("yellow");
+            System.out.println("Yellow");
+        }
+        if (hypothesisDoesCover(properties, brownArea)) {
+            destinationPlace = findNextPlaceInArea("brown");
+            System.out.println("Brown");
+        }
+        if (hypothesisDoesCover(properties, redArea)) {
+            destinationPlace = findNextPlaceInArea("red");
+            System.out.println("Red");
+        }
 
         return destinationPlace;
+    }
+
+    private int[] findNextPlaceInArea(String area) {
+        int[] result = new int[2];
+
+        result[0] = 1;
+        result[1] = 1;
+        return result;
     }
 }

@@ -295,46 +295,7 @@ public class Main extends Application {
     public void start(Stage mainStage) throws Exception {
         learningStrategy = new CandidateEleminationLearningStrategy();
         Start geneticAlgotithm = new Start();
-
-
-
-//        for(int i = 0; i < 5; i++) {
-//            int oilRandomPoint = oilRandom.nextInt(algorithmAvailablePoints.size());
-//        }
-
-
-       /* ********************************* START ALGORITHM!!!!!!!!!!! *************************************************
-        a - array size (our map has 16x16)
-        sy - start point y
-        sx - start point x
-        dy - destination point y
-        dx - destination point x
-        z - array with blocked points
-
-                      a   a  sy  sx dy dx    z                       */
-        // astar.test(16, 16, 0, 0, 10, 8, astarBlockedPoints);
-
-
-//        int randX = randPoints.nextInt(15);
-//        int randY = randPoints.nextInt(15);
-//
-//        while (astar.foundPath == false) {
-//            randX = randPoints.nextInt(15);
-//            randY = randPoints.nextInt(15);
-//            astar.test(16, 16, 0, 0, randY, randX, astarBlockedPoints);
-//
-//        }
-//        for(int i = 0; i < 10; i++) {
-//
-//            int randOil = oilRandom.nextInt(pointsForOil.length);
-////            while(!contains(oilArray, randOil)) {
-////
-////                randOil = oilRandom.nextInt(pointsForOil.length) - 1;
-////            }
-//            oilArray[i] = randOil;
-//            astarBlockedPoints[80 + i] = pointsForOil[randOil];
-//
-//        }
+        
         // scenario for oil
         oilArray[0] = 0;
         astarBlockedPoints[81] = pointsForOil[0];
