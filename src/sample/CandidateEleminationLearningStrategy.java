@@ -15,6 +15,7 @@ public class CandidateEleminationLearningStrategy implements LearningStrategy {
 
     private int numberOfProperties;
 
+
     public CandidateEleminationLearningStrategy() {
         System.out.println("Using CandidateEliminationLearningStrategy");
         numberOfProperties = 4;
@@ -100,7 +101,7 @@ public class CandidateEleminationLearningStrategy implements LearningStrategy {
         properties = new ArrayList<>();
         properties.add("yellow");
         properties.add("transparent");
-        properties.add("light");
+        properties.add("heavy");
         properties.add("solid");
         propertyDecision.put(properties, true);
         properties = new ArrayList<>();
@@ -283,7 +284,7 @@ public class CandidateEleminationLearningStrategy implements LearningStrategy {
     }
 
     private Map<List<String>, Boolean> prepareBlackAreaLearningSet() {
-        //Should be heavy, solid and metal - color doesn't matter
+        //Should be solid and metal - color and weight don't matter
         Map<List<String>, Boolean> propertyDecision = new HashMap<>();
 
         List<String> properties;
@@ -305,7 +306,7 @@ public class CandidateEleminationLearningStrategy implements LearningStrategy {
         properties.add("metal");
         properties.add("light");
         properties.add("solid");
-        propertyDecision.put(properties, false);
+        propertyDecision.put(properties, true);
         properties = new ArrayList<>();
         properties.add("gray");
         properties.add("metal");
@@ -443,50 +444,12 @@ public class CandidateEleminationLearningStrategy implements LearningStrategy {
 
     private boolean generalHasMoreGeneralHypothesis(List<String> hypothesis, List<List<String>> generalHypothesis) {
         return true;
-//        for (List<String> singleGeneralHypothesis : generalHypothesis) {
-//            boolean has = true;
-//            for (int i = 0; i < numberOfProperties; i++) {
-//                if (singleGeneralHypothesis.get(i).equals(hypothesis.get(i)))
-//                    has = false;
-//            }
-//            if (has) return true;
-//        }
-//        return false;
     }
 
     private void deleteMoreGeneralHypothesis(List<List<String>> specificHypothesis, List<String> hypothesis) {
     }
 
     private void parseNegativeExample(Map<List<String>, Boolean> blackAreaLearningSet, List<String> example, List<List<String>> generalHypothesis, List<List<String>> specificHypothesis) {
-//        for (List<String> hypothesis : specificHypothesis) {
-//                if (hypothesisDoesCover(example, hypothesis)) {
-//                    System.out.println(hypothesis + " doesn't cover " + example + " so it's deleted (specific negative)");
-//                    removeHypothesis(specificHypothesis, hypothesis);
-//                    addMinimalGeneralizations(specificHypothesis, hypothesis, generalHypothesis, example);
-//                } else {
-//                    System.out.println(hypothesis + " does cover" + example + " (specific negative)");
-//                }
-//        }
-
-//        Iterator<List<String>> generalHypothesisIterator = generalHypothesis.iterator();
-//        while (generalHasMoreGeneralHypothesis())
-//        for (List<String> hypothesis : generalHypothesis) {
-//                if (hypothesisDoesCover(example, hypothesis)) {
-//                    System.out.println(hypothesis + " doesn't cover " + example + " so it's deleted (general negative)");
-//                    removeHypothesis(generalHypothesis, hypothesis);
-//                    addMinimalSpecializations(generalHypothesis, hypothesis);
-//                    deleteMoreSpecificHypothesis(generalHypothesis, hypothesis);
-//                } else {
-//                    System.out.println(hypothesis + " does cover " + example + " (general negative)");
-//                }
-//        }
-    }
-
-    private void addMinimalSpecializations(List<List<String>> generalHypothesis, List<String> hypothesis) {
-    }
-
-    private void deleteMoreSpecificHypothesis(List<List<String>> generalHypothesis, List<String> hypothesis) {
-
     }
 
     private boolean exampleIsPositive(List<String> example, Map<List<String>, Boolean> learningSet) {
@@ -495,23 +458,58 @@ public class CandidateEleminationLearningStrategy implements LearningStrategy {
     }
 
     @Override
-    public int[] findDestinationPlace(KnowledgeBase knowledgeBase, String caseName) {
+    public int[] findDestinationPlace(List<String> properties, Map<String, List<int[]>> areasData) {
+        int[] destinationPlace = new int[2];
+
+
+        if (hypothesisDoesCover(properties, blackArea)) {
+            destinationPlace = findNextPlaceInArea("black", areasData);
+            System.out.println("Black");
+        }
+        if (hypothesisDoesCover(properties, blueArea)) {
+            destinationPlace = findNextPlaceInArea("blue", areasData);
+            System.out.println("Blue");
+        }
+        if (hypothesisDoesCover(properties, greenArea)) {
+            destinationPlace = findNextPlaceInArea("green", areasData);
+            System.out.println("Green");
+        }
+        if (hypothesisDoesCover(properties, yellowArea)) {
+            destinationPlace = findNextPlaceInArea("yellow", areasData);
+            System.out.println("Yellow");
+        }
+        if (hypothesisDoesCover(properties, brownArea)) {
+            destinationPlace = findNextPlaceInArea("brown", areasData);
+            System.out.println("Brown");
+        }
+        if (hypothesisDoesCover(properties, redArea)) {
+            destinationPlace = findNextPlaceInArea("red", areasData);
+            System.out.println("Red");
+        }
+
+        return destinationPlace;
+    }
+
+    @Override
+    public int[] findDestinationPlace(KnowledgeBase knowledgeBase, String caseName, Map<String, List<int[]>> areasData) {
         //destinationPlace[0] is x and destinationPlace[1] is y
 
         List<String> properties = knowledgeBase.getKnowledgeBase().get(caseName);
-        System.out.println("Current case properties: " + properties);
+        return findDestinationPlace(properties, areasData);
+    }
 
-        if (hypothesisDoesCover(properties, blackArea)) System.out.println("Black");
-        if (hypothesisDoesCover(properties, blueArea)) System.out.println("Blue");
-        if (hypothesisDoesCover(properties, greenArea)) System.out.println("Green");
-        if (hypothesisDoesCover(properties, yellowArea)) System.out.println("Yellow");
-        if (hypothesisDoesCover(properties, brownArea)) System.out.println("Brown");
-        if (hypothesisDoesCover(properties, redArea)) System.out.println("Red");
+    private int[] findNextPlaceInArea(String area, Map<String, List<int[]>> areasData) {
+        int[] result;
+        List<int[]> areaPoints = areasData.get(area);
+        result = choosePlaceRoundRobin(areaPoints);
 
-        int[] destinationPlace = new int[2];
-        destinationPlace[0] = 15;
-        destinationPlace[1] = 15;
+        return result;
+    }
 
-        return destinationPlace;
+    private int[] choosePlaceRoundRobin(List<int[]> areaPoints) {
+        //popping element and pushing it to the end
+        int[] result = areaPoints.remove(0);
+        areaPoints.add(result);
+        return result;
     }
 }

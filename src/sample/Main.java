@@ -2,10 +2,7 @@ package sample;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.concurrent.Task;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -16,10 +13,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import sample.Genetic.Start;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
 
@@ -34,9 +33,6 @@ public class Main extends Application {
     static Map<Integer, AstarPoints> algorithmAvailablePoints = new HashMap<Integer, AstarPoints>();
 
     static int[] tempArray = new int[20];
-    // Mouse events
-    static double mouseX = 0.0;
-    static double mouseY = 0.0;
 
     static Map<Integer, AstarPoints> multiplePoints = new HashMap<Integer, AstarPoints>();
     static KnowledgeBase knowledgeBase;
@@ -62,6 +58,7 @@ public class Main extends Application {
     static Image caseEight;
     static double casePoints[][] = new double[80][2];
 
+    static Image currentCase;
     // Oil
     static Image oilSlick;
 
@@ -70,8 +67,6 @@ public class Main extends Application {
     static Random caseNumber = new Random();
     static Image casesToSpawn[] = new Image[20];
 
-    // Random for oil spawns
-    static Random oilRandom = new Random();
     // Arrays for oil spawns
     static int oilArray[] = new int[10];
     static int oilsToDraw[] = new int[10];
@@ -79,9 +74,6 @@ public class Main extends Application {
 
     // Random for algorithm points
     static Random randPoints = new Random();
-
-    // Boolean for pathfinding (true if came back, false if still walking)
-    static boolean didComeBack = false;
 
     // actual case on forklift
     static Image actualCase;
@@ -101,9 +93,7 @@ public class Main extends Application {
 
     static LearningStrategy learningStrategy;
 
-
     // True if right, false if left
-    static boolean leftOrRight = true;
     static boolean unlockPack = false;
     static boolean returnMode = false;
 
@@ -120,21 +110,10 @@ public class Main extends Application {
             {11, 14}, {12, 14}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}, {15, 15}
     };
 
-    static int[][] casesCoordinates = {
-            {3, 0}, {4, 0}, {5, 0}, {6, 0}, {7, 0}, {8, 0}, {9, 0}, {10, 0}, {11, 0}, {12, 0},
-            {3, 3}, {4, 3}, {5, 3}, {6, 3}, {7, 3}, {8, 3}, {9, 3}, {10, 3}, {11, 3}, {12, 3},
-            {3, 4}, {4, 4}, {5, 4}, {6, 4}, {7, 4}, {8, 4}, {9, 4}, {10, 4}, {11, 4}, {12, 4},
-            {3, 7}, {4, 7}, {5, 7}, {6, 7}, {7, 7}, {8, 7}, {9, 7}, {10, 7}, {11, 7}, {12, 7},
-            {3, 8}, {4, 8}, {5, 8}, {6, 8}, {7, 8}, {8, 8}, {9, 8}, {10, 8}, {11, 8}, {12, 8},
-            {3, 11}, {4, 11}, {5, 11}, {6, 11}, {7, 11}, {8, 11}, {9, 11}, {10, 11}, {11, 11}, {12, 11},
-            {3, 12}, {4, 12}, {5, 12}, {6, 12}, {7, 12}, {8, 12}, {9, 12}, {10, 12}, {11, 12}, {12, 12},
-            {3, 15}, {4, 15}, {5, 15}, {6, 15}, {7, 15}, {8, 15}, {9, 15}, {10, 15}, {11, 15}, {12, 15},
-    };
-
     static int[][] pointsForOil = {
             {0, 2}, {0, 3}, {0, 4}, {0, 5}, {0, 6}, {0, 7}, {0, 8}, {0, 9}, {0, 10}, {0, 11}, {0, 12},
             {0, 13}, {0, 14}, {0, 15}, {1, 2}, {1, 3}, {1, 4}, {1, 5}, {1, 6}, {1, 7}, {1, 8}, {1, 9}, {1, 10}, {1, 11}, {1, 12},
-            {1, 13}, {1, 14}, {1, 15},{2, 0}, {2, 1}, {2, 2}, {2, 3}, {2, 4}, {2, 5}, {2, 6}, {2, 7}, {2, 8}, {2, 9}, {2, 10}, {2, 11}, {2, 12},
+            {1, 13}, {1, 14}, {1, 15}, {2, 0}, {2, 1}, {2, 2}, {2, 3}, {2, 4}, {2, 5}, {2, 6}, {2, 7}, {2, 8}, {2, 9}, {2, 10}, {2, 11}, {2, 12},
             {2, 13}, {2, 14}, {2, 15}, {14, 0}, {14, 1}, {14, 2}, {14, 3}, {14, 4}, {14, 5}, {14, 6}, {14, 7}, {14, 8}, {14, 9}, {14, 10}, {14, 11}, {14, 12},
             {14, 13}, {14, 14}, {14, 15}, {15, 0}, {15, 1}, {15, 2}, {15, 3}, {15, 4}, {15, 5}, {15, 6}, {15, 7}, {15, 8}, {15, 9}, {15, 10}, {15, 11}, {15, 12},
             {15, 13}, {15, 14}, {15, 15},
@@ -142,6 +121,102 @@ public class Main extends Application {
 
     };
     public int iterator = 0;
+
+    private static Map<String, List<int[]>> areasData = new HashMap<>();
+
+    private static void prepareAreasData() {
+        int[] point = new int[2];
+        List<int[]> blueAreaCoordinates = new ArrayList<>();
+        point[1] = 0;
+        point[0] = 3;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 0;
+        point[0] = 4;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 0;
+        point[0] = 5;
+        blueAreaCoordinates.add(point);
+        point[1] = 0;
+        point[0] = 6;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 0;
+        point[0] = 7;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 0;
+        point[0] = 8;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 0;
+        point[0] = 9;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 0;
+        point[0] = 10;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 0;
+        point[0] = 11;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 0;
+        point[0] = 12;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 3;
+        point[0] = 3;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 3;
+        point[0] = 4;
+        blueAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 3;
+        point[0] = 5;
+        blueAreaCoordinates.add(point);
+        areasData.put("blue", blueAreaCoordinates);
+
+        //TODO complete it
+
+        List<int[]> greenAreaCoordinates = new ArrayList<>();
+        point = new int[2];
+        point[1] = 3;
+        point[0] = 12;
+        greenAreaCoordinates.add(point);
+        areasData.put("green", greenAreaCoordinates);
+
+        List<int[]> blackAreaCoordinates = new ArrayList<>();
+        point = new int[2];
+        point[1] = 4;
+        point[0] = 12;
+        blackAreaCoordinates.add(point);
+        areasData.put("black", blackAreaCoordinates);
+
+        List<int[]> brownAreaCoordinates = new ArrayList<>();
+        point = new int[2];
+        point[1] = 8;
+        point[0] = 12;
+        brownAreaCoordinates.add(point);
+        areasData.put("brown", brownAreaCoordinates);
+
+        List<int[]> yellowAreaCoordinates = new ArrayList<>();
+        point = new int[2];
+        point[1] = 12;
+        point[0] = 3;
+        yellowAreaCoordinates.add(point);
+        areasData.put("yellow", yellowAreaCoordinates);
+
+        List<int[]> redAreaCoordinates = new ArrayList<>();
+        point = new int[2];
+        point[1] = 12;
+        point[0] = 12;
+        redAreaCoordinates.add(point);
+        areasData.put("red", redAreaCoordinates);
+        System.out.println("areas data ready");
+    }
 
     private static void prepareActionHandlers() {
         mainScene.setOnKeyPressed(event -> currentlyActiveKeys.add(event.getCode().toString()));
@@ -164,6 +239,7 @@ public class Main extends Application {
         caseEight = new Image("images/case8.png");
         oilSlick = new Image("images/oil.png");
 
+
     }
 
     private static void tickAndRender() {
@@ -173,43 +249,9 @@ public class Main extends Application {
 
 
         // ZAMIANA NA WSPÓŁRZĘDNE
-        for(int i = 0; i < oilArray.length; i++) {
+        for (int i = 0; i < oilArray.length; i++) {
             graphicsContext.drawImage(oilSlick, oilsCoordinates[i][0] + 5, oilsCoordinates[i][1] + 25);
         }
-
-
-        // Spawn Cases.
-        IntStream.range(0, 20).forEach(
-                n -> {
-                    double distance = Math.sqrt(
-                            (Math.pow((actualPositionH - casePoints[locOfCases[n]][1]), 2)) +
-                                    (Math.pow((actualPositionW - casePoints[locOfCases[n]][0]),
-                                            2)));
-
-                    // if distance of forklift and case is greater than 30 draw all random cases
-                    if (distance > 55) {
-                        graphicsContext.drawImage(casesToSpawn[n], casePoints[locOfCases[n]][0],
-                                casePoints[locOfCases[n]][1]);
-
-                        // if distance of forklift and case < 30 change state that forklift is busy
-                    } else if (distance < 55 && unlockPack) {
-                        caseNotToSpawn = true;
-                        numberOfCase = n;
-
-                    }
-                    if (casesToSpawn[numberOfCase] != null && unlockPack) {
-                        actualCase = casesToSpawn[numberOfCase];
-                    }
-                    // if forklift is busy draw case on the forklift
-                    if (caseNotToSpawn == true && unlockPack) {
-                        graphicsContext
-                                .drawImage(actualCase, actualPositionW + 10, actualPositionH);
-                    }
-                }
-        );
-
-        // delete case from bookstand
-        casesToSpawn[numberOfCase] = null;
 
         // if the forklift approaches the tape, we remove the pack
         if (actualPositionW <= 60) {
@@ -217,9 +259,11 @@ public class Main extends Application {
             actualCase = null;
         }
 
-        //leftOrRight = false;
 
         graphicsContext.drawImage(forklift, actualPositionW, actualPositionH);
+        if (currentCase != null) {
+            graphicsContext.drawImage(currentCase, actualPositionW, actualPositionH);
+        }
 
     }
 
@@ -241,12 +285,11 @@ public class Main extends Application {
 
     private static void getOilSlickNumber() {
 
-        for(int i = 0; i < oilArray.length; i ++) {
-            for(int j = 0; j < algorithmAvailablePoints.size(); j++) {
-                if((algorithmAvailablePoints.get(j).getX() == astarBlockedPoints[80 + i][0]) &&
+        for (int i = 0; i < oilArray.length; i++) {
+            for (int j = 0; j < algorithmAvailablePoints.size(); j++) {
+                if ((algorithmAvailablePoints.get(j).getX() == astarBlockedPoints[80 + i][0]) &&
                         algorithmAvailablePoints.get(j).getY() == astarBlockedPoints[80 + i][1]) {
 
-//                    System.out.print(j + "Dla: X: " + astarBlockedPoints[80 + i][0] + " Y: " + astarBlockedPoints[80 + i][1] + "\n");
                     oilsToDraw[i] = j;
                 }
             }
@@ -254,7 +297,7 @@ public class Main extends Application {
     }
 
     private static void convertOilNumberToCoordinates() {
-        for(int i = 0; i < oilsToDraw.length; i++) {
+        for (int i = 0; i < oilsToDraw.length; i++) {
 //            System.out.print("X: " + multiplePoints.get(oilsToDraw[i]).getX() + " Y: " + multiplePoints.get(oilsToDraw[i]).getY() + "\n");
             oilsCoordinates[i][0] = multiplePoints.get(oilsToDraw[i]).getX();
             oilsCoordinates[i][1] = multiplePoints.get(oilsToDraw[i]).getY();
@@ -292,45 +335,9 @@ public class Main extends Application {
     @Override
     public void start(Stage mainStage) throws Exception {
         learningStrategy = new CandidateEleminationLearningStrategy();
+        Start geneticAlgotithm = new Start();
 
-//        for(int i = 0; i < 5; i++) {
-//            int oilRandomPoint = oilRandom.nextInt(algorithmAvailablePoints.size());
-//        }
-
-
-       /* ********************************* START ALGORITHM!!!!!!!!!!! *************************************************
-        a - array size (our map has 16x16)
-        sy - start point y
-        sx - start point x
-        dy - destination point y
-        dx - destination point x
-        z - array with blocked points
-
-                      a   a  sy  sx dy dx    z                       */
-        // astar.test(16, 16, 0, 0, 10, 8, astarBlockedPoints);
-
-
-//        int randX = randPoints.nextInt(15);
-//        int randY = randPoints.nextInt(15);
-//
-//        while (astar.foundPath == false) {
-//            randX = randPoints.nextInt(15);
-//            randY = randPoints.nextInt(15);
-//            astar.test(16, 16, 0, 0, randY, randX, astarBlockedPoints);
-//
-//        }
-//        for(int i = 0; i < 10; i++) {
-//
-//            int randOil = oilRandom.nextInt(pointsForOil.length);
-////            while(!contains(oilArray, randOil)) {
-////
-////                randOil = oilRandom.nextInt(pointsForOil.length) - 1;
-////            }
-//            oilArray[i] = randOil;
-//            astarBlockedPoints[80 + i] = pointsForOil[randOil];
-//
-//        }
-       // scenario for oil
+        // scenario for oil
         oilArray[0] = 0;
         astarBlockedPoints[81] = pointsForOil[0];
         oilArray[1] = 15;
@@ -351,31 +358,8 @@ public class Main extends Application {
         oilArray[9] = 7;
         astarBlockedPoints[80] = pointsForOil[7];
 
-
-//        for(int i=0;i<10;i++) {
-//            System.out.print(oilArray[i] + "\n");
-//        }
-//        System.out.print(astarBlockedPoints[71][0] + " " + astarBlockedPoints[71][1]);
-
-
-        int randCasePoint = randPoints.nextInt(80);
-        //random
-//        astar.test(16, 16, 0, 0, casesCoordinates[randCasePoint][0], casesCoordinates[randCasePoint][1], astarBlockedPoints);
-
-        //scenario 1
-      //  astar.test(16,16,0,0,15,15,astarBlockedPoints);
-
-        //scenrio 2
-//        astar.test(16,16,0,0,12,8,astarBlockedPoints);
-
-        //scenario 3
-//        astar.test(16,16,0,0,4,15,astarBlockedPoints);
-
-        //scenario 4 not possible
-      //  astar.test(16,16,0,0,3,2,astarBlockedPoints);
-
-
         prepareKnowledgeBase();
+        prepareAreasData();
 
         int x = 0;
         int y = 0;
@@ -392,21 +376,6 @@ public class Main extends Application {
 
         getOilSlickNumber();
         convertOilNumberToCoordinates();
-
-        Map<String, List<String>> knowledgeBase = Main.knowledgeBase.getKnowledgeBase();
-        //System.out.println(knowledgeBase.toString());
-
-        // Declare random case spawn-points
-
-//        for (int n = 0; n < 73; n += 8) casePoints[n][0] = 156.0;
-//        for (int n = 1; n < 74; n += 8) casePoints[n][0] = 210.0;
-//        for (int n = 2; n < 75; n += 8) casePoints[n][0] = 313.5;
-//        for (int n = 3; n < 76; n += 8) casePoints[n][0] = 367.5;
-//        for (int n = 4; n < 77; n += 8) casePoints[n][0] = 472.0;
-//        for (int n = 5; n < 78; n += 8) casePoints[n][0] = 525.5;
-//        for (int n = 6; n < 79; n += 8) casePoints[n][0] = 629.0;
-//        for (int n = 7; n < 80; n += 8) casePoints[n][0] = 682.0;
-        // Y
 
         IntStream.range(0, 80).forEach(
                 n -> {
@@ -453,10 +422,8 @@ public class Main extends Application {
             loadGraphics();
 
             getFieldNumber();
-//            astar.test(16,16,0,0,15,15,astarBlockedPoints);
-
             /**
-             * Main "game" loop
+             * Main.java "game" loop
              */
 
             setCase();
@@ -475,7 +442,6 @@ public class Main extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
 
         // Get random spawn points and random cases.
@@ -531,11 +497,6 @@ public class Main extends Application {
                 }
         );
 
-//        for (int i = 0; i < algorithmAvailablePoints.size(); i++) {
-//            System.out.print("X:" + algorithmAvailablePoints.get(i).getX() + " Y:" + algorithmAvailablePoints.get(i).getY() + "\n");
-//        }
-
-
     }
 
     private void prepareMultiplePoints() {
@@ -547,7 +508,6 @@ public class Main extends Application {
         knowledgeBase.addData("car parts", "gray");
         knowledgeBase.addData("car parts", "metal");
         knowledgeBase.addData("car parts", "heavy");
-        knowledgeBase.addData("car parts", "middleweight");
         knowledgeBase.addData("car parts", "solid");
         knowledgeBase.addData("wood", "brown");
         knowledgeBase.addData("wood", "wooden");
@@ -586,50 +546,80 @@ public class Main extends Application {
     }
 
     private void mouseClicked() {
+        System.out.println("Case base: " + Start.casesBase.getCasesBase());
         mainPool.execute(() -> {
-//            getRandomCase();
+            //TODO not sure how to do it
+//            int currentKey = Start.casesBase.getCasesBase().keySet().stream().findAny().get();
+//            List<String> currentProperties = Start.casesBase.getCasesBase().get(currentKey);
+//            List<String> finalProperties = parseProperties(currentProperties);
+//            int[] destinationXY = findPlace(finalProperties);
+
+
             int[] destinationXY = findPlace();
-            astar.test(16,16,0,0,destinationXY[0],destinationXY[1],astarBlockedPoints);
             getFieldNumber();
+//DO IT!
+//            Astar.test(16, 16, 0, 0, 1, 10, astarBlockedPoints);
+            Astar.test(16, 16, 0, 0, destinationXY[0], destinationXY[1], astarBlockedPoints);
+
 
             while (iterator < astar.pathXY.size() - 1) {
-                handleGoingForPackage();
+                handleGoingWithPackage();
             }
             returnMode = true;
             unlockPack = true;
+
+            currentCase = null;
 
             while (iterator > 0 && returnMode) {
                 handleReturning();
             }
             if (iterator == 0) {
                 System.out.print("END\n");
+                Start.getResults();
+
                 returnMode = false;
             }
         });
     }
 
-    private void getRandomCase() {
-        int random = new Random().nextInt(7);
-//        if (random == 0)
-//
+    private List<String> parseProperties(List<String> currentProperties) {
+        List<String> result = new ArrayList<>();
+        List<String> colors = new ArrayList<>(Arrays.asList("gray", "brown", "white", "red", "black", "blue", "yellow"));
+        String color = currentProperties.stream().filter(colors::contains).findFirst().orElse("0");
+        List<String> materials = new ArrayList<>(Arrays.asList("metal", "wooden", "transparent", "labelled", "paper"));
+        String material = currentProperties.stream().filter(materials::contains).findFirst().orElse("0");
+        List<String> weights = new ArrayList<>(Arrays.asList("heavy", "light", "middleweight"));
+        String weight = currentProperties.stream().filter(weights::contains).findFirst().orElse("0");
+        List<String> states = new ArrayList<>(Arrays.asList("solid", "liquid"));
+        String state = currentProperties.stream().filter(states::contains).findFirst().orElse("0");
+        result.addAll(Arrays.asList(color, material, weight, state));
+        return result;
     }
-
 
     private int[] findPlace() {
-//        int[] result = new int[2];
-//        result[0] = 15;
-//        result[1] = 15;
-//        return result;
-//        String caseName = "glass";
-        String caseName = "explosives";
-//        String caseName = "oil";
-//        String caseName = "wood";
-        return learningStrategy.findDestinationPlace(knowledgeBase, caseName);
+        String caseName = getRandomCase();
+        return learningStrategy.findDestinationPlace(knowledgeBase, caseName, areasData);
     }
 
-    private void handleGoingForPackage() {
-            iterator++;
-            move();
+
+    private String getRandomCase() {
+        List<String> casesNames = new ArrayList<>(Arrays.asList("car parts", "wood", "paper", "explosives", "chemicals", "water", "oil", "glass"));
+        int random = new Random().nextInt(casesNames.size());
+
+        String randomCase = casesNames.get(random);
+        System.out.println(randomCase);
+        currentCase = new Image("images/cases/"+randomCase+".png");
+
+        return randomCase;
+    }
+
+    private int[] findPlace(List<String> properties) {
+        return learningStrategy.findDestinationPlace(properties, areasData);
+    }
+
+    private void handleGoingWithPackage() {
+        iterator++;
+        move();
     }
 
     private void move() {
