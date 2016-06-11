@@ -444,50 +444,12 @@ public class CandidateEleminationLearningStrategy implements LearningStrategy {
 
     private boolean generalHasMoreGeneralHypothesis(List<String> hypothesis, List<List<String>> generalHypothesis) {
         return true;
-//        for (List<String> singleGeneralHypothesis : generalHypothesis) {
-//            boolean has = true;
-//            for (int i = 0; i < numberOfProperties; i++) {
-//                if (singleGeneralHypothesis.get(i).equals(hypothesis.get(i)))
-//                    has = false;
-//            }
-//            if (has) return true;
-//        }
-//        return false;
     }
 
     private void deleteMoreGeneralHypothesis(List<List<String>> specificHypothesis, List<String> hypothesis) {
     }
 
     private void parseNegativeExample(Map<List<String>, Boolean> blackAreaLearningSet, List<String> example, List<List<String>> generalHypothesis, List<List<String>> specificHypothesis) {
-//        for (List<String> hypothesis : specificHypothesis) {
-//                if (hypothesisDoesCover(example, hypothesis)) {
-//                    System.out.println(hypothesis + " doesn't cover " + example + " so it's deleted (specific negative)");
-//                    removeHypothesis(specificHypothesis, hypothesis);
-//                    addMinimalGeneralizations(specificHypothesis, hypothesis, generalHypothesis, example);
-//                } else {
-//                    System.out.println(hypothesis + " does cover" + example + " (specific negative)");
-//                }
-//        }
-
-//        Iterator<List<String>> generalHypothesisIterator = generalHypothesis.iterator();
-//        while (generalHasMoreGeneralHypothesis())
-//        for (List<String> hypothesis : generalHypothesis) {
-//                if (hypothesisDoesCover(example, hypothesis)) {
-//                    System.out.println(hypothesis + " doesn't cover " + example + " so it's deleted (general negative)");
-//                    removeHypothesis(generalHypothesis, hypothesis);
-//                    addMinimalSpecializations(generalHypothesis, hypothesis);
-//                    deleteMoreSpecificHypothesis(generalHypothesis, hypothesis);
-//                } else {
-//                    System.out.println(hypothesis + " does cover " + example + " (general negative)");
-//                }
-//        }
-    }
-
-    private void addMinimalSpecializations(List<List<String>> generalHypothesis, List<String> hypothesis) {
-    }
-
-    private void deleteMoreSpecificHypothesis(List<List<String>> generalHypothesis, List<String> hypothesis) {
-
     }
 
     private boolean exampleIsPositive(List<String> example, Map<List<String>, Boolean> learningSet) {
