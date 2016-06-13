@@ -186,19 +186,115 @@ public class Main extends Application {
         point[1] = 3;
         point[0] = 12;
         greenAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 3;
+        point[0] = 11;
+        greenAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 3;
+        point[0] = 10;
+        greenAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 3;
+        point[0] = 9;
+        greenAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 3;
+        point[0] = 8;
+        greenAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 3;
+        point[0] = 7;
+        greenAreaCoordinates.add(point);
         areasData.put("green", greenAreaCoordinates);
+
+
+
 
         List<int[]> blackAreaCoordinates = new ArrayList<>();
         point = new int[2];
-        point[1] = 4;
+        point[1] = 8;
         point[0] = 12;
         blackAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 8;
+        point[0] = 11;
+        blackAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 8;
+        point[0] = 10;
+        blackAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 8;
+        point[0] = 9;
+        blackAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 8;
+        point[0] = 8;
+        blackAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 8;
+        point[0] = 7;
+        blackAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 8;
+        point[0] = 6;
+        blackAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 8;
+        point[0] = 5;
+        blackAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 8;
+        point[0] = 4;
+        blackAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 8;
+        point[0] = 3;
+        blackAreaCoordinates.add(point);
+
         areasData.put("black", blackAreaCoordinates);
 
         List<int[]> brownAreaCoordinates = new ArrayList<>();
         point = new int[2];
-        point[1] = 8;
+        point[1] = 11;
         point[0] = 12;
+        brownAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 11;
+        point[0] = 11;
+        brownAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 11;
+        point[0] = 10;
+        brownAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 11;
+        point[0] = 9;
+        brownAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 11;
+        point[0] = 8;
+        brownAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 11;
+        point[0] = 7;
+        brownAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 11;
+        point[0] = 6;
+        brownAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 11;
+        point[0] = 5;
+        brownAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 11;
+        point[0] = 4;
+        brownAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 11;
+        point[0] = 3;
         brownAreaCoordinates.add(point);
         areasData.put("brown", brownAreaCoordinates);
 
@@ -207,6 +303,26 @@ public class Main extends Application {
         point[1] = 12;
         point[0] = 3;
         yellowAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 12;
+        point[0] = 4;
+        yellowAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 12;
+        point[0] = 5;
+        yellowAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 12;
+        point[0] = 6;
+        yellowAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 12;
+        point[0] = 7;
+        yellowAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 12;
+        point[0] = 8;
+        yellowAreaCoordinates.add(point);
         areasData.put("yellow", yellowAreaCoordinates);
 
         List<int[]> redAreaCoordinates = new ArrayList<>();
@@ -214,6 +330,24 @@ public class Main extends Application {
         point[1] = 12;
         point[0] = 12;
         redAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 12;
+        point[0] = 11;
+        redAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 12;
+        point[0] = 10;
+        redAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 12;
+        point[0] = 9;
+        redAreaCoordinates.add(point);
+        point = new int[2];
+        point[1] = 12;
+        point[0] = 8;
+        redAreaCoordinates.add(point);
+
+
         areasData.put("red", redAreaCoordinates);
         System.out.println("areas data ready");
     }
@@ -548,17 +682,9 @@ public class Main extends Application {
     private void mouseClicked() {
         System.out.println("Case base: " + Start.casesBase.getCasesBase());
         mainPool.execute(() -> {
-            //TODO not sure how to do it
-//            int currentKey = Start.casesBase.getCasesBase().keySet().stream().findAny().get();
-//            List<String> currentProperties = Start.casesBase.getCasesBase().get(currentKey);
-//            List<String> finalProperties = parseProperties(currentProperties);
-//            int[] destinationXY = findPlace(finalProperties);
-
 
             int[] destinationXY = findPlace();
             getFieldNumber();
-//DO IT!
-//            Astar.test(16, 16, 0, 0, 1, 10, astarBlockedPoints);
             Astar.test(16, 16, 0, 0, destinationXY[0], destinationXY[1], astarBlockedPoints);
 
 
