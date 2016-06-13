@@ -72,20 +72,11 @@ public class Main extends Application {
     static int oilsToDraw[] = new int[10];
     static int oilsCoordinates[][] = new int[10][2];
 
-    // Random for algorithm points
-    static Random randPoints = new Random();
-
-    // actual case on forklift
-    static Image actualCase;
     static int locOfCases[] = new int[20];
 
+    static List<Map<String, Object>> casesPlace = new ArrayList<Map<String, Object>>();
+
     static int movingTicks = 3;
-
-    // state if forklift is busy
-    static Boolean caseNotToSpawn = false;
-
-    // number of case that is on forklift
-    static int numberOfCase;
 
     static double actualPositionH = 0;
     static double actualPositionW = 110;
@@ -385,19 +376,25 @@ public class Main extends Application {
             graphicsContext.drawImage(oilSlick, oilsCoordinates[i][0] + 5, oilsCoordinates[i][1] + 25);
         }
 
-        // if the forklift approaches the tape, we remove the pack
-        if (actualPositionW <= 60) {
-            caseNotToSpawn = false;
-            actualCase = null;
-        }
-
-
         graphicsContext.drawImage(forklift, actualPositionW, actualPositionH);
         if (currentCase != null) {
             graphicsContext.drawImage(currentCase, actualPositionW, actualPositionH);
         }
 
+        casesPlace.forEach(caseInfo -> {
+            double caseW = (double)caseInfo.get("caseW");
+            double caseH = (double)caseInfo.get("caseH");
+            Image image = (Image)caseInfo.get("caseImage");
+
+            graphicsContext.drawImage(image, caseW, caseH);
+        });
+
     }
+
+    private static double parseToRealPoint(double point) {
+        return point*36;
+    }
+
 
     // Get points that algorithm returns [x,y] and change them to map points for example [ 15,15 ] -> 255
     private static void getFieldNumber() {
@@ -553,7 +550,7 @@ public class Main extends Application {
             graphicsContext = canvas.getGraphicsContext2D();
             loadGraphics();
 
-            getFieldNumber();
+//            getFieldNumber();
             /**
              * Main.java "game" loop
              */
@@ -683,8 +680,8 @@ public class Main extends Application {
 
             int[] destinationXY = findPlace();
             getFieldNumber();
-            Astar.test(16, 16, 0, 0, destinationXY[0], destinationXY[1], astarBlockedPoints);
 
+            Astar.test(16, 16, 0, 0, destinationXY[0], destinationXY[1], astarBlockedPoints);
 
             while (iterator < astar.pathXY.size() - 1) {
                 handleGoingWithPackage();
@@ -692,6 +689,15 @@ public class Main extends Application {
             returnMode = true;
             unlockPack = true;
 
+
+            HashMap<String, Object> currentCaseInfo = new HashMap<>();
+            currentCaseInfo.put("caseW", actualPositionW);
+            currentCaseInfo.put("caseH", actualPositionH);
+            currentCaseInfo.put("caseImage", currentCase);
+
+            casesPlace.add(currentCaseInfo);
+
+            //So case is not rendered on forklift when it's going back
             currentCase = null;
 
             while (iterator > 0 && returnMode) {
@@ -768,6 +774,8 @@ public class Main extends Application {
     private double calculateYIterator() {
         return (multiplePoints.get(fieldNumber[iterator]).getY() - actualPositionH) / movingTicks;
     }
+
+
 
     private Runnable prepareRunableForMovingSlowly(double xIterator, double yIterator) {
         return () -> {
