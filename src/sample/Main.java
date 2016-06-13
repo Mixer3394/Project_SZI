@@ -209,8 +209,6 @@ public class Main extends Application {
         areasData.put("green", greenAreaCoordinates);
 
 
-
-
         List<int[]> blackAreaCoordinates = new ArrayList<>();
         point = new int[2];
         point[1] = 8;
@@ -699,12 +697,10 @@ public class Main extends Application {
             while (iterator > 0 && returnMode) {
                 handleReturning();
             }
-            if (iterator == 0) {
-                System.out.print("END\n");
-                Start.getResults();
+            System.out.print("END\n");
+            Start.getResults();
 
-                returnMode = false;
-            }
+            returnMode = false;
         });
     }
 
@@ -734,7 +730,7 @@ public class Main extends Application {
 
         String randomCase = casesNames.get(random);
         System.out.println(randomCase);
-        currentCase = new Image("images/cases/"+randomCase+".png");
+        currentCase = new Image("images/cases/" + randomCase + ".png");
 
         return randomCase;
     }
